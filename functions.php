@@ -86,3 +86,6 @@ function understrap_child_customize_controls_js() {
 	);
 }
 add_action( 'customize_controls_enqueue_scripts', 'understrap_child_customize_controls_js' );
+
+//loads inc contents
+require_once get_theme_file_path( 'inc/acf.php' );
