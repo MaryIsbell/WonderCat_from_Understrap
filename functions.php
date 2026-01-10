@@ -89,3 +89,13 @@ add_action( 'customize_controls_enqueue_scripts', 'understrap_child_customize_co
 
 //loads inc contents
 require_once get_theme_file_path( 'inc/acf.php' );
+
+/* Add USER EXPERIENCE to author archives */
+function ue_post_author_archive($query) {
+    if (!$query->is_main_query() || !$query->is_author()) {
+        return;
+    }
+    
+    $query->set('post_type', array('user-experience', 'post'));
+}
+add_action('pre_get_posts', 'ue_post_author_archive');
