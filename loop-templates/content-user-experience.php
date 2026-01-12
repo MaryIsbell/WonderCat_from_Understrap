@@ -40,8 +40,18 @@ defined( 'ABSPATH' ) || exit;
 
     // Get the pieces for the bento box
     $title_of_creative_work = get_field( 'title_of_creative_work', $post_id);
-	$experience = get_field( 'experience', $post_id);
-	$technology = get_field( 'technology', $post_id);
+	$experience = '';
+$experience_url = '';
+
+$experience_terms = get_the_terms( $post_id, 'experience' );
+
+if ( ! empty( $experience_terms ) && ! is_wp_error( $experience_terms ) ) {
+    $term = $experience_terms[0];
+    $experience = $term->name;
+    $experience_url = get_term_link( $term );
+}
+
+	//$technology = get_field( 'technology', $post_id);
 	$feature = get_field( 'feature', $post_id);
 	$display_name = get_the_author_meta( 'display_name', get_post_field( 'post_author', $post_id ));
 	$author_id = get_post_field( 'post_author', $post_id ); 
@@ -56,13 +66,15 @@ defined( 'ABSPATH' ) || exit;
         <div class='row'>
             <div class='col-md-6'>
                 <div class='button_creative_work'>{$title_of_creative_work}</div>
-                <div class='button_experience'>{$experience}</div>
+                <div class='button_experience'>Experience:
+    				<a href='" . esc_url( $experience_url ) . "'>" . esc_html( $experience ) . "</a>
+				</div>
                 <div class='button_technology'>{$technology}</div>
             </div>
             <div class='col-md-6'>
                 <div class='button_feature'>{$feature}</div>
-                <div class='button_user'>
-                <a href='" . esc_url( $author_url ) . "'>" . esc_html( $display_name ) . "</a>
+                <div class='button_user'>Contributed by: 
+                	<a href='" . esc_url( $author_url ) . "'>" . esc_html( $display_name ) . "</a>
             	</div>
                 <div class='button_date'>{$date}</div>
             </div>
