@@ -30,7 +30,16 @@ if ( ! empty( $experience_terms ) && ! is_wp_error( $experience_terms ) ) {
     $experience_url = get_term_link( $term );
 }
 
-	//$technology = get_field( 'technology', $post_id);
+	$technology = '';
+	$technology_url='';
+	$technology_terms=get_the_terms( $post_id, 'technology' );
+if ( ! empty($technology_terms ) && ! is_wp_error( $technology_terms ) ) {
+	$term = $technology_terms[0];
+	$technology = $term->name;
+	$technology_url = get_term_link( $term );
+}
+	
+	
 	$feature = get_field( 'feature', $post_id);
 	$display_name = get_the_author_meta( 'display_name', get_post_field( 'post_author', $post_id ));
 	$author_id = get_post_field( 'post_author', $post_id ); 
@@ -48,8 +57,9 @@ if ( ! empty( $experience_terms ) && ! is_wp_error( $experience_terms ) ) {
                 <div class='button_experience'>Experience:
     				<a href='" . esc_url( $experience_url ) . "'>" . esc_html( $experience ) . "</a>
 				</div>
-                <div class='button_technology'>{$technology}</div>
-            </div>
+                <div class='button_technology'>Technology:
+    				<a href='" . esc_url( $technology_url ) . "'>" . esc_html( $technology ) . "</a>
+				</div></div>
             <div class='col-md-6'>
                 <div class='button_feature'>{$feature}</div>
                 <div class='button_user'>Contributed by: 
