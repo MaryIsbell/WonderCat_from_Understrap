@@ -44,7 +44,7 @@ $container = get_theme_mod( 'understrap_container_type' );
     if ( $term->parent ) {
         $parent_term = get_term( $term->parent, $term->taxonomy );
         if ( $parent_term && ! is_wp_error( $parent_term ) ) {
-            echo '<p>Parent: <a href="' . esc_url( get_term_link( $parent_term ) ) . '">' . esc_html( $parent_term->name ) . '</a></p>';
+            echo '<p>Primary term: <a href="' . esc_url( get_term_link( $parent_term ) ) . '">' . esc_html( $parent_term->name ) . '</a></p>';
         }
     }
 
