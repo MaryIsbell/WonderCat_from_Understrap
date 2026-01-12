@@ -32,11 +32,40 @@ $container = get_theme_mod( 'understrap_container_type' );
 				if ( have_posts() ) {
 					?>
 					<header class="page-header">
-						<?php
-						the_archive_title( '<h1 class="page-title">', '</h1>' );
-						the_archive_description( '<div class="taxonomy-description">', '</div>' );
-						?>
-					</header><!-- .page-header -->
+    <?php
+    // Default title and description
+    the_archive_title( '<h1 class="page-title">', '</h1>' );
+    the_archive_description( '<div class="taxonomy-description">', '</div>' );
+
+    // Custom parent/child info
+    $term = get_queried_object();
+
+    // Parent
+    if ( $term->parent ) {
+        $parent_term = get_term( $term->parent, $term->taxonomy );
+        if ( $parent_term && ! is_wp_error( $parent_term ) ) {
+            echo '<p>Parent: <a href="' . esc_url( get_term_link( $parent_term ) ) . '">' . esc_html( $parent_term->name ) . '</a></p>';
+        }
+    }
+
+    // Children
+    $child_terms = get_terms([
+        'taxonomy'   => $term->taxonomy,
+        'parent'     => $term->term_id,
+        'hide_empty' => false,
+    ]);
+
+    if ( ! empty( $child_terms ) && ! is_wp_error( $child_terms ) ) {
+        echo '<p>Related terms: ';
+        $links = [];
+        foreach ( $child_terms as $child ) {
+            $links[] = '<a href="' . esc_url( get_term_link( $child ) ) . '">' . esc_html( $child->name ) . '</a>';
+        }
+        echo implode( ', ', $links );
+        echo '</p>';
+    }
+    ?>
+</header><!-- .page-header -->
 					<?php
 					// Start the loop.
 					while ( have_posts() ) {
