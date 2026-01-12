@@ -31,7 +31,7 @@ $container = get_theme_mod( 'understrap_container_type' );
 				<?php
 				if ( have_posts() ) {
 					?>
-					<header class="page-header"><h1 class="page-title">Archives: Story Experiences</h1>
+					<header class="page-header"><h1 class="page-title">Archive: Story Experiences</h1>
 						
 					</header><!-- .page-header -->
 					<?php
