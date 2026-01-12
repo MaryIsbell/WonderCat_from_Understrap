@@ -44,6 +44,8 @@ defined( 'ABSPATH' ) || exit;
 	$technology = get_field( 'technology', $post_id);
 	$feature = get_field( 'feature', $post_id);
 	$display_name = get_the_author_meta( 'display_name', get_post_field( 'post_author', $post_id ));
+	$author_id = get_post_field( 'post_author', $post_id ); 
+	$author_url = get_author_posts_url( $author_id );
 	$date = get_the_date( 'F j, Y', $post_id);
 	//$authorarchivelink = ge
 
@@ -59,7 +61,9 @@ defined( 'ABSPATH' ) || exit;
             </div>
             <div class='col-md-6'>
                 <div class='button_feature'>{$feature}</div>
-                <div class='button_user'>{$display_name}</div>
+                <div class='button_user'>
+                <a href='" . esc_url( $author_url ) . "'>" . esc_html( $display_name ) . "</a>
+            	</div>
                 <div class='button_date'>{$date}</div>
             </div>
         </div>
