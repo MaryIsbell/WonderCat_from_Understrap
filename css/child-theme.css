@@ -14970,18 +14970,18 @@ figure.woocommerce-product-gallery__wrapper {
 
 .container {
   border: 2px solid black;
-  box-shadow: 5px 5px black;
+  box-shadow: 3px 3px black;
   border-radius: 8px;
   text-align: center;
   padding: 10px;
   font-size: 1.4rem;
   background-color: #d9d9d9;
-  margin-bottom: 20px;
+  margin-bottom: 50px;
 }
 
 .button_creative_work {
   border: 2px solid black;
-  box-shadow: 5px 5px black;
+  box-shadow: 2px 2px inset black;
   border-radius: 8px;
   text-align: center;
   padding: 10px;
@@ -14992,7 +14992,7 @@ figure.woocommerce-product-gallery__wrapper {
 
 .button_feature {
   border: 2px solid black;
-  box-shadow: 5px 5px black;
+  box-shadow: 2px 2px inset black;
   border-radius: 8px;
   text-align: center;
   padding: 10px;
@@ -15003,7 +15003,7 @@ figure.woocommerce-product-gallery__wrapper {
 
 .button_experience {
   border: 2px solid black;
-  box-shadow: 5px 5px black;
+  box-shadow: 2px 2px inset black;
   border-radius: 8px;
   text-align: center;
   padding: 10px;
@@ -15014,40 +15014,18 @@ figure.woocommerce-product-gallery__wrapper {
 
 .button_technology {
   border: 2px solid black;
-  box-shadow: 5px 5px black;
+  box-shadow: 2px 2px inset black;
   border-radius: 8px;
   text-align: center;
   padding: 10px;
   font-size: 1.4rem;
   background-color: #97c2fc;
-  margin-bottom: 20px;
-}
-
-.button_proposed_technology {
-  border: 2px dotted black;
-  box-shadow: 5px 5px black;
-  border-radius: 8px;
-  text-align: center;
-  padding: 10px;
-  font-size: 1.4rem;
-  background-color: #97c2fc;
-  margin-bottom: 20px;
-}
-
-.button_proposed_experience {
-  border: 2px dotted black;
-  box-shadow: 5px 5px black;
-  border-radius: 8px;
-  text-align: center;
-  padding: 10px;
-  font-size: 1.4rem;
-  background-color: #ff6347;
   margin-bottom: 20px;
 }
 
 .button_user {
   border: 2px solid black;
-  box-shadow: 5px 5px black;
+  box-shadow: 2px 2px inset black;
   border-radius: 8px;
   text-align: center;
   padding: 10px;
