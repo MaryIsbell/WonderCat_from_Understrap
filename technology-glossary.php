@@ -1,8 +1,8 @@
 <?php
 /**
- * Template Name: Full Width Page
+ * Template Name: Technology Glossary Template
  *
- * Template for displaying a page without sidebar even if a sidebar widget is published.
+ * A custom page to display terms from the technology taxonomy.
  *
  * @package Understrap
  */
@@ -11,49 +11,92 @@
 defined( 'ABSPATH' ) || exit;
 
 get_header();
+
 $container = get_theme_mod( 'understrap_container_type' );
-
-if ( is_front_page() ) {
-	get_template_part( 'global-templates/hero' );
-}
-
-$wrapper_id = 'full-width-page-wrapper';
-if ( is_page_template( 'page-templates/no-title.php' ) ) {
-	$wrapper_id = 'no-title-page-wrapper';
-}
 ?>
 
-<div class="wrapper" id="<?php echo $wrapper_id; // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped -- ok. ?>">
+<div class="wrapper" id="technology-glossary-wrapper">
+    <div class="<?php echo esc_attr( $container ); ?>" id="content" tabindex="-1">
+        <div class="row">
 
-	<div class="<?php echo esc_attr( $container ); ?>" id="content">
+            <main class="site-main col" id="main">
 
-		<div class="row">
+                <?php
+                // Page title
+                if ( have_posts() ) :
+                    while ( have_posts() ) : the_post();
+                        ?>
+                        <h1 class="page-title"><?php the_title(); ?></h1>
+                        <div class="page-content"><?php the_content(); ?></div>
+                        <?php
+                    endwhile;
+                endif;
 
-			<div class="col-md-12 content-area" id="primary">
+                // Fetch all top-level technology terms alphabetically
+                $taxonomy = 'technology';
+                $terms = get_terms([
+                    'taxonomy'   => $taxonomy,
+                    'hide_empty' => false,
+                    'orderby'    => 'name',
+                    'order'      => 'ASC',
+                    'parent'     => 0,
+                ]);
 
-				<main class="site-main" id="main" role="main">
+                if ( ! empty( $terms ) && ! is_wp_error( $terms ) ) :
+                    ?>
+                    <table class="glossary-table" style="width:100%; border-collapse: collapse; border: 1px solid #333;">
+                        <thead>
+                            <tr>
+                                <th style="text-align:left; padding: 8px; border:1px solid #333;">Term</th>
+                                <th style="text-align:left; padding: 8px; border:1px solid #333;">Description</th>
+                                <th style="text-align:left; padding: 8px; border:1px solid #333;">Related Terms</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <?php foreach ( $terms as $term ) :
 
-					<?php
-					while ( have_posts() ) {
-						the_post();
-						get_template_part( 'loop-templates/content', 'page' );
+                                $term_link = get_term_link( $term );
+                                $description = term_description( $term );
 
-						// If comments are open or we have at least one comment, load up the comment template.
-						if ( comments_open() || get_comments_number() ) {
-							comments_template();
-						}
-					}
-					?>
+                                // Fetch child terms
+                                $child_terms = get_terms([
+                                    'taxonomy'   => $taxonomy,
+                                    'parent'     => $term->term_id,
+                                    'hide_empty' => false,
+                                    'orderby'    => 'name',
+                                    'order'      => 'ASC',
+                                ]);
+                                $child_links = '';
+                                if ( ! empty( $child_terms ) && ! is_wp_error( $child_terms ) ) {
+                                    $links = [];
+                                    foreach ( $child_terms as $child ) {
+                                        $links[] = '<a href="' . esc_url( get_term_link( $child ) ) . '">' . esc_html( $child->name ) . '</a>';
+                                    }
+                                    $child_links = implode( ', ', $links );
+                                }
+                                ?>
+                                <tr>
+                                    <td style="padding: 8px; border:1px solid #333; vertical-align: top;">
+                                        <a href="<?php echo esc_url( $term_link ); ?>"><?php echo esc_html( $term->name ); ?></a>
+                                    </td>
+                                    <td style="padding: 8px; border:1px solid #333; vertical-align: top;">
+    									<?php echo esc_html( wp_strip_all_tags( term_description( $term ) ) ); ?>
+									</td>
+                                    <td style="padding: 8px; border:1px solid #333; vertical-align: top;">
+                                        <?php echo $child_links; ?>
+                                    </td>
+                                </tr>
+                            <?php endforeach; ?>
+                        </tbody>
+                    </table>
+                <?php else : ?>
+                    <p>No terms found in this taxonomy.</p>
+                <?php endif; ?>
 
-				</main>
+            </main><!-- #main -->
 
-			</div><!-- #primary -->
+        </div><!-- .row -->
+    </div><!-- #content -->
+</div><!-- #technology-glossary-wrapper -->
 
-		</div><!-- .row -->
-
-	</div><!-- #content -->
-
-</div><!-- #<?php echo $wrapper_id; // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped -- ok. ?> -->
-
-<?php
-get_footer();
+<?php get_footer(); ?>
