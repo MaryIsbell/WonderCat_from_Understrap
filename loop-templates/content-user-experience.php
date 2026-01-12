@@ -50,7 +50,7 @@ if ( ! empty($technology_terms ) && ! is_wp_error( $technology_terms ) ) {
 
     // Display the bento box
 
-    echo "<div class='container'>
+    echo "<div class='bento_container'>
         <div class='row'>
             <div class='col-md-6'>
                 <div class='button_creative_work'>{$title_of_creative_work}</div>
