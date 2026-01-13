@@ -116,7 +116,6 @@ $container = get_theme_mod( 'understrap_container_type' );
         // Description column + appended bolded version history link
         echo '<td style="padding:8px; border:1px solid #333; vertical-align:top;">'
              . esc_html( wp_strip_all_tags( $description ) )
-             . '<br><strong><a href="' . $history_link . '">View Version History</a></strong>'
              . '</td>';
 
         // Related terms column
