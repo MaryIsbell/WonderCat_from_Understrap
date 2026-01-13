@@ -13,8 +13,20 @@
 defined('ABSPATH') || exit;
 get_header();
 
+$field_map = [
+    'experience' => [
+        'fields' => ['9', '10'],
+        'labels' => ['Proposed Experience Term', 'Proposed Definition']
+    ],
+    'technology' => [
+        'fields' => ['11', '12'],
+        'labels' => ['Proposed Technology Term', 'Proposed Definition']
+    ],
+];
 $container = get_theme_mod('understrap_container_type');
 ?>
+
+
 
 <div class="wrapper" id="multi-taxonomy-revisions-wrapper">
     <div class="<?php echo esc_attr($container); ?>" id="content" tabindex="-1">
@@ -91,64 +103,62 @@ $container = get_theme_mod('understrap_container_type');
 );
 
 
-                            if (!empty($entries)) :
-                                echo '<table style="width:100%; border-collapse: collapse; border:1px solid #333; margin-bottom: 2rem;">';
-                                echo '<thead>
-<tr>
-    <th style="border:1px solid #333; padding:8px;">Change Proposed</th>
-    <th style="border:1px solid #333; padding:8px;">Submitted By</th>
-    <th style="border:1px solid #333; padding:8px;">Experience Term Proposed</th>
-    <th style="border:1px solid #333; padding:8px;">Proposed Description</th>
-    <th style="border:1px solid #333; padding:8px;">Technology Term Proposed</th>
-    <th style="border:1px solid #333; padding:8px;">Proposed Description</th>
-</tr>
-</thead><tbody>';
+if (!empty($entries)) :
 
+    if ( ! isset($field_map[$taxonomy]) ) {
+        echo '<p>Configuration missing for taxonomy.</p>';
+        continue;
+    }
 
-                                foreach ($entries as $entry) {
+    $config = $field_map[$taxonomy];
+    $fields = $config['fields'];
+    $labels = $config['labels'];
 
-    echo '<tr>';
+    echo '<table style="width:100%; border-collapse: collapse; border:1px solid #333; margin-bottom: 2rem;">';
 
-    echo '<td style="border:1px solid #333; padding:8px;">' .
-         esc_html(date('F j, Y', strtotime($entry->date_created))) .
-         '</td>';
+    echo '<thead><tr>';
+    echo '<th style="border:1px solid #333; padding:8px;">Date</th>';
+    echo '<th style="border:1px solid #333; padding:8px;">Proposed By</th>';
 
-    echo '<td style="border:1px solid #333; padding:8px;">' .
-         esc_html($entry->display_name ?: 'Anonymous') .
-         '</td>';
+    foreach ($labels as $label) {
+        echo '<th style="border:1px solid #333; padding:8px;">' . esc_html($label) . '</th>';
+    }
 
-    echo '<td style="border:1px solid #333; padding:8px;">' .
-         esc_html($entry->field_9) .
-         '</td>';
+    echo '</tr></thead><tbody>';
 
-    echo '<td style="border:1px solid #333; padding:8px;">' .
-         esc_html($entry->field_10) .
-         '</td>';
+    foreach ($entries as $entry) {
 
-    echo '<td style="border:1px solid #333; padding:8px;">' .
-         esc_html($entry->field_11) .
-         '</td>';
+        echo '<tr>';
 
-    echo '<td style="border:1px solid #333; padding:8px;">' .
-         esc_html($entry->field_12) .
-         '</td>';
+        echo '<td style="border:1px solid #333; padding:8px;">' .
+             esc_html( date('F j, Y', strtotime($entry->date_created)) ) .
+             '</td>';
 
-    echo '</tr>';
-}
+        echo '<td style="border:1px solid #333; padding:8px;">' .
+             esc_html( $entry->display_name ?: 'Unknown' ) .
+             '</td>';
 
+        foreach ($fields as $field_number) {
+            $property = 'field_' . $field_number;
+            $value = isset($entry->$property) ? $entry->$property : '';
+            echo '<td style="border:1px solid #333; padding:8px;">' . esc_html($value) . '</td>';
+        }
 
-                                echo '</tbody></table>';
-                            else :
-                                echo '<p>No proposed revisions for this term.</p>';
-                            endif;
+        echo '</tr>';
+    }
 
-                        endforeach;
+    echo '</tbody></table>';
 
-                    else :
-                        echo '<p>No terms found in the ' . esc_html($taxonomy) . ' taxonomy.</p>';
-                    endif;
+else :
+    echo '<p>No proposed revisions for this term.</p>';
+endif;
 
-                endforeach;
+endforeach; // closes: foreach ($terms as $term)
+
+endif;     // closes: if (!empty($terms) && !is_wp_error($terms))
+
+endforeach; // closes: foreach ($taxonomies as $taxonomy)
+
                 ?>
 
             </main><!-- #main -->
