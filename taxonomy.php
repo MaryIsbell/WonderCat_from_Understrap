@@ -69,7 +69,7 @@ $container = get_theme_mod( 'understrap_container_type' );
     $anchor_id = sanitize_title( $term->taxonomy . '-' . $term->slug );
     $version_history_url = home_url( '/term-version-history/#' . $anchor_id );
 
-    echo '<p><a href="' . esc_url( $version_history_url ) . '" target="_blank" rel="noopener noreferrer">View Version History for This Term</a></p>';
+    echo '<p><a href="' . esc_url( $version_history_url ) . '">View Version History for This Term</a></p>';
     ?>
 </header><!-- .page-header -->
 					<?php
