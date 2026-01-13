@@ -94,20 +94,48 @@ $container = get_theme_mod('understrap_container_type');
                             if (!empty($entries)) :
                                 echo '<table style="width:100%; border-collapse: collapse; border:1px solid #333; margin-bottom: 2rem;">';
                                 echo '<thead>
-                                        <tr>
-                                            <th style="border:1px solid #333; padding:8px; text-align:left;">Proposed Description</th>
-                                            <th style="border:1px solid #333; padding:8px; text-align:left;">Submitted By</th>
-                                            <th style="border:1px solid #333; padding:8px; text-align:left;">Date</th>
-                                        </tr>
-                                      </thead><tbody>';
+<tr>
+    <th style="border:1px solid #333; padding:8px;">Change Proposed</th>
+    <th style="border:1px solid #333; padding:8px;">Submitted By</th>
+    <th style="border:1px solid #333; padding:8px;">Experience Term Proposed</th>
+    <th style="border:1px solid #333; padding:8px;">Proposed Description</th>
+    <th style="border:1px solid #333; padding:8px;">Technology Term Proposed</th>
+    <th style="border:1px solid #333; padding:8px;">Proposed Description</th>
+</tr>
+</thead><tbody>';
+
 
                                 foreach ($entries as $entry) {
-                                    echo '<tr>';
-                                    echo '<td style="border:1px solid #333; padding:8px;">' . esc_html($entry->description) . '</td>';
-                                    echo '<td style="border:1px solid #333; padding:8px;">' . esc_html($entry->user_name) . '</td>';
-                                    echo '<td style="border:1px solid #333; padding:8px;">' . esc_html(date('F j, Y', strtotime($entry->date_created))) . '</td>';
-                                    echo '</tr>';
-                                }
+
+    echo '<tr>';
+
+    echo '<td style="border:1px solid #333; padding:8px;">' .
+         esc_html(date('F j, Y', strtotime($entry->date_created))) .
+         '</td>';
+
+    echo '<td style="border:1px solid #333; padding:8px;">' .
+         esc_html($entry->display_name ?: 'Anonymous') .
+         '</td>';
+
+    echo '<td style="border:1px solid #333; padding:8px;">' .
+         esc_html($entry->field_9) .
+         '</td>';
+
+    echo '<td style="border:1px solid #333; padding:8px;">' .
+         esc_html($entry->field_10) .
+         '</td>';
+
+    echo '<td style="border:1px solid #333; padding:8px;">' .
+         esc_html($entry->field_11) .
+         '</td>';
+
+    echo '<td style="border:1px solid #333; padding:8px;">' .
+         esc_html($entry->field_12) .
+         '</td>';
+
+    echo '</tr>';
+}
+
 
                                 echo '</tbody></table>';
                             else :
