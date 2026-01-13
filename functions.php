@@ -100,21 +100,3 @@ function ue_post_author_archive($query) {
 }
 add_action('pre_get_posts', 'ue_post_author_archive');
 
-
-function yourchild_enqueue_styles() {
-    $parenthandle = 'understrap-styles'; // UnderStrap parent handle
-    $theme = wp_get_theme();
-
-    // Enqueue parent stylesheet
-    wp_enqueue_style( $parenthandle, get_template_directory_uri() . '/style.css', 
-        array(),  // no dependencies
-        $theme->parent()->get('Version')
-    );
-
-    // Enqueue child stylesheet
-    wp_enqueue_style( 'child-style', get_stylesheet_directory_uri() . '/style.css', 
-        array( $parenthandle ), // make sure it loads after parent
-        $theme->get('Version')
-    );
-}
-add_action( 'wp_enqueue_scripts', 'yourchild_enqueue_styles' );

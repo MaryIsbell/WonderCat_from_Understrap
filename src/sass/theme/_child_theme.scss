@@ -68,3 +68,108 @@
   margin-bottom: 20px;
 
 }
+
+ /* Custom navbar styling */
+/* ========== Header container ========== */
+
+#wrapper-navbar .navbar {
+    background: #ffffff !important;
+    border-bottom: 1px solid #ddd;
+    padding: 18px 0;
+}
+
+/* Prevent Bootstrap spacing issues */
+#wrapper-navbar .container {
+    display: flex;
+    align-items: center;
+}
+
+/* ========== Site title ========== */
+
+#wrapper-navbar .navbar-brand {
+    font-size: 1.35rem;
+    font-weight: 700;
+    color: #000;
+    margin-right: 40px;
+    padding: 0;
+}
+
+#wrapper-navbar .navbar-brand:hover {
+    text-decoration: none;
+}
+
+/* ========== Main navigation ========== */
+
+#wrapper-navbar .navbar-nav {
+    display: flex;
+    flex-direction: row;
+    gap: 28px;
+}
+
+#wrapper-navbar .navbar-nav .nav-link {
+    font-size: 0.95rem;
+    font-weight: 400;
+    color: #000;
+    padding: 0;
+}
+
+#wrapper-navbar .navbar-nav .nav-link:hover {
+    text-decoration: underline;
+}
+
+/* ========== Right side login / signup ========== */
+
+.login-signup-wrapper {
+    margin-left: auto;
+    gap: 10px;
+    font-size: 0.9rem;
+}
+
+/* Remove Bootstrap button appearance */
+.login-signup-wrapper .btn,
+.login-signup-wrapper .wp-block-button__link {
+    all: unset;
+    cursor: pointer;
+    color: #000;
+    font-size: 0.9rem;
+    font-weight: 400;
+}
+
+/* spacing */
+.login-signup-wrapper a {
+    margin-left: 6px;
+    margin-right: 6px;
+}
+
+.login-signup-wrapper a:hover {
+    text-decoration: underline;
+}
+
+/* Add the "or" text styling */
+.login-signup-wrapper::after {
+    content: "";
+}
+
+/* ========== Mobile behavior ========== */
+
+@media (max-width: 991px) {
+
+    #wrapper-navbar .container {
+        flex-wrap: wrap;
+    }
+
+    .login-signup-wrapper {
+        width: 100%;
+        justify-content: flex-end;
+        margin-top: 8px;
+    }
+
+    .navbar-collapse {
+        margin-top: 10px;
+    }
+
+    .navbar-nav {
+        flex-direction: column;
+        gap: 10px;
+    }
+}
