@@ -61,18 +61,35 @@ $container = get_theme_mod('understrap_container_type');
                             echo '</h3>';
 
                             // Query Gravity Flow entries associated with this term
-                            // Replace FORM_ID and FIELD_ID with your actual values
-                            $entries = $wpdb->get_results($wpdb->prepare(
-                                "SELECT e.id, e.date_created, em.meta_value as description, u.display_name as user_name
-                                 FROM {$wpdb->prefix}gf_entry e
-                                 INNER JOIN {$wpdb->prefix}gf_entry_meta em ON e.id = em.entry_id
-                                 LEFT JOIN {$wpdb->users} u ON e.created_by = u.ID
-                                 WHERE em.form_id = %d AND em.meta_key = %s AND em.meta_value = %d
-                                 ORDER BY e.date_created ASC",
-                                5, // FORM_ID - replace with your Gravity Form ID
-                                $taxonomy . '_term_id', // meta_key storing the term ID for each taxonomy
-                                $term->term_id
-                            ));
+                            $entries = $wpdb->get_results(
+    $wpdb->prepare(
+        "
+        SELECT 
+            e.id AS entry_id,
+            e.date_created,
+            u.display_name,
+            MAX(CASE WHEN em.meta_key = '9'  THEN em.meta_value END) AS field_9,
+            MAX(CASE WHEN em.meta_key = '10' THEN em.meta_value END) AS field_10,
+            MAX(CASE WHEN em.meta_key = '11' THEN em.meta_value END) AS field_11,
+            MAX(CASE WHEN em.meta_key = '12' THEN em.meta_value END) AS field_12
+        FROM {$wpdb->prefix}gf_entry e
+        INNER JOIN {$wpdb->prefix}gf_entry_meta term_meta
+            ON e.id = term_meta.entry_id
+        LEFT JOIN {$wpdb->users} u
+            ON e.created_by = u.ID
+        LEFT JOIN {$wpdb->prefix}gf_entry_meta em
+            ON e.id = em.entry_id
+        WHERE 
+            e.form_id = 1
+            AND term_meta.meta_key = '25'
+            AND term_meta.meta_value = %d
+        GROUP BY e.id
+        ORDER BY e.date_created ASC
+        ",
+        $term->term_id
+    )
+);
+
 
                             if (!empty($entries)) :
                                 echo '<table style="width:100%; border-collapse: collapse; border:1px solid #333; margin-bottom: 2rem;">';
