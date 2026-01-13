@@ -54,13 +54,9 @@ continue;
 }
 
 foreach ( $terms as $term ) {
-$in_glossary = get_term_meta( $term->term_id, 'in_glossary', true );
-if ( strtolower($in_glossary) !== 'yes' ) {
-continue;
-} else{
-$choices[] = [ 'text' => $term->name, 'value' => $term->slug ];
+    $choices[] = [ 'text' => $term->name, 'value' => $term->slug ];
 }
-}
+
 
         $field->choices           = array_values( $choices );
         $field->enableChoiceValue = false;
