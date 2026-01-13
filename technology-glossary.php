@@ -2,7 +2,8 @@
 /**
  * Template Name: Technology Glossary Template
  *
- * A custom page to display terms from the technology taxonomy.
+ * A custom page to display terms from the technology taxonomy, split into normal and combination terms,
+ * with a "View Version History" link for each term.
  *
  * @package Understrap
  */
@@ -32,9 +33,11 @@ $container = get_theme_mod( 'understrap_container_type' );
                     endwhile;
                 endif;
 
-                // Fetch all top-level technology terms alphabetically
                 $taxonomy = 'technology';
-                $terms = get_terms([
+                $version_history_page = '/term-version-history/'; // change to your actual page slug
+
+                // Fetch all top-level technology terms alphabetically
+                $all_terms = get_terms([
                     'taxonomy'   => $taxonomy,
                     'hide_empty' => false,
                     'orderby'    => 'name',
@@ -42,56 +45,96 @@ $container = get_theme_mod( 'understrap_container_type' );
                     'parent'     => 0,
                 ]);
 
-                if ( ! empty( $terms ) && ! is_wp_error( $terms ) ) :
-                    ?>
-                    <table class="glossary-table" style="width:100%; border-collapse: collapse; border: 1px solid #333;">
-                        <thead>
-                            <tr>
-                                <th style="text-align:left; padding: 8px; border:1px solid #333;">Term</th>
-                                <th style="text-align:left; padding: 8px; border:1px solid #333;">Description</th>
-                                <th style="text-align:left; padding: 8px; border:1px solid #333;">Related Terms</th>
-                            </tr>
-                        </thead>
-                        <tbody>
-                            <?php foreach ( $terms as $term ) :
+                $normal_terms = [];
+                $combination_terms = [];
 
-                                $term_link = get_term_link( $term );
-                                $description = term_description( $term );
+                if ( ! empty( $all_terms ) && ! is_wp_error( $all_terms ) ) {
+                    foreach ( $all_terms as $term ) {
+                        $in_glossary = get_term_meta( $term->term_id, 'in_glossary', true );
+                        if ( strtolower($in_glossary) === 'yes' ) {
+                            $combination_terms[] = $term;
+                        } else {
+                            $normal_terms[] = $term;
+                        }
+                    }
+                }
 
-                                // Fetch child terms
-                                $child_terms = get_terms([
-                                    'taxonomy'   => $taxonomy,
-                                    'parent'     => $term->term_id,
-                                    'hide_empty' => false,
-                                    'orderby'    => 'name',
-                                    'order'      => 'ASC',
-                                ]);
-                                $child_links = '';
-                                if ( ! empty( $child_terms ) && ! is_wp_error( $child_terms ) ) {
-                                    $links = [];
-                                    foreach ( $child_terms as $child ) {
-                                        $links[] = '<a href="' . esc_url( get_term_link( $child ) ) . '">' . esc_html( $child->name ) . '</a>';
-                                    }
-                                    $child_links = implode( ', ', $links );
-                                }
-                                ?>
-                                <tr>
-                                    <td style="padding: 8px; border:1px solid #333; vertical-align: top;">
-                                        <a href="<?php echo esc_url( $term_link ); ?>"><?php echo esc_html( $term->name ); ?></a>
-                                    </td>
-                                    <td style="padding: 8px; border:1px solid #333; vertical-align: top;">
-    									<?php echo esc_html( wp_strip_all_tags( term_description( $term ) ) ); ?>
-									</td>
-                                    <td style="padding: 8px; border:1px solid #333; vertical-align: top;">
-                                        <?php echo $child_links; ?>
-                                    </td>
-                                </tr>
-                            <?php endforeach; ?>
-                        </tbody>
-                    </table>
-                <?php else : ?>
-                    <p>No terms found in this taxonomy.</p>
-                <?php endif; ?>
+                /**
+                 * Helper function to render a glossary table.
+                 *
+                 * @param array  $terms                List of WP_Term objects
+                 * @param string $heading              Table heading
+                 * @param string $version_history_page URL slug for version history page
+                 */
+                function render_glossary_table( $terms, $heading, $version_history_page ) {
+    if ( empty( $terms ) ) {
+        return;
+    }
+
+    echo '<h2>' . esc_html( $heading ) . '</h2>';
+    echo '<table class="glossary-table" style="width:100%; border-collapse: collapse; border: 1px solid #333;">';
+    echo '<thead>
+            <tr>
+                <th style="text-align:left; padding:8px; border:1px solid #333;">Term</th>
+                <th style="text-align:left; padding:8px; border:1px solid #333;">Description</th>
+                <th style="text-align:left; padding:8px; border:1px solid #333;">Related Terms</th>
+            </tr>
+          </thead><tbody>';
+
+    foreach ( $terms as $term ) {
+        $term_link   = get_term_link( $term );
+        $description = term_description( $term );
+
+        // Fetch child terms
+        $child_terms = get_terms([
+            'taxonomy'   => $term->taxonomy,
+            'parent'     => $term->term_id,
+            'hide_empty' => false,
+            'orderby'    => 'name',
+            'order'      => 'ASC',
+        ]);
+
+        $child_links = '';
+        if ( ! empty( $child_terms ) && ! is_wp_error( $child_terms ) ) {
+            $links = [];
+            foreach ( $child_terms as $child ) {
+                $links[] = '<a href="' . esc_url( get_term_link( $child ) ) . '">' . esc_html( $child->name ) . '</a>';
+            }
+            $child_links = implode( ', ', $links );
+        }
+
+        // Build version history link using anchor
+        $term_anchor = sanitize_title( $term->taxonomy . '-' . $term->slug );
+        $history_link = esc_url( $version_history_page . '#' . $term_anchor );
+
+        echo '<tr>';
+        // Term name column
+        echo '<td style="padding:8px; border:1px solid #333; vertical-align:top;">
+                <a href="' . esc_url( $term_link ) . '">' . esc_html( $term->name ) . '</a>
+              </td>';
+
+        // Description column + appended bolded version history link
+        echo '<td style="padding:8px; border:1px solid #333; vertical-align:top;">'
+             . esc_html( wp_strip_all_tags( $description ) )
+             . '<br><strong><a href="' . $history_link . '">View Version History</a></strong>'
+             . '</td>';
+
+        // Related terms column
+        echo '<td style="padding:8px; border:1px solid #333; vertical-align:top;">' . $child_links . '</td>';
+
+        echo '</tr>';
+    }
+
+    echo '</tbody></table>';
+}
+
+
+                // Render normal terms
+                render_glossary_table( $normal_terms, 'Technology Terms', $version_history_page );
+
+                // Render combination terms
+                render_glossary_table( $combination_terms, 'Combination Terms', $version_history_page );
+                ?>
 
             </main><!-- #main -->
 
