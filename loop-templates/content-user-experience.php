@@ -57,7 +57,7 @@ if ( ! empty($technology_terms ) && ! is_wp_error( $technology_terms ) ) {
                 <div class='button_experience'>Experience:
     				<a href='" . esc_url( $experience_url ) . "'>" . esc_html( $experience ) . "</a>
 				</div>
-                <div class='button_technology'>Technology:
+                <div class='button_technology'>Narrative Technology:
     				<a href='" . esc_url( $technology_url ) . "'>" . esc_html( $technology ) . "</a>
 				</div></div>
             <div class='col-md-6'>
