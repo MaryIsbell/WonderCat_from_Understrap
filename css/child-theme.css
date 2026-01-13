@@ -14974,9 +14974,12 @@ figure.woocommerce-product-gallery__wrapper {
   border-radius: 8px;
   text-align: center;
   padding: 10px;
-  font-size: 1.4rem;
+  font-size: 1.25rem;
   background-color: #d9d9d9;
-  margin-bottom: 50px;
+  margin-bottom: 10px;
+  margin-top: 50px;
+  margin-left: 30px;
+  margin-right: 30px;
 }
 
 .button_creative_work {
@@ -14985,8 +14988,8 @@ figure.woocommerce-product-gallery__wrapper {
   border-radius: 8px;
   text-align: center;
   padding: 10px;
-  font-size: 1.4rem;
-  background-color: #ffd600;
+  font-size: 1.25rem;
+  background-color: #FFD700;
   margin-bottom: 20px;
 }
 
@@ -14996,7 +14999,7 @@ figure.woocommerce-product-gallery__wrapper {
   border-radius: 8px;
   text-align: center;
   padding: 10px;
-  font-size: 1.4rem;
+  font-size: 1.25rem;
   background-color: white;
   margin-bottom: 20px;
 }
@@ -15007,8 +15010,8 @@ figure.woocommerce-product-gallery__wrapper {
   border-radius: 8px;
   text-align: center;
   padding: 10px;
-  font-size: 1.4rem;
-  background-color: #ff6347;
+  font-size: 1.25rem;
+  background-color: #FF6347;
   margin-bottom: 20px;
 }
 
@@ -15018,8 +15021,8 @@ figure.woocommerce-product-gallery__wrapper {
   border-radius: 8px;
   text-align: center;
   padding: 10px;
-  font-size: 1.4rem;
-  background-color: #97c2fc;
+  font-size: 1.25rem;
+  background-color: #97C2FC;
   margin-bottom: 20px;
 }
 
@@ -15029,7 +15032,7 @@ figure.woocommerce-product-gallery__wrapper {
   border-radius: 8px;
   text-align: center;
   padding: 10px;
-  font-size: 1.4rem;
+  font-size: 1.25rem;
   background-color: #8e7b7f;
   margin-bottom: 20px;
 }
@@ -15050,7 +15053,7 @@ figure.woocommerce-product-gallery__wrapper {
 
 /* ========== Site title ========== */
 #wrapper-navbar .navbar-brand {
-  font-size: 1.35rem;
+  font-size: 2rem;
   font-weight: 700;
   color: #000;
   margin-right: 40px;
