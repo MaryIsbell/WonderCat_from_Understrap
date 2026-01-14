@@ -15133,6 +15133,43 @@ figure.woocommerce-product-gallery__wrapper {
     gap: 10px;
   }
 }
+/*Footer*/
+.wc-footer-bar {
+  background-color: #D9D9D9;
+  padding: 12px 0;
+  font-size: 14px;
+}
+
+.wc-footer-inner {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 8px;
+}
+
+.wc-footer-left a {
+  text-decoration: none;
+  font-weight: 600;
+}
+
+.wc-footer-left a:hover {
+  text-decoration: underline;
+}
+
+.wc-footer-right {
+  white-space: nowrap;
+}
+
+/* Mobile stacking */
+@media (max-width: 767px) {
+  .wc-footer-inner {
+    flex-direction: column;
+    align-items: flex-start;
+  }
+  .wc-footer-right {
+    white-space: normal;
+  }
+}
 .has-blue-color,
 .has-blue-color:visited {
   color: #97C2FC;

@@ -13,40 +13,35 @@ defined( 'ABSPATH' ) || exit;
 $container = get_theme_mod( 'understrap_container_type' );
 ?>
 
-<?php get_template_part( 'sidebar-templates/sidebar', 'footerfull' ); ?>
-
 <div class="wrapper" id="wrapper-footer">
 
-	<div class="<?php echo esc_attr( $container ); ?>">
+    <div class="<?php echo esc_attr( $container ); ?>">
 
-		<div class="row">
+        <div class="row">
 
-			<div class="col-md-12">
+            <div class="col-md-12">
 
-				<footer class="site-footer" id="colophon">
+                <footer class="site-footer wc-footer-bar">
 
-					<div class="site-info">
+                    <div class="wc-footer-inner">
 
-						BOO<?php understrap_site_info(); ?>
+                        <div class="wc-footer-left">
+                            <a href="<?php echo esc_url( home_url('/about') ); ?>">About</a>
+                        </div>
 
-					</div><!-- .site-info -->
+                        <div class="wc-footer-right">
+                            Powered by WordPress and WikiData | WonderCat Theme
+                        </div>
 
-				</footer><!-- #colophon -->
+                    </div>
 
-			</div><!-- col -->
+                </footer>
 
-		</div><!-- .row -->
+            </div>
 
-	</div><!-- .container(-fluid) -->
+        </div>
 
-</div><!-- #wrapper-footer -->
+    </div>
 
-<?php // Closing div#page from header.php. ?>
-</div><!-- #page -->
-
-<?php wp_footer(); ?>
-
-</body>
-
-</html>
+</div>
 
