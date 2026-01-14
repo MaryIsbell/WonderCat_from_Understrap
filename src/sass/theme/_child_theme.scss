@@ -226,3 +226,37 @@
 body {
     margin: 0;
 }
+
+html, body {
+    height: 100%;
+}
+
+#page {
+    min-height: 100%;
+    display: flex;
+    flex-direction: column;
+}
+
+#wrapper-footer {
+    margin-top: auto;
+}
+
+/* Remove Bootstrap row spacing inside footer */
+#wrapper-footer .row {
+    margin-bottom: 0 !important;
+}
+
+/* Ensure footer has no bottom gap */
+#wrapper-footer {
+    padding-bottom: 0;
+}
+
+.site-footer {
+    margin-bottom: 0;
+}
+
+/* Guarantee background fills any remaining pixel */
+#wrapper-footer,
+.wc-footer-bar {
+    background-color: #D9D9D9;
+}
