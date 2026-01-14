@@ -15170,6 +15170,22 @@ figure.woocommerce-product-gallery__wrapper {
     white-space: normal;
   }
 }
+#wrapper-footer .container,
+#wrapper-footer .container-fluid,
+#wrapper-footer .container-sm,
+#wrapper-footer .container-md,
+#wrapper-footer .container-lg,
+#wrapper-footer .container-xl,
+#wrapper-footer .container-xxl {
+  max-width: 100%;
+  padding-left: 0;
+  padding-right: 0;
+}
+
+body {
+  margin: 0;
+}
+
 .has-blue-color,
 .has-blue-color:visited {
   color: #97C2FC;

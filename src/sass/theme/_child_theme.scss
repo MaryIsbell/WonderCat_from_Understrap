@@ -216,3 +216,13 @@
         white-space: normal;
     }
 }
+#wrapper-footer .container,
+#wrapper-footer .container-fluid {
+    max-width: 100%;
+    padding-left: 0;
+    padding-right: 0;
+}
+
+body {
+    margin: 0;
+}
