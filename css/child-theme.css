@@ -15042,19 +15042,15 @@ figure.woocommerce-product-gallery__wrapper {
 }
 
 /* ================================
-   Navbar
-   ================================ */
-#wrapper-navbar .navbar {
-  background: #ffffff !important;
-  border-bottom: 1px solid #ddd;
-  padding: 18px 0;
-}
-
-#wrapper-navbar .container {
-  display: flex;
-  align-items: center;
-}
-
+   HEADER / NAVBAR CLEAN-UP
+   ================================
+   This section replaces old navbar styles related to:
+   - Navbar link text-decoration
+   - Sliding underline hover effect
+   - Login / Signup links
+   It does NOT touch padding, background color, or flex layout.
+*/
+/* ----- Navbar brand ----- */
 #wrapper-navbar .navbar-brand {
   font-size: 2rem;
   font-weight: 700;
@@ -15068,64 +15064,63 @@ figure.woocommerce-product-gallery__wrapper {
   text-decoration: none;
 }
 
-#wrapper-navbar .navbar-nav {
-  display: flex;
-  flex-direction: row;
-  gap: 28px;
-}
-
-#wrapper-navbar .navbar-nav .nav-link {
+/* ----- Navbar links ----- */
+#wrapper-navbar .nav-link {
+  position: relative;
+  text-decoration: none !important;
+  color: #000;
   font-size: 0.95rem;
   font-weight: 400;
-  color: #000;
   padding: 0;
 }
 
-.login-signup-wrapper {
-  margin-left: auto;
-  gap: 10px;
-  font-size: 0.9rem;
+/* Pseudo-element sliding underline */
+#wrapper-navbar .nav-link::after {
+  content: "";
+  position: absolute;
+  left: 50%;
+  bottom: -2px;
+  height: 2px;
+  width: 0;
+  background-color: #000;
+  transform: translateX(-50%);
+  transition: width 0.3s ease-in-out;
 }
 
-.login-signup-wrapper .btn, .login-signup-wrapper .wpcf7 input[type=submit], .wpcf7 .login-signup-wrapper input[type=submit], .login-signup-wrapper .woocommerce-notices-wrapper .woocommerce-message a.button, .woocommerce-notices-wrapper .woocommerce-message .login-signup-wrapper a.button, .login-signup-wrapper .woocommerce-info a.button, .woocommerce-info .login-signup-wrapper a.button,
-.login-signup-wrapper .wp-block-button__link {
-  all: unset;
-  cursor: pointer;
+/* Hover / focus expands underline */
+#wrapper-navbar .nav-link:hover::after,
+#wrapper-navbar .nav-link:focus::after {
+  width: 100%;
+}
+
+/* ----- Login / Signup links ----- */
+.login-signup-wrapper a {
+  position: relative;
+  text-decoration: none !important;
   color: #000;
+  margin-left: 6px;
+  margin-right: 6px;
   font-size: 0.9rem;
   font-weight: 400;
 }
 
-.login-signup-wrapper a {
-  margin-left: 6px;
-  margin-right: 6px;
-}
-
-.login-signup-wrapper a:hover {
-  text-decoration: underline;
-}
-
-.login-signup-wrapper::after {
+.login-signup-wrapper a::after {
   content: "";
+  position: absolute;
+  left: 50%;
+  bottom: -2px;
+  height: 2px;
+  width: 0;
+  background-color: #000;
+  transform: translateX(-50%);
+  transition: width 0.3s ease-in-out;
 }
 
-@media (max-width: 991px) {
-  #wrapper-navbar .container {
-    flex-wrap: wrap;
-  }
-  .login-signup-wrapper {
-    width: 100%;
-    justify-content: flex-end;
-    margin-top: 8px;
-  }
-  .navbar-collapse {
-    margin-top: 10px;
-  }
-  .navbar-nav {
-    flex-direction: column;
-    gap: 10px;
-  }
+.login-signup-wrapper a:hover::after,
+.login-signup-wrapper a:focus::after {
+  width: 100%;
 }
+
 /* Footer spacing to match header container */
 #wrapper-footer .container {
   max-width: 100%;
@@ -15361,31 +15356,6 @@ figure.woocommerce-product-gallery__wrapper {
     text-align: center;
   }
 }
-/* ================================
-   Header links: remove underline, add sliding hover underline
-   ================================ */
-/* Base style for all header links including nav links and login/signup */
-#wrapper-navbar .nav-link,
-#wrapper-navbar .login-signup-wrapper a {
-  position: relative; /* needed for ::after */
-  text-decoration: none !important; /* remove default underline */
-  color: #000;
-}
-
-/* Sliding underline pseudo-element */
-#wrapper-navbar .nav-link::after,
-#wrapper-navbar .login-signup-wrapper a::after {
-  content: "";
-  position: absolute;
-  left: 50%;
-  bottom: -2px; /* adjust distance from text */
-  height: 2px;
-  width: 0;
-  background-color: #000;
-  transform: translateX(-50%);
-  transition: width 0.3s ease-in-out;
-}
-
 .has-blue-color,
 .has-blue-color:visited {
   color: #97C2FC;
