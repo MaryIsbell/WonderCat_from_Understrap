@@ -421,3 +421,26 @@ color: #000;
 #wrapper-footer .wc-footer-right a:hover::after {
     width: 100%;
 }
+
+/* Custom hover underline for WordPress menu items */
+.navbar-nav .nav-link {
+  position: relative;
+  text-decoration: none;  // remove default underline
+  color: #000;            // keep existing color
+}
+
+.navbar-nav .nav-link::after {
+  content: "";
+  position: absolute;
+  left: 0;
+  bottom: -3px;           // adjust distance from text
+  height: 2px;
+  width: 0;
+  background-color: #000; // underline color
+  transition: width 0.3s ease;
+}
+
+.navbar-nav .nav-link:hover::after,
+.navbar-nav .nav-link:focus::after {
+  width: 100%;
+}
