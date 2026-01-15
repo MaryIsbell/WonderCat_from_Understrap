@@ -15257,17 +15257,39 @@ html, body {
     text-align: center;
   }
 }
-/* Full-width homepage image below slider */
+/* Full-width homepage image below slider with white background */
 .wc-home-fullwidth-image {
   width: 100%;
-  margin: 0;
+  margin: 0 auto; /* centers container if narrower than viewport */
   padding: 0;
+  text-align: center; /* centers image horizontally */
+  background-color: #ffffff; /* white background */
 }
 .wc-home-fullwidth-image img {
-  display: block;
-  width: 100%;
-  height: auto;
+  display: inline-block; /* allows centering */
+  width: 75%; /* full width of container */
+  height: auto; /* maintain aspect ratio */
   max-width: 100%;
+  -o-object-fit: cover;
+  object-fit: cover; /* ensures image covers container nicely */
+}
+
+/* Optional: set max-height for desktop and mobile for visual balance */
+@media (min-width: 768px) {
+  .wc-home-fullwidth-image img {
+    max-height: 500px; /* adjust for desktops */
+  }
+}
+@media (max-width: 767px) {
+  .wc-home-fullwidth-image img {
+    max-height: 300px; /* smaller height for mobile */
+  }
+}
+.homepage_header {
+  text-align: center;
+  color: #000;
+  font-size: 4rem;
+  font-weight: 400;
 }
 
 .has-blue-color,
