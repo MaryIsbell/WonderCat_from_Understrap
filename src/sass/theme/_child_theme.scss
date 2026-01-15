@@ -1,7 +1,9 @@
+/* ================================
+   Bento Boxes
+   ================================ */
 .col-md-6 {
   border: 0px solid;
 }
-
 
 .bento_container {
   border: 2px solid black;
@@ -17,12 +19,7 @@
   margin-right: 30px;
 }
 
-/* Bento boxes in home page slider - new class for reduced spacing & no side margins */
-.bento_slider {
-  margin: 0; /* removed original margins inside slider for better fit */
-  padding: 10px;
-}
-
+/* Individual bento buttons */
 .button_creative_work {
   border: 2px solid black;
   box-shadow: 2px 2px inset black;
@@ -43,7 +40,6 @@
   background-color: white;
   margin-bottom: 20px;
 }
-
 .button_experience {
   border: 2px solid black;
   box-shadow: 2px 2px inset black;
@@ -54,7 +50,6 @@
   background-color: $red;
   margin-bottom: 20px;
 }
-
 .button_technology {
   border: 2px solid black;
   box-shadow: 2px 2px inset black;
@@ -65,7 +60,6 @@
   background-color: $blue;
   margin-bottom: 20px;
 }
-
 .button_user {
   border: 2px solid black;
   box-shadow: 2px 2px inset black;
@@ -75,26 +69,20 @@
   font-size: 1.25rem;
   background-color: $brown;
   margin-bottom: 20px;
-
 }
 
- /* Custom navbar styling */
-/* ========== Header container ========== */
-
+/* ================================
+   Navbar
+   ================================ */
 #wrapper-navbar .navbar {
     background: #ffffff !important;
     border-bottom: 1px solid #ddd;
     padding: 18px 0;
 }
-
-/* Prevent Bootstrap spacing issues */
 #wrapper-navbar .container {
     display: flex;
     align-items: center;
 }
-
-/* ========== Site title ========== */
-
 #wrapper-navbar .navbar-brand {
     font-size: 2.0rem;
     font-weight: 700;
@@ -103,39 +91,28 @@
     margin-left: -50px;
     padding: 0;
 }
-
 #wrapper-navbar .navbar-brand:hover {
     text-decoration: none;
 }
-
-/* ========== Main navigation ========== */
-
 #wrapper-navbar .navbar-nav {
     display: flex;
     flex-direction: row;
     gap: 28px;
 }
-
 #wrapper-navbar .navbar-nav .nav-link {
     font-size: 0.95rem;
     font-weight: 400;
     color: #000;
     padding: 0;
 }
-
 #wrapper-navbar .navbar-nav .nav-link:hover {
     text-decoration: underline;
 }
-
-/* ========== Right side login / signup ========== */
-
 .login-signup-wrapper {
     margin-left: auto;
     gap: 10px;
     font-size: 0.9rem;
 }
-
-/* Remove Bootstrap button appearance */
 .login-signup-wrapper .btn,
 .login-signup-wrapper .wp-block-button__link {
     all: unset;
@@ -144,79 +121,58 @@
     font-size: 0.9rem;
     font-weight: 400;
 }
-
-/* spacing */
 .login-signup-wrapper a {
     margin-left: 6px;
     margin-right: 6px;
 }
-
 .login-signup-wrapper a:hover {
     text-decoration: underline;
 }
-
-/* Add the "or" text styling */
 .login-signup-wrapper::after {
     content: "";
 }
-
-/* ========== Mobile behavior ========== */
-
 @media (max-width: 991px) {
-
     #wrapper-navbar .container {
         flex-wrap: wrap;
     }
-
     .login-signup-wrapper {
         width: 100%;
         justify-content: flex-end;
         margin-top: 8px;
     }
-
     .navbar-collapse {
         margin-top: 10px;
     }
-
     .navbar-nav {
         flex-direction: column;
         gap: 10px;
     }
 }
-/* ================================
-   Sticky footer layout foundation
-   ================================ */
 
+/* ================================
+   Sticky footer layout
+   ================================ */
 html, body {
     height: 100%;
     margin: 0;
 }
-
 #page {
     min-height: 100vh;
     display: flex;
     flex-direction: column;
 }
-
-/* This must match your template */
 #content {
-    flex: 1 0 auto;
+    flex: 1 0 auto; /* content area expands to fill space */
 }
 
 /* ================================
-   Footer container
+   Footer styling
    ================================ */
-
 #wrapper-footer {
     width: 100%;
     margin: 0;
     padding: 0;
 }
-
-/* ================================
-   Footer bar styling
-   ================================ */
-
 .wc-footer-bar {
     background-color: #D9D9D9;
     font-size: 14px;
@@ -224,89 +180,93 @@ html, body {
     margin: 0;
     width: 100%;
 }
-
-/* Inner content width + layout */
 .wc-footer-inner {
     max-width: 1140px; /* adjust if needed */
     margin: 0 auto;
     padding: 0 16px;
-
     display: flex;
     justify-content: space-between;
     align-items: center;
     gap: 8px;
 }
-
-/* Left link */
 .wc-footer-left a {
     text-decoration: none;
     font-weight: 600;
     color: #000;
 }
-
 .wc-footer-left a:hover {
     text-decoration: underline;
 }
-
-/* Right text */
 .wc-footer-right {
     white-space: nowrap;
 }
-
-/* ================================
-   Mobile stacking
-   ================================ */
-
 @media (max-width: 767px) {
     .wc-footer-inner {
         flex-direction: column;
         align-items: flex-start;
     }
-
     .wc-footer-right {
         white-space: normal;
     }
 }
 
-/* ==========================================================================
-   Home Page Slider Styling
-   --------------------------------------------------------------------------
-   Notes:
-   - Added .bento_slider class for bento containers in the slider
-   - Removed original side margins and adjusted padding
-   - Images resize responsively with border radius
-   - Slider content flexes horizontally on desktop, stacks on mobile
-   ========================================================================== */
+/* ================================
+   Home Page Slider
+   ================================ */
+
+/* New: Set slider height and center content */
+#wrapper-home-slider,
+.wc-experience-carousel {
+    height: 60vh; /* relative to viewport height */
+    min-height: 300px;
+    max-height: 600px;
+}
+
+/* Each slide fills container */
 .wc-slider-slide {
-  padding: 40px 20px;
+    height: 100%;
+    display: flex;
+    align-items: center; /* vertical centering */
+    justify-content: center; /* horizontal centering */
+    padding: 20px;
 }
 
+/* Slider content (bento + image) */
 .wc-slider-content {
-  max-width: 1100px;
-  margin: 0 auto;
-  display: flex;
-  gap: 30px;
-  align-items: center;
+    max-width: 1100px;
+    margin: 0 auto;
+    display: flex;
+    gap: 30px;
+    align-items: center;
+    justify-content: center; /* new: centers content horizontally */
 }
 
+/* Slider image */
 .wc-slider-image img {
-  max-width: 300px;
-  height: auto;
-  border-radius: 8px;
-  object-fit: cover; /* NEW: ensures images fill container without distortion */
+    max-width: 300px;
+    height: auto;
+    border-radius: 8px;
 }
 
-.wc-slider-text {
-  flex: 1;
-}
-
+/* Bento box inside slider */
 .wc-slider-bento {
-  flex: 1;
+    flex: 1;
 }
 
+/* Text portion inside slider */
+.wc-slider-text {
+    flex: 1;
+}
+
+/* Mobile adjustments */
 @media (max-width: 768px) {
-  .wc-slider-content {
-    flex-direction: column;
-    text-align: center;
-  }
+    #wrapper-home-slider,
+    .wc-experience-carousel {
+        height: 50vh;
+        min-height: 250px;
+    }
+    .wc-slider-content {
+        flex-direction: column;
+        text-align: center;
+    }
 }
