@@ -383,39 +383,27 @@ color: #000;
 }
 
 /* ================================
-   Header & Footer Centered Sliding Underline
+   Header links: remove underline, add sliding hover underline
    ================================ */
 
-/* Base link styling */
+/* Base style for all header links including nav links and login/signup */
 #wrapper-navbar .nav-link,
-#wrapper-navbar .login-signup-wrapper a,
-#wrapper-footer .wc-footer-left a,
-#wrapper-footer .wc-footer-right a {
-    position: relative;        /* needed for ::after positioning */
-    text-decoration: none !important;     /* remove default underline */
+#wrapper-navbar .login-signup-wrapper a {
+    position: relative;        /* needed for ::after */
+    text-decoration: none !important;  /* remove default underline */
     color: #000;
 }
 
-/* Pseudo-element for underline */
+/* Sliding underline pseudo-element */
 #wrapper-navbar .nav-link::after,
-#wrapper-navbar .login-signup-wrapper a::after,
-#wrapper-footer .wc-footer-left a::after,
-#wrapper-footer .wc-footer-right a::after {
+#wrapper-navbar .login-signup-wrapper a::after {
     content: '';
     position: absolute;
-    left: 50%;                  /* start at center */
-    bottom: -2px;               /* distance from text */
-    height: 2px;                /* thickness of underline */
-    width: 0;                    /* hidden initially */
-    background-color: #000;      /* underline color */
-    transform: translateX(-50%); /* center the underline */
+    left: 50%;
+    bottom: -2px;            /* adjust distance from text */
+    height: 2px;
+    width: 0;
+    background-color: #000;
+    transform: translateX(-50%);
     transition: width 0.3s ease-in-out;
-}
-
-/* Expand from center on hover */
-#wrapper-navbar .nav-link:hover::after,
-#wrapper-navbar .login-signup-wrapper a:hover::after,
-#wrapper-footer .wc-footer-left a:hover::after,
-#wrapper-footer .wc-footer-right a:hover::after {
-    width: 100%;
 }
