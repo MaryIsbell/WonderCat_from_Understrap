@@ -387,3 +387,45 @@ color: #000;
     }
 }
 
+/* ================================
+   NAVIGATION LINK SPACING & FOOTER UNDERLINE FIX
+   ================================ */
+
+/* ----- Left nav link spacing ----- */
+#wrapper-navbar .navbar-nav {
+    display: flex;
+    flex-direction: row;
+    gap: 40px;   // adjust spacing between nav links here
+}
+
+#wrapper-navbar .nav-item {
+    margin: 0;   // remove any default Bootstrap spacing
+}
+
+/* ----- Footer links: sliding underline from center ----- */
+.wc-footer-left a,
+.wc-footer-right a {
+    position: relative;        // needed for pseudo-element
+    text-decoration: none !important;
+    color: #000;               // maintain text color
+}
+
+.wc-footer-left a::after,
+.wc-footer-right a::after {
+    content: '';
+    position: absolute;
+    left: 50%;
+    bottom: -2px;          // adjust distance from text if needed
+    height: 2px;
+    width: 0;
+    background-color: #000;
+    transform: translateX(-50%);
+    transition: width 0.3s ease-in-out;
+}
+
+.wc-footer-left a:hover::after,
+.wc-footer-left a:focus::after,
+.wc-footer-right a:hover::after,
+.wc-footer-right a:focus::after {
+    width: 100%;
+}

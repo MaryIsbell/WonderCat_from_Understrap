@@ -28,9 +28,9 @@ defined( 'ABSPATH' ) || exit;
         <!-- Navigation links -->
         <div class="collapse navbar-collapse mt-2 mt-lg-0" id="primaryNavbar">
             <ul class="navbar-nav me-auto mb-2 mb-lg-0">
-                <li class="nav-item"><a class="nav-link" href="/">Archive</a></li>
-                <li class="nav-item"><a class="nav-link" href="/about">Glossaries</a></li>
-                <li class="nav-item"><a class="nav-link" href="/services">Contribute</a></li>
+                <li class="nav-item"><a class="nav-link" href="/user-experience">Archive</a></li>
+                <li class="nav-item"><a class="nav-link" href="/glossaries">Glossaries</a></li>
+                <li class="nav-item"><a class="nav-link" href="/add-experience">Contribute</a></li>
             </ul>
         </div>
 
