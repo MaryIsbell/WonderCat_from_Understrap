@@ -109,7 +109,10 @@ if ( $slider_query->have_posts() ) :
 endif;
 wp_reset_postdata();
 ?>
-
+<!-- Full-width homepage image -->
+<div class="wc-home-fullwidth-image">
+    <img src="<?php echo get_stylesheet_directory_uri(); ?>/images/How_it_works.png" alt="Homepage Image" loading="lazy">
+</div>
 </main>
 
 <?php get_footer(); ?>
