@@ -14982,6 +14982,12 @@ figure.woocommerce-product-gallery__wrapper {
   margin-right: 30px;
 }
 
+/* Bento boxes in home page slider - new class for reduced spacing & no side margins */
+.bento_slider {
+  margin: 0; /* removed original margins inside slider for better fit */
+  padding: 10px;
+}
+
 .button_creative_work {
   border: 2px solid black;
   box-shadow: 2px 2px inset black;
@@ -15211,9 +15217,15 @@ html, body {
     white-space: normal;
   }
 }
-/*================================
-Home Page Slider
-==================================*/
+/* ==========================================================================
+   Home Page Slider Styling
+   --------------------------------------------------------------------------
+   Notes:
+   - Added .bento_slider class for bento containers in the slider
+   - Removed original side margins and adjusted padding
+   - Images resize responsively with border radius
+   - Slider content flexes horizontally on desktop, stacks on mobile
+   ========================================================================== */
 .wc-slider-slide {
   padding: 40px 20px;
 }
@@ -15230,9 +15242,15 @@ Home Page Slider
   max-width: 300px;
   height: auto;
   border-radius: 8px;
+  -o-object-fit: cover;
+  object-fit: cover; /* NEW: ensures images fill container without distortion */
 }
 
 .wc-slider-text {
+  flex: 1;
+}
+
+.wc-slider-bento {
   flex: 1;
 }
 
