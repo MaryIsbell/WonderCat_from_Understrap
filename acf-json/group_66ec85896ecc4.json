@@ -1,0 +1,505 @@
+{
+    "key": "group_66ec85896ecc4",
+    "title": "Add A New Experience Here!",
+    "fields": [
+        {
+            "key": "field_66ec858c6a07b",
+            "label": "Title of Creative Work",
+            "name": "title_of_creative_work",
+            "aria-label": "",
+            "type": "text",
+            "instructions": "",
+            "required": 0,
+            "conditional_logic": 0,
+            "wrapper": {
+                "width": "",
+                "class": "",
+                "id": ""
+            },
+            "default_value": "",
+            "maxlength": "",
+            "allow_in_bindings": 0,
+            "placeholder": "",
+            "prepend": "",
+            "append": ""
+        },
+        {
+            "key": "field_67114728e7dc0",
+            "label": "In Wikidata?",
+            "name": "in_wikidata",
+            "aria-label": "",
+            "type": "select",
+            "instructions": "Please search at Wikidata.org to find if the creative work that prompted your experience has been added to Wikidata. If you enter \"yes,\" you will be prompted to share the Wikidata Q Identifier",
+            "required": 1,
+            "conditional_logic": 0,
+            "wrapper": {
+                "width": "",
+                "class": "",
+                "id": ""
+            },
+            "acf_ct_exclude_column": 0,
+            "acf_ct_read_only_field": 0,
+            "choices": {
+                "yes": "yes",
+                "no": "no"
+            },
+            "default_value": false,
+            "return_format": "value",
+            "multiple": 0,
+            "allow_null": 0,
+            "allow_in_bindings": 1,
+            "ui": 0,
+            "ajax": 0,
+            "placeholder": "",
+            "create_options": 0,
+            "save_options": 0
+        },
+        {
+            "key": "field_66ec85b50b8f1",
+            "label": "Wikidata QID",
+            "name": "wikidata-qid",
+            "aria-label": "",
+            "type": "text",
+            "instructions": "Enter the number that begins with a Q (the Wikidata Q Identifier) in this field.",
+            "required": 1,
+            "conditional_logic": [
+                [
+                    {
+                        "field": "field_67114728e7dc0",
+                        "operator": "==contains",
+                        "value": "yes"
+                    }
+                ]
+            ],
+            "wrapper": {
+                "width": "",
+                "class": "",
+                "id": ""
+            },
+            "acf_ct_exclude_column": 0,
+            "acf_ct_read_only_field": 0,
+            "default_value": "",
+            "maxlength": "",
+            "allow_in_bindings": 0,
+            "placeholder": "",
+            "prepend": "",
+            "append": ""
+        },
+        {
+            "key": "field_6787eea156392",
+            "label": "Wikidata",
+            "name": "wikidata",
+            "aria-label": "",
+            "type": "textarea",
+            "instructions": "This field is not editable and is only shown for debugging purposes.",
+            "required": 0,
+            "conditional_logic": 0,
+            "wrapper": {
+                "width": "",
+                "class": "",
+                "id": ""
+            },
+            "default_value": "",
+            "maxlength": "",
+            "allow_in_bindings": 0,
+            "rows": "",
+            "placeholder": "",
+            "new_lines": ""
+        },
+        {
+            "key": "field_6787eec056393",
+            "label": "Wikidata Last Update",
+            "name": "wikidata_last_update",
+            "aria-label": "",
+            "type": "text",
+            "instructions": "This field is not editable and is only shown for debugging purposes.",
+            "required": 0,
+            "conditional_logic": 0,
+            "wrapper": {
+                "width": "",
+                "class": "",
+                "id": ""
+            },
+            "default_value": "",
+            "maxlength": "",
+            "allow_in_bindings": 0,
+            "placeholder": "",
+            "prepend": "",
+            "append": ""
+        },
+        {
+            "key": "field_671148110ccca",
+            "label": "URL",
+            "name": "url",
+            "aria-label": "",
+            "type": "url",
+            "instructions": "Please enter a URL for the creative work prompting your experience (or a link to a website describing the work)",
+            "required": 0,
+            "conditional_logic": [
+                [
+                    {
+                        "field": "field_67114728e7dc0",
+                        "operator": "==",
+                        "value": "no"
+                    }
+                ]
+            ],
+            "wrapper": {
+                "width": "",
+                "class": "",
+                "id": ""
+            },
+            "acf_ct_exclude_column": 0,
+            "acf_ct_read_only_field": 0,
+            "default_value": "",
+            "allow_in_bindings": 0,
+            "placeholder": ""
+        },
+        {
+            "key": "field_66ec85cae24cf",
+            "label": "Experience",
+            "name": "experience",
+            "aria-label": "",
+            "type": "taxonomy",
+            "instructions": "Which term below best captures the experience you are submitting? (you can refer to the glossary of experiences for descriptions of each term) If your experience isn't in our list, select \"xxx-I need to enter something new\" at the bottom of the list and you will be invited to propose a new term",
+            "required": 1,
+            "conditional_logic": 0,
+            "wrapper": {
+                "width": "",
+                "class": "",
+                "id": ""
+            },
+            "taxonomy": "experience",
+            "add_term": 0,
+            "save_terms": 1,
+            "load_terms": 1,
+            "return_format": "object",
+            "field_type": "select",
+            "allow_null": 0,
+            "allow_in_bindings": 1,
+            "bidirectional": 0,
+            "multiple": 0,
+            "bidirectional_target": []
+        },
+        {
+            "key": "field_67114a3153e2e",
+            "label": "Propose Experience",
+            "name": "propose_experience",
+            "aria-label": "",
+            "type": "text",
+            "instructions": "What experience do you want to add to our database?",
+            "required": 0,
+            "conditional_logic": [
+                [
+                    {
+                        "field": "field_66ec85cae24cf",
+                        "operator": "==",
+                        "value": "118"
+                    }
+                ]
+            ],
+            "wrapper": {
+                "width": "",
+                "class": "",
+                "id": ""
+            },
+            "default_value": "",
+            "maxlength": "",
+            "allow_in_bindings": 0,
+            "placeholder": "",
+            "prepend": "",
+            "append": ""
+        },
+        {
+            "key": "field_67114b6af1aa0",
+            "label": "Define Proposed Experience",
+            "name": "define_proposed_experienced",
+            "aria-label": "",
+            "type": "textarea",
+            "instructions": "Please define this experience in one or two sentences.",
+            "required": 0,
+            "conditional_logic": [
+                [
+                    {
+                        "field": "field_66ec85cae24cf",
+                        "operator": "==",
+                        "value": "118"
+                    }
+                ]
+            ],
+            "wrapper": {
+                "width": "",
+                "class": "",
+                "id": ""
+            },
+            "default_value": "",
+            "maxlength": "",
+            "allow_in_bindings": 0,
+            "rows": "",
+            "placeholder": "",
+            "new_lines": ""
+        },
+        {
+            "key": "field_68b06ef0bfdeb",
+            "label": "Reviewer 1 Feedback",
+            "name": "reviewer_1_feedback",
+            "aria-label": "",
+            "type": "textarea",
+            "instructions": "",
+            "required": 0,
+            "conditional_logic": [
+                [
+                    {
+                        "field": "field_66ec858c6a07b",
+                        "operator": "==pattern",
+                        "value": "67890"
+                    }
+                ]
+            ],
+            "wrapper": {
+                "width": "",
+                "class": "",
+                "id": ""
+            },
+            "default_value": "",
+            "maxlength": "",
+            "allow_in_bindings": 0,
+            "rows": "",
+            "placeholder": "",
+            "new_lines": ""
+        },
+        {
+            "key": "field_67114bbaec08e",
+            "label": "Year of Experience",
+            "name": "Year_of_Experience",
+            "aria-label": "",
+            "type": "number",
+            "instructions": "In what year did you have this experience? Make your best guess if you're not totally sure.",
+            "required": 1,
+            "conditional_logic": 0,
+            "wrapper": {
+                "width": "",
+                "class": "",
+                "id": ""
+            },
+            "acf_ct_exclude_column": 0,
+            "acf_ct_read_only_field": 0,
+            "default_value": "",
+            "min": "",
+            "max": "",
+            "allow_in_bindings": 1,
+            "placeholder": "",
+            "step": "",
+            "prepend": "",
+            "append": ""
+        },
+        {
+            "key": "field_67114c32bc63d",
+            "label": "Feature",
+            "name": "feature",
+            "aria-label": "",
+            "type": "textarea",
+            "instructions": "Please provide a specific feature or combination of features from the creative work that you believe prompted the experience you are entering. If it’s specific language, include direct quotation (with quotation marks). If it is something that can’t be quoted (some aspect of the plot or non-textual features), put it into your own words with as much detail as possible. Aim for less than 500 characters. This field will allow no more than 750 characters.",
+            "required": 1,
+            "conditional_logic": 0,
+            "wrapper": {
+                "width": "",
+                "class": "",
+                "id": ""
+            },
+            "default_value": "",
+            "maxlength": 750,
+            "allow_in_bindings": 1,
+            "rows": "",
+            "placeholder": "",
+            "new_lines": ""
+        },
+        {
+            "key": "field_66ec85dc26aeb",
+            "label": "Technology",
+            "name": "technology",
+            "aria-label": "",
+            "type": "taxonomy",
+            "instructions": "Which term below best captures the technology that prompted your experience? (you can refer to the glossary of technologies for descriptions of each term) If the technology you'd like to enter isn't in our list, select \"xxx-I need to enter something new\" at the bottom of the list and you will be invited to propose a new term. If you think your experience was prompted by a combination of technologies, please propose a new term combining two or more.",
+            "required": 1,
+            "conditional_logic": 0,
+            "wrapper": {
+                "width": "",
+                "class": "",
+                "id": ""
+            },
+            "taxonomy": "technology",
+            "add_term": 1,
+            "save_terms": 1,
+            "load_terms": 1,
+            "return_format": "object",
+            "field_type": "select",
+            "allow_null": 0,
+            "allow_in_bindings": 0,
+            "bidirectional": 0,
+            "multiple": 0,
+            "bidirectional_target": []
+        },
+        {
+            "key": "field_67114d369d673",
+            "label": "Propose Technology",
+            "name": "propose_technology",
+            "aria-label": "",
+            "type": "text",
+            "instructions": "What technique do you want to add to our database?",
+            "required": 0,
+            "conditional_logic": [
+                [
+                    {
+                        "field": "field_66ec85dc26aeb",
+                        "operator": "==",
+                        "value": "70"
+                    }
+                ]
+            ],
+            "wrapper": {
+                "width": "",
+                "class": "",
+                "id": ""
+            },
+            "default_value": "",
+            "maxlength": "",
+            "allow_in_bindings": 0,
+            "placeholder": "",
+            "prepend": "",
+            "append": ""
+        },
+        {
+            "key": "field_67114e2acd6f8",
+            "label": "Define Proposed Technology",
+            "name": "define_proposed_technology",
+            "aria-label": "",
+            "type": "textarea",
+            "instructions": "Please define this technology in one or two sentences.",
+            "required": 0,
+            "conditional_logic": [
+                [
+                    {
+                        "field": "field_66ec85dc26aeb",
+                        "operator": "==",
+                        "value": "70"
+                    }
+                ]
+            ],
+            "wrapper": {
+                "width": "",
+                "class": "",
+                "id": ""
+            },
+            "default_value": "",
+            "maxlength": "",
+            "allow_in_bindings": 0,
+            "rows": "",
+            "placeholder": "",
+            "new_lines": ""
+        },
+        {
+            "key": "field_67114e6d0612c",
+            "label": "Benefit of Experience",
+            "name": "benefit_of_experience",
+            "aria-label": "",
+            "type": "taxonomy",
+            "instructions": "Do you think this experience prompted any of the benefits below? (you can refer to the benefits glossary for description of each term). You can also leave this blank in you're not sure. Remember that some benefits are immediate and some emerge upon reflection. If the benefit isn't in our list, select \"xxx-I need to enter something new.\"",
+            "required": 0,
+            "conditional_logic": 0,
+            "wrapper": {
+                "width": "",
+                "class": "",
+                "id": ""
+            },
+            "taxonomy": "benefit",
+            "add_term": 1,
+            "save_terms": 1,
+            "load_terms": 1,
+            "return_format": "id",
+            "field_type": "select",
+            "allow_null": 1,
+            "allow_in_bindings": 1,
+            "bidirectional": 0,
+            "multiple": 0,
+            "bidirectional_target": []
+        },
+        {
+            "key": "field_671150d42e328",
+            "label": "Propose Benefit",
+            "name": "propose_benefit",
+            "aria-label": "",
+            "type": "text",
+            "instructions": "What benefit do you want to add to our database?",
+            "required": 0,
+            "conditional_logic": [
+                [
+                    {
+                        "field": "field_67114e6d0612c",
+                        "operator": "==",
+                        "value": "151"
+                    }
+                ]
+            ],
+            "wrapper": {
+                "width": "",
+                "class": "",
+                "id": ""
+            },
+            "default_value": "",
+            "maxlength": "",
+            "allow_in_bindings": 0,
+            "placeholder": "",
+            "prepend": "",
+            "append": ""
+        },
+        {
+            "key": "field_671151db4280d",
+            "label": "Theorize Benefit",
+            "name": "theorize_benefit",
+            "aria-label": "",
+            "type": "textarea",
+            "instructions": "If you think this experience was beneficial to you and\/or might be beneficial to others, why do you think that is? This is a space to theorize a little about benefits that might emerge from the experience you're submitting. Make sure to include citations for any sources you reference as you formulate your hypothesis. You can leave this blank if you're not sure.",
+            "required": 0,
+            "conditional_logic": [
+                [
+                    {
+                        "field": "field_67114e6d0612c",
+                        "operator": "==",
+                        "value": "151"
+                    }
+                ]
+            ],
+            "wrapper": {
+                "width": "",
+                "class": "",
+                "id": ""
+            },
+            "default_value": "",
+            "maxlength": "",
+            "allow_in_bindings": 1,
+            "rows": "",
+            "placeholder": "",
+            "new_lines": ""
+        }
+    ],
+    "location": [
+        [
+            {
+                "param": "post_type",
+                "operator": "==",
+                "value": "user-experience"
+            }
+        ]
+    ],
+    "menu_order": 0,
+    "position": "normal",
+    "style": "default",
+    "label_placement": "top",
+    "instruction_placement": "label",
+    "hide_on_screen": "",
+    "active": true,
+    "description": "",
+    "show_in_rest": 1,
+    "modified": 1768486217
+}
