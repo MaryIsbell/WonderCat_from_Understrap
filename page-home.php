@@ -13,13 +13,14 @@ get_header();
 <main id="primary" class="site-main">
 
 <?php
+// Query featured user-experience posts
 $args = [
     'post_type'      => 'user-experience',
     'posts_per_page' => 10,
     'meta_query'     => [
         [
             'key'     => 'feature_in_slider',
-            'value'   => 'yes',   // since your field is yes/no
+            'value'   => '1', // TRUE for ACF true/false field
             'compare' => '='
         ]
     ]
@@ -28,17 +29,17 @@ $args = [
 $slider_query = new WP_Query( $args );
 
 if ( $slider_query->have_posts() ) :
-
-    // Enable slider context for template part
-    $GLOBALS['is_home_slider'] = true;
 ?>
 
-<div id="experienceCarousel" class="carousel slide" data-bs-ride="carousel">
+<div id="experienceCarousel" class="carousel slide wc-experience-carousel" data-bs-ride="carousel">
 
     <div class="carousel-inner">
 
         <?php
         $index = 0;
+
+        // Flag for content-user-experience.php
+        $GLOBALS['is_home_slider'] = true;
 
         while ( $slider_query->have_posts() ) :
             $slider_query->the_post();
@@ -61,18 +62,22 @@ if ( $slider_query->have_posts() ) :
 
             <div class="wc-slider-slide" <?php echo $bg_style; ?>>
 
-                <?php if ( $image_url ) : ?>
-                    <div class="wc-slider-image">
-                        <img src="<?php echo esc_url( $image_url ); ?>" alt="<?php the_title_attribute(); ?>">
-                    </div>
-                <?php endif; ?>
-
                 <div class="wc-slider-content">
 
-                    <?php
-                    // Reuse your existing bento-box template
-                    get_template_part( 'loop-templates/content', 'user-experience' );
-                    ?>
+                    <?php if ( $image_url ) : ?>
+                        <div class="wc-slider-image">
+                            <img src="<?php echo esc_url( $image_url ); ?>" alt="<?php the_title_attribute(); ?>">
+                        </div>
+                    <?php endif; ?>
+
+                    <div class="wc-slider-bento">
+
+                        <?php
+                        // Render your existing bento box layout
+                        get_template_part( 'loop-templates/content', 'user-experience' );
+                        ?>
+
+                    </div>
 
                 </div>
 
@@ -83,10 +88,13 @@ if ( $slider_query->have_posts() ) :
         <?php
             $index++;
         endwhile;
+
+        unset( $GLOBALS['is_home_slider'] );
         ?>
 
     </div>
 
+    <!-- Controls -->
     <button class="carousel-control-prev" type="button" data-bs-target="#experienceCarousel" data-bs-slide="prev">
         <span class="carousel-control-prev-icon"></span>
     </button>
@@ -98,9 +106,7 @@ if ( $slider_query->have_posts() ) :
 </div>
 
 <?php
-    unset( $GLOBALS['is_home_slider'] );
 endif;
-
 wp_reset_postdata();
 ?>
 
