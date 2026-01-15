@@ -15267,7 +15267,8 @@ html, body {
   display: block;
   width: 100%;
   height: auto;
-  max-width: 100%;
+  max-width: 90%;
+  text-align: center;
 }
 
 .has-blue-color,
