@@ -15174,6 +15174,12 @@ figure.woocommerce-product-gallery__wrapper {
 
 .wc-footer-right {
   white-space: nowrap;
+  font-size: 0.95rem;
+  color: #000;
+}
+
+.wc-footer-right a:hover {
+  text-decoration: underline;
 }
 
 /* Mobile stacking */

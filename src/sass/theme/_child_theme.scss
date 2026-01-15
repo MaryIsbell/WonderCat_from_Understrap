@@ -192,6 +192,12 @@
 
 .wc-footer-right {
     white-space: nowrap;
+    font-size: .95rem;
+    color: #000;
+}
+
+.wc-footer-right a:hover {
+    text-decoration: underline;
 }
 
 /* Mobile stacking */
