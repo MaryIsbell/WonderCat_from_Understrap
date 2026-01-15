@@ -105,9 +105,7 @@
     color: #000;
     padding: 0;
 }
-#wrapper-navbar .navbar-nav .nav-link:hover {
-    text-decoration: underline;
-}
+
 .login-signup-wrapper {
     margin-left: auto;
     gap: 10px;
@@ -394,7 +392,7 @@ color: #000;
 #wrapper-footer .wc-footer-left a,
 #wrapper-footer .wc-footer-right a {
     position: relative;        /* needed for ::after positioning */
-    text-decoration: none;     /* remove default underline */
+    text-decoration: none !important;     /* remove default underline */
     color: #000;
 }
 
@@ -407,10 +405,10 @@ color: #000;
     position: absolute;
     left: 50%;                  /* start at center */
     bottom: -2px;               /* distance from text */
-    height: 2px;                 /* thickness of underline */
-    width: 0;                     /* hidden initially */
-    background-color: #000;       /* underline color */
-    transform: translateX(-50%);  /* center the underline */
+    height: 2px;                /* thickness of underline */
+    width: 0;                    /* hidden initially */
+    background-color: #000;      /* underline color */
+    transform: translateX(-50%); /* center the underline */
     transition: width 0.3s ease-in-out;
 }
 
@@ -420,27 +418,4 @@ color: #000;
 #wrapper-footer .wc-footer-left a:hover::after,
 #wrapper-footer .wc-footer-right a:hover::after {
     width: 100%;
-}
-
-/* Custom hover underline for WordPress menu items */
-.navbar-nav .nav-link {
-  position: relative;
-  text-decoration: none;  // remove default underline
-  color: #000;            // keep existing color
-}
-
-.navbar-nav .nav-link::after {
-  content: "";
-  position: absolute;
-  left: 0;
-  bottom: -3px;           // adjust distance from text
-  height: 2px;
-  width: 0;
-  background-color: #000; // underline color
-  transition: width 0.3s ease;
-}
-
-.navbar-nav .nav-link:hover::after,
-.navbar-nav .nav-link:focus::after {
-  width: 100%;
 }
