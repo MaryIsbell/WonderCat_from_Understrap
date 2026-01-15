@@ -2,12 +2,9 @@
 /**
  * Template Name: Home Page Template
  *
- * A custom template to associate with a static home page for the WonderCat site that draws in featured user-experience posts into a carousel
- *
  * @package Understrap
  */
 
-// Exit if accessed directly.
 defined( 'ABSPATH' ) || exit;
 
 get_header();
@@ -17,12 +14,12 @@ get_header();
 
 <?php
 $args = [
-    'post_type'      => 'user-experience',   // change if needed
+    'post_type'      => 'user-experience',
     'posts_per_page' => 10,
     'meta_query'     => [
         [
             'key'     => 'feature_in_slider',
-            'value'   => '1',
+            'value'   => 'yes',   // since your field is yes/no
             'compare' => '='
         ]
     ]
@@ -31,6 +28,9 @@ $args = [
 $slider_query = new WP_Query( $args );
 
 if ( $slider_query->have_posts() ) :
+
+    // Enable slider context for template part
+    $GLOBALS['is_home_slider'] = true;
 ?>
 
 <div id="experienceCarousel" class="carousel slide" data-bs-ride="carousel">
@@ -61,23 +61,18 @@ if ( $slider_query->have_posts() ) :
 
             <div class="wc-slider-slide" <?php echo $bg_style; ?>>
 
+                <?php if ( $image_url ) : ?>
+                    <div class="wc-slider-image">
+                        <img src="<?php echo esc_url( $image_url ); ?>" alt="<?php the_title_attribute(); ?>">
+                    </div>
+                <?php endif; ?>
+
                 <div class="wc-slider-content">
 
-                    <?php if ( $image_url ) : ?>
-                        <div class="wc-slider-image">
-                            <img src="<?php echo esc_url( $image_url ); ?>" alt="<?php the_title_attribute(); ?>">
-                        </div>
-                    <?php endif; ?>
-
-                    <div class="wc-slider-text">
-                        <h3><?php the_title(); ?></h3>
-                        <div class="wc-slider-excerpt">
-                            <?php the_excerpt(); ?>
-                        </div>
-                        <a href="<?php the_permalink(); ?>" class="btn btn-outline-dark mt-2">
-                            View Experience
-                        </a>
-                    </div>
+                    <?php
+                    // Reuse your existing bento-box template
+                    get_template_part( 'loop-templates/content', 'user-experience' );
+                    ?>
 
                 </div>
 
@@ -92,7 +87,6 @@ if ( $slider_query->have_posts() ) :
 
     </div>
 
-    <!-- Controls -->
     <button class="carousel-control-prev" type="button" data-bs-target="#experienceCarousel" data-bs-slide="prev">
         <span class="carousel-control-prev-icon"></span>
     </button>
@@ -104,7 +98,9 @@ if ( $slider_query->have_posts() ) :
 </div>
 
 <?php
+    unset( $GLOBALS['is_home_slider'] );
 endif;
+
 wp_reset_postdata();
 ?>
 
