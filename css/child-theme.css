@@ -15257,6 +15257,19 @@ html, body {
     text-align: center;
   }
 }
+/* Full-width homepage image below slider */
+.wc-home-fullwidth-image {
+  width: 100%;
+  margin: 0;
+  padding: 0;
+}
+.wc-home-fullwidth-image img {
+  display: block;
+  width: 100%;
+  height: auto;
+  max-width: 100%;
+}
+
 .has-blue-color,
 .has-blue-color:visited {
   color: #97C2FC;
