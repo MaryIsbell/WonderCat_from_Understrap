@@ -13,7 +13,7 @@ defined( 'ABSPATH' ) || exit;
 ?>
 
 <nav class="navbar navbar-expand-lg navbar-light bg-light p-0">
-    <div class="container">
+    <div class="container-fluid">
 
         <!-- Site title / logo -->
 <a class="navbar-brand h4 mb-0" href="<?php echo esc_url(home_url('/')); ?>">
