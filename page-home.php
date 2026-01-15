@@ -115,6 +115,19 @@ wp_reset_postdata();
 <div class="wc-home-fullwidth-image">
     <img src="<?php echo get_stylesheet_directory_uri(); ?>/images/How_it_works_revised.png" alt="Homepage Image" loading="lazy">
 </div>
+
+<!-- Homepage CTA section -->
+<div class="wc-home-cta">
+    <div class="wc-home-cta-left">
+        Start chronicling your experiences
+    </div>
+    <div class="wc-home-cta-right">
+        <a href="<?php echo esc_url( home_url('/join') ); ?>" class="btn">
+            Join WonderCat
+        </a>
+    </div>
+</div>
+
 </main>
 
 <?php get_footer(); ?>

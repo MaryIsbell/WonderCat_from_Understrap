@@ -304,3 +304,65 @@ color: #000;
     font-size: 4.0rem;
     font-weight: 400;
 }
+
+/* ================================
+   Homepage CTA Section
+   ================================ */
+.wc-home-cta {
+    display: flex;
+    align-items: center;      /* vertically center */
+    justify-content: space-between;
+    max-width: 1140px;        /* match container width */
+    margin: 0 auto;
+    padding: 40px 20px;
+    gap: 20px;
+    flex-wrap: wrap;          /* wraps on small screens */
+    min-height: 20vh;         /* relative height for viewport filling */
+}
+
+.wc-home-cta-left {
+    flex: 1 1 60%;            /* larger portion for text */
+    font-size: 2.5rem;
+    font-weight: 600;
+    text-align: left;
+    color: #000;
+}
+
+.wc-home-cta-right {
+    flex: 1 1 35%;            /* smaller portion for button */
+    text-align: right;
+}
+
+.wc-home-cta-right .btn {
+    font-size: 1.25rem;
+    font-weight: 600;
+    padding: 12px 24px;
+    border-radius: 8px;
+    background-color: $yellow;
+    color: #000;
+    border: 2px solid black;
+    box-shadow: 2px 2px inset black;
+    cursor: pointer;
+    text-decoration: none;
+}
+
+.wc-home-cta-right .btn:hover {
+    background-color: darken($yellow, 10%);
+    text-decoration: none;
+}
+
+/* Mobile adjustments */
+@media (max-width: 767px) {
+    .wc-home-cta {
+        flex-direction: column;
+        text-align: center;
+        min-height: auto;
+    }
+
+    .wc-home-cta-left,
+    .wc-home-cta-right {
+        flex: 1 1 100%;
+        text-align: center;
+        margin-bottom: 15px;
+    }
+}
