@@ -31,7 +31,7 @@ $slider_query = new WP_Query( $args );
 if ( $slider_query->have_posts() ) :
 ?>
 
-<div id="experienceCarousel" class="carousel slide wc-experience-carousel" data-bs-ride="carousel">
+<div id="experienceCarousel" class="carousel slide wc-experience-carousel" data-bs-ride="carousel" data-bs-interval="8000">
 
     <div class="carousel-inner">
 
