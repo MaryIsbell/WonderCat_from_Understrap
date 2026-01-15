@@ -261,3 +261,35 @@ html, body {
         white-space: normal;
     }
 }
+
+/*================================
+Home Page Slider
+==================================*/
+.wc-slider-slide {
+    padding: 40px 20px;
+}
+
+.wc-slider-content {
+    max-width: 1100px;
+    margin: 0 auto;
+    display: flex;
+    gap: 30px;
+    align-items: center;
+}
+
+.wc-slider-image img {
+    max-width: 300px;
+    height: auto;
+    border-radius: 8px;
+}
+
+.wc-slider-text {
+    flex: 1;
+}
+
+@media (max-width: 768px) {
+    .wc-slider-content {
+        flex-direction: column;
+        text-align: center;
+    }
+}
