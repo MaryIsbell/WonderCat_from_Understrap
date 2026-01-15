@@ -48,8 +48,9 @@ if ( ! empty($technology_terms ) && ! is_wp_error( $technology_terms ) ) {
 	$author_id = get_post_field( 'post_author', $post_id ); 
 	$author_url = get_author_posts_url( $author_id );
 	$date = get_the_date( 'F j, Y', $post_id);
-	//$authorarchivelink = ge
-
+	
+	// Choose container class based on context
+	$container_class = $is_slider ? 'bento_container bento_slider' : 'bento_container';
 
     // Display the bento box
 
