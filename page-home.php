@@ -17,7 +17,7 @@ get_header();
 
 <?php
 $args = [
-    'post_type'      => 'experience',   // change if needed
+    'post_type'      => 'user-experience',   // change if needed
     'posts_per_page' => 10,
     'meta_query'     => [
         [
