@@ -5,6 +5,7 @@
  * Copyright 2011-2022 Twitter, Inc.
  * Licensed under MIT (https://github.com/twbs/bootstrap/blob/main/LICENSE)
  */
+@import url("https://fonts.googleapis.com/css2?family=PT+Sans:wght@400;600;700&display=swap");
 :root {
   --bs-blue: #97C2FC;
   --bs-indigo: #6610f2;
@@ -14962,6 +14963,37 @@ figure.woocommerce-product-gallery__wrapper {
 
 .gallery-caption {
   display: block;
+}
+
+/* ================================
+   Global Font Setup: PT Sans
+   ================================ */
+/* Import PT Sans from Google Fonts */
+/* Define a variable for convenience */
+/* Apply globally */
+body,
+button,
+input,
+textarea,
+select,
+a {
+  font-family: "PT Sans", sans-serif;
+  font-weight: 400;
+  line-height: 1.6;
+  color: #000;
+}
+
+/* Optional: strong/bold elements */
+strong, b {
+  font-weight: 700;
+}
+
+/* Optional: headings */
+h1, .h1, h2, .h2, h3, .h3, h4, .h4, h5, .h5, h6, .h6 {
+  font-family: "PT Sans", sans-serif;
+  font-weight: 600; /* or 700 for h1 */
+  line-height: 1.2;
+  color: #000;
 }
 
 /* ================================

@@ -1,4 +1,40 @@
 /* ================================
+   Global Font Setup: PT Sans
+   ================================ */
+
+/* Import PT Sans from Google Fonts */
+@import url('https://fonts.googleapis.com/css2?family=PT+Sans:wght@400;600;700&display=swap');
+
+/* Define a variable for convenience */
+$primary-font: 'PT Sans', sans-serif;
+
+/* Apply globally */
+body, 
+button, 
+input, 
+textarea, 
+select, 
+a {
+  font-family: $primary-font;
+  font-weight: 400;
+  line-height: 1.6;
+  color: #000;
+}
+
+/* Optional: strong/bold elements */
+strong, b {
+  font-weight: 700;
+}
+
+/* Optional: headings */
+h1, h2, h3, h4, h5, h6 {
+  font-family: $primary-font;
+  font-weight: 600; /* or 700 for h1 */
+  line-height: 1.2;
+  color: #000;
+}
+
+/* ================================
    Bento Boxes
    ================================ */
 .col-md-6 {
