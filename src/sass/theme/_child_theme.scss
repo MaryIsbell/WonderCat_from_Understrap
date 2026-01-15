@@ -149,14 +149,63 @@
     }
 }
 
-/* Footer bar background and padding */
+/* Footer spacing to match header container */
+#wrapper-footer .container {
+    max-width: 100%;
+    padding-left: 15px;   // mobile default
+    padding-right: 15px;
+
+    @media (min-width: 768px) {
+        padding-left: 30px;  // matches header spacing on tablet/desktop
+        padding-right: 30px;
+    }
+}
+
+/* Footer bar styling (existing) */
 .wc-footer-bar {
-    background-color: #D9D9D9;
+    background-color: white;
     font-size: 14px;
     padding: 12px 0;
+    margin: 0;
     width: 100%;
 }
 
+/* Footer inner layout */
+.wc-footer-inner {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    gap: 8px;
+    width: 100%;
+}
+
+.wc-footer-left a {
+    text-decoration: none;
+    font-weight: 600;
+    font-size: .95rem;
+    color: #000;
+}
+
+.wc-footer-left a:hover {
+    text-decoration: underline;
+}
+
+.wc-footer-right {
+    white-space: nowrap;
+}
+
+/* Mobile stacking */
+@media (max-width: 767px) {
+    .wc-footer-inner {
+        flex-direction: column;
+        align-items: flex-start;
+    }
+
+    .wc-footer-right {
+        white-space: normal;
+        margin-top: 8px;
+    }
+}
 /* ================================
    Home Page Slider
    ================================ */
