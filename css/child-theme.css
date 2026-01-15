@@ -15430,6 +15430,25 @@ h1, .h1, h2, .h2, h3, .h3, h4, .h4, h5, .h5, h6, .h6 {
   width: 100%;
 }
 
+/* Center taxonomy archive header content */
+.page-header {
+  text-align: center;
+}
+.page-header h1.page-title, .page-header .page-title.h1 {
+  margin-bottom: 1rem;
+}
+.page-header .taxonomy-description,
+.page-header p {
+  margin: 0.5rem 0;
+}
+.page-header a {
+  color: #000;
+  text-decoration: none;
+}
+.page-header a:hover {
+  text-decoration: underline;
+}
+
 .has-blue-color,
 .has-blue-color:visited {
   color: #97C2FC;

@@ -465,3 +465,27 @@ color: #000;
 .wc-footer-right a:focus::after {
     width: 100%;
 }
+
+/* Center taxonomy archive header content */
+.page-header {
+    text-align: center; // horizontally center all text inside
+
+    h1.page-title {
+        margin-bottom: 1rem; // optional spacing
+    }
+
+    .taxonomy-description,
+    p {
+        margin: 0.5rem 0; // space between paragraphs
+    }
+
+    a {
+        color: #000; // adjust link color if needed
+        text-decoration: none;
+
+        &:hover {
+            text-decoration: underline; // optional underline on hover
+        }
+    }
+}
+
