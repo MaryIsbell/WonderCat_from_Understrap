@@ -116,17 +116,18 @@ wp_reset_postdata();
     <img src="<?php echo get_stylesheet_directory_uri(); ?>/images/How_it_works_revised.png" alt="Homepage Image" loading="lazy">
 </div>
 
-<!-- Homepage CTA section -->
-<div class="wc-home-cta">
-    <div class="wc-home-cta-left">
+<!-- Homepage CTA Section -->
+<div class="homepage-cta">
+    <div class="homepage-cta-left">
         Start chronicling your experiences
     </div>
-    <div class="wc-home-cta-right">
+    <div class="homepage-cta-right">
         <a href="<?php echo esc_url( home_url('/join') ); ?>" class="btn">
             Join WonderCat
         </a>
     </div>
 </div>
+
 
 </main>
 

@@ -306,63 +306,73 @@ color: #000;
 }
 
 /* ================================
-   Homepage CTA Section
+   Homepage hero section: fill viewport
    ================================ */
-.wc-home-cta {
+#primary.site-main {
     display: flex;
-    align-items: center;      /* vertically center */
-    justify-content: space-between;
-    max-width: 1140px;        /* match container width */
-    margin: 0 auto;
-    padding: 40px 20px;
-    gap: 20px;
-    flex-wrap: wrap;          /* wraps on small screens */
-    min-height: 20vh;         /* relative height for viewport filling */
+    flex-direction: column;
+    min-height: 100vh; /* ensures hero + CTA fills viewport */
 }
 
-.wc-home-cta-left {
-    flex: 1 1 60%;            /* larger portion for text */
+/* ================================
+   Homepage CTA section below hero image
+   ================================ */
+.homepage-cta {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    flex-wrap: wrap; /* allows stacking on mobile */
+    padding: 40px 20px;
+    margin-top: 20px;
+    width: 100%;
+}
+
+/* Left side: black background with white text */
+.homepage-cta-left {
+    flex: 1 1 60%;
+    background-color: #000000; /* black */
+    color: #ffffff; /* white text */
+    padding: 30px;
     font-size: 2.5rem;
     font-weight: 600;
-    text-align: left;
-    color: #000;
-}
-
-.wc-home-cta-right {
-    flex: 1 1 35%;            /* smaller portion for button */
-    text-align: right;
-}
-
-.wc-home-cta-right .btn {
-    font-size: 1.25rem;
-    font-weight: 600;
-    padding: 12px 24px;
+    text-align: center; /* centers text horizontally */
     border-radius: 8px;
-    background-color: $yellow;
+}
+
+/* Right side: button */
+.homepage-cta-right {
+    flex: 1 1 35%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    margin-top: 20px;
+}
+
+.homepage-cta-right .btn {
+    font-size: 1.5rem;
+    padding: 15px 30px;
+    border-radius: 8px;
+    background-color: #ffcc00; /* example highlight color */
+    color: #000000;
+    font-weight: 700;
+    text-decoration: none;
+    transition: background-color 0.3s;
+}
+
+.homepage-cta-right .btn:hover {
+    background-color: #e6b800;
     color: #000;
-    border: 2px solid black;
-    box-shadow: 2px 2px inset black;
-    cursor: pointer;
-    text-decoration: none;
 }
 
-.wc-home-cta-right .btn:hover {
-    background-color: darken($yellow, 10%);
-    text-decoration: none;
-}
-
-/* Mobile adjustments */
+/* Mobile responsiveness */
 @media (max-width: 767px) {
-    .wc-home-cta {
+    .homepage-cta {
         flex-direction: column;
-        text-align: center;
-        min-height: auto;
+        gap: 20px;
     }
-
-    .wc-home-cta-left,
-    .wc-home-cta-right {
+    .homepage-cta-left,
+    .homepage-cta-right {
         flex: 1 1 100%;
         text-align: center;
-        margin-bottom: 15px;
     }
 }
