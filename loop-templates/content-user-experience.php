@@ -7,6 +7,9 @@
 
 // Exit if accessed directly.
 defined( 'ABSPATH' ) || exit;
+
+// Detect if we are rendering inside the homepage slider
+$is_slider = ! empty( $GLOBALS['is_home_slider'] );
 ?>
 
 <article <?php post_class(); ?> id="post-<?php the_ID(); ?>">
