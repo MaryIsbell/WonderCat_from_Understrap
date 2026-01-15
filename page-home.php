@@ -66,7 +66,7 @@ if ( $slider_query->have_posts() ) :
 
                     <?php if ( $image_url ) : ?>
                         <div class="wc-slider-image">
-                            <img src="<?php echo esc_url( $image_url ); ?>" alt="<?php the_title_attribute(); ?>">
+                            <img src="<?php echo esc_url( $image_url ); ?>" alt="<?php the_title_attribute(); ?>" loading="lazy">
                         </div>
                     <?php endif; ?>
 
