@@ -1,6 +1,6 @@
 <?php
 /**
- * Custom responsive navbar for UnderStrap child theme
+ * Custom responsive navbar for UnderStrap child theme (hard-coded)
  *
  * Left: Site title + nav links
  * Right: Log In / Sign Up (always visible)
@@ -8,7 +8,6 @@
  * @package YourChildTheme
  */
 
-// Exit if accessed directly.
 defined( 'ABSPATH' ) || exit;
 ?>
 
@@ -16,33 +15,32 @@ defined( 'ABSPATH' ) || exit;
     <div class="container-fluid">
 
         <!-- Site title / logo -->
-<a class="navbar-brand h4 mb-0" href="<?php echo esc_url(home_url('/')); ?>">
-    <?php bloginfo('name'); ?>
-</a>
+        <a class="navbar-brand" href="<?php echo esc_url(home_url('/')); ?>">
+            <?php bloginfo('name'); ?>
+        </a>
 
-<!-- Hamburger toggle -->
-<button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#primaryNavbar"
-        aria-controls="primaryNavbar" aria-expanded="false" aria-label="Toggle navigation">
-    <span class="navbar-toggler-icon"></span>
-</button>
+        <!-- Hamburger toggle (mobile) -->
+        <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#primaryNavbar"
+                aria-controls="primaryNavbar" aria-expanded="false" aria-label="Toggle navigation">
+            <span class="navbar-toggler-icon"></span>
+        </button>
 
-<!-- Navigation links FIRST -->
-<div class="collapse navbar-collapse mt-2 mt-lg-0" id="primaryNavbar">
-    <?php
-    wp_nav_menu(array(
-        'theme_location' => 'primary',
-        'menu_class' => 'navbar-nav me-auto mb-2 mb-lg-0',
-        'container' => false,
-        'depth' => 1,
-        'fallback_cb' => false
-    ));
-    ?>
-</div>
+        <!-- Navigation links -->
+        <div class="collapse navbar-collapse mt-2 mt-lg-0" id="primaryNavbar">
+            <ul class="navbar-nav me-auto mb-2 mb-lg-0">
+                <li class="nav-item"><a class="nav-link" href="/">Home</a></li>
+                <li class="nav-item"><a class="nav-link" href="/about">About</a></li>
+                <li class="nav-item"><a class="nav-link" href="/services">Services</a></li>
+                <li class="nav-item"><a class="nav-link" href="/contact">Contact</a></li>
+            </ul>
+        </div>
 
-<!-- Login / Signup LAST -->
-<div class="d-flex align-items-center login-signup-wrapper ms-lg-auto">
-    <a href="<?php echo wp_login_url(); ?>">Log In</a>
-    <span class="mx-1">or</span>
-    <a href="/sign-up">Sign Up</a>
-</div>
+        <!-- Login / Signup -->
+        <div class="d-flex align-items-center login-signup-wrapper ms-lg-auto">
+            <a href="<?php echo wp_login_url(); ?>">Log In</a>
+            <span class="mx-1">or</span>
+            <a href="/sign-up">Sign Up</a>
+        </div>
+
+    </div>
 </nav>
