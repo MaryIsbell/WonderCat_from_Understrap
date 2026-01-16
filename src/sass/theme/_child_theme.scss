@@ -486,13 +486,4 @@ color: #000;
     p {
         margin: 0.5rem 0; // space between paragraphs
     }
-
-    a {
-        color: #000; // adjust link color if needed
-        text-decoration: none;
-
-        &:hover {
-            text-decoration: underline; // optional underline on hover
-        }
-    }
 }
