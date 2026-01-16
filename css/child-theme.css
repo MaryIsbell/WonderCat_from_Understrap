@@ -15309,6 +15309,23 @@ body.page-template-experience-glossary .page-content {
     text-align: center;
   }
 }
+/* ================================
+   Homepage slider image constraints
+   ================================ */
+.wc-experience-carousel .wc-slider-image {
+  height: 420px;
+  overflow: hidden;
+  position: relative;
+}
+
+.wc-experience-carousel .wc-slider-image img {
+  width: 100%;
+  height: 100%;
+  -o-object-fit: cover;
+  object-fit: cover;
+  display: block;
+}
+
 /* =========================================================
 Full-width homepage image below slider with white background 
 ============================================================*/
