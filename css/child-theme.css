@@ -15103,6 +15103,19 @@ a:focus {
 }
 
 /* ================================
+   Center titles on normal pages & posts
+   ================================ */
+body.page .entry-header,
+body.single .entry-header {
+  text-align: center;
+}
+body.page .entry-header h1.entry-title, body.page .entry-header .entry-title.h1,
+body.single .entry-header h1.entry-title,
+body.single .entry-header .entry-title.h1 {
+  margin-bottom: 1rem;
+}
+
+/* ================================
    Header / Navbar
    ================================ */
 #wrapper-navbar .navbar-brand {
