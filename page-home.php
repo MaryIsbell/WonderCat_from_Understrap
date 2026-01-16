@@ -67,6 +67,12 @@ if ( $slider_query->have_posts() ) :
                     <?php if ( $image_url ) : ?>
                         <div class="wc-slider-image">
                             <img src="<?php echo esc_url( $image_url ); ?>" alt="<?php the_title_attribute(); ?>" loading="lazy">
+
+<?php if ( $image && is_array( $image ) && ! empty( $image['caption'] ) ) : ?>
+    <div class="wc-slider-caption">
+        <?php echo esc_html( $image['caption'] ); ?>
+    </div>
+<?php endif; ?>
                         </div>
                     <?php endif; ?>
 
