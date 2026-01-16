@@ -371,6 +371,11 @@ body.page-template-experience-glossary .page-content {
     display: block;
 }
 
+@media (max-width: 768px) {
+  .wc-experience-carousel .wc-slider-image {
+    height: 280px;
+  }
+}
 
 
 /* =========================================================
