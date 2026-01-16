@@ -35,14 +35,11 @@ $container = get_theme_mod( 'understrap_container_type' );
     <?php
     $author = get_queried_object();
 
-    echo '<h1 class="page-title">Experiences by ' . esc_html( $author->display_name ) . '</h1>';
+    echo '<h1 class="page-title">Experiences entered by ' . esc_html( $author->display_name ) . '</h1>';
 
     if ( ! empty( $author->description ) ) {
         echo '<div class="taxonomy-description">' . wp_kses_post( wpautop( $author->description ) ) . '</div>';
     }
-
-    echo '<p><a href="' . esc_url( get_author_posts_url( $author->ID ) ) . '">View all posts by this author</a></p>';
-    ?>
 </header>
 
 					<?php
