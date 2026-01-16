@@ -40,6 +40,7 @@ $container = get_theme_mod( 'understrap_container_type' );
     if ( ! empty( $author->description ) ) {
         echo '<div class="taxonomy-description">' . wp_kses_post( wpautop( $author->description ) ) . '</div>';
     }
+    ?>
 </header>
 
 					<?php
