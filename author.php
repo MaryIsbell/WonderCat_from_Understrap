@@ -33,45 +33,18 @@ $container = get_theme_mod( 'understrap_container_type' );
 					?>
 					<header class="page-header">
     <?php
-    // Default title and description
-    the_archive_title( '<h1 class="page-title">', '</h1>' );
-    the_archive_description( '<div class="taxonomy-description">', '</div>' );
+    $author = get_queried_object();
 
-    // Custom parent/child info
-    $term = get_queried_object();
+    echo '<h1 class="page-title">Experiences by ' . esc_html( $author->display_name ) . '</h1>';
 
-    // Parent
-    if ( $term->parent ) {
-        $parent_term = get_term( $term->parent, $term->taxonomy );
-        if ( $parent_term && ! is_wp_error( $parent_term ) ) {
-            echo '<p>Primary term: <a href="' . esc_url( get_term_link( $parent_term ) ) . '">' . esc_html( $parent_term->name ) . '</a></p>';
-        }
+    if ( ! empty( $author->description ) ) {
+        echo '<div class="taxonomy-description">' . wp_kses_post( wpautop( $author->description ) ) . '</div>';
     }
 
-    // Children
-    $child_terms = get_terms([
-        'taxonomy'   => $term->taxonomy,
-        'parent'     => $term->term_id,
-        'hide_empty' => false,
-    ]);
-
-    if ( ! empty( $child_terms ) && ! is_wp_error( $child_terms ) ) {
-        echo '<p>Related terms: ';
-        $links = [];
-        foreach ( $child_terms as $child ) {
-            $links[] = '<a href="' . esc_url( get_term_link( $child ) ) . '">' . esc_html( $child->name ) . '</a>';
-        }
-        echo implode( ', ', $links );
-        echo '</p>';
-    }
-    
-	// Version history link
-    $anchor_id = sanitize_title( $term->taxonomy . '-' . $term->slug );
-    $version_history_url = home_url( '/term-version-history/#' . $anchor_id );
-
-    echo '<p><a href="' . esc_url( $version_history_url ) . '">View Version History for This Term</a></p>';
+    echo '<p><a href="' . esc_url( get_author_posts_url( $author->ID ) ) . '">View all posts by this author</a></p>';
     ?>
-</header><!-- .page-header -->
+</header>
+
 					<?php
 					// Start the loop.
 					while ( have_posts() ) {
