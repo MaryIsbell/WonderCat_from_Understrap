@@ -15309,6 +15309,26 @@ body.page-template-experience-glossary .page-content {
     text-align: center;
   }
 }
+/*===================================
+Homepage slider feature clickability
+====================================*/
+.wc-experience-carousel .button_feature_link {
+  display: block;
+  color: inherit;
+  text-decoration: none;
+}
+
+.wc-experience-carousel .button_feature_link:hover {
+  text-decoration: none;
+  filter: brightness(0.95);
+  cursor: pointer;
+}
+
+.wc-experience-carousel .button_feature_link:focus-visible {
+  outline: 2px solid currentColor;
+  outline-offset: 3px;
+}
+
 /* ================================
    Homepage slider image constraints
    ================================ */
