@@ -15309,7 +15309,9 @@ body.page-template-experience-glossary .page-content {
     text-align: center;
   }
 }
-/* Full-width homepage image below slider with white background */
+/* =========================================================
+Full-width homepage image below slider with white background 
+============================================================*/
 .wc-home-fullwidth-image {
   width: 100%;
   margin: 0 auto; /* centers container if narrower than viewport */
