@@ -35,6 +35,20 @@ h1, h2, h3, h4, h5, h6 {
 }
 
 /* ================================
+   Default link behavior (site-wide)
+   ================================ */
+
+a {
+  color: #000;
+  text-decoration: underline;
+}
+
+a:hover,
+a:focus {
+  text-decoration: none;
+}
+
+/* ================================
    Bento Boxes
    ================================ */
 .col-md-6 {
