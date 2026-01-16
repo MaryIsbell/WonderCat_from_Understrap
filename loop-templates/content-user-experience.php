@@ -47,7 +47,7 @@ $feature = get_field( 'feature', $post_id );
 
 // Trim feature text only inside the homepage slider
 if ( $is_slider && ! empty( $feature ) ) {
-    $feature = wp_trim_words( wp_strip_all_tags( $feature ), 28, '…' );
+    $feature = wp_trim_words( wp_strip_all_tags( $feature ), 20, '…' );
 }
 $display_name = get_the_author_meta( 'display_name', get_post_field( 'post_author', $post_id ) );
 $author_id    = get_post_field( 'post_author', $post_id );
