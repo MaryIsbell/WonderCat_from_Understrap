@@ -15331,6 +15331,22 @@ body.page-template-experience-glossary .page-content {
     height: 280px;
   }
 }
+/* ================================
+   Slider caption overlay
+   ================================ */
+.wc-experience-carousel .wc-slider-caption {
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  padding: 10px 16px;
+  background: linear-gradient(to top, rgba(0, 0, 0, 0.65), rgba(0, 0, 0, 0.15));
+  color: #fff;
+  font-size: 0.9rem;
+  line-height: 1.4;
+  z-index: 2;
+}
+
 /* =========================================================
 Full-width homepage image below slider with white background 
 ============================================================*/
