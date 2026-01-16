@@ -82,9 +82,20 @@ $container_class = $is_slider ? 'bento_container bento_slider' : 'bento_containe
         </div>
 
         <div class="col-md-6">
-            <div class="button_feature">
-                <?php echo esc_html( $feature ); ?>
-            </div>
+            <?php if ( $is_slider ) : ?>
+
+    <a href="<?php echo esc_url( get_permalink( $post_id ) ); ?>" class="button_feature button_feature_link">
+        <?php echo esc_html( $feature ); ?>
+    </a>
+
+<?php else : ?>
+
+    <div class="button_feature">
+        <?php echo esc_html( $feature ); ?>
+    </div>
+
+<?php endif; ?>
+
 
             <div class="button_user">
                 Contributed by:
