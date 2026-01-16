@@ -14996,6 +14996,19 @@ h1, .h1, h2, .h2, h3, .h3, h4, .h4, h5, .h5, h6, .h6 {
 }
 
 /* ================================
+   Default link behavior (site-wide)
+   ================================ */
+a {
+  color: #000;
+  text-decoration: underline;
+}
+
+a:hover,
+a:focus {
+  text-decoration: none;
+}
+
+/* ================================
    Bento Boxes
    ================================ */
 .col-md-6 {
@@ -15087,7 +15100,6 @@ h1, .h1, h2, .h2, h3, .h3, h4, .h4, h5, .h5, h6, .h6 {
 }
 .page-header a {
   color: #000;
-  text-decoration: underline; /* default underline for non-header/footer links */
 }
 
 /* ================================
@@ -15390,34 +15402,6 @@ h1, .h1, h2, .h2, h3, .h3, h4, .h4, h5, .h5, h6, .h6 {
   margin: 0;
 }
 
-/* ----- Footer links: sliding underline from center ----- */
-.wc-footer-left a,
-.wc-footer-right a {
-  position: relative;
-  text-decoration: none !important;
-  color: #000;
-}
-
-.wc-footer-left a::after,
-.wc-footer-right a::after {
-  content: "";
-  position: absolute;
-  left: 50%;
-  bottom: -2px;
-  height: 2px;
-  width: 0;
-  background-color: #000;
-  transform: translateX(-50%);
-  transition: width 0.3s ease-in-out;
-}
-
-.wc-footer-left a:hover::after,
-.wc-footer-left a:focus::after,
-.wc-footer-right a:hover::after,
-.wc-footer-right a:focus::after {
-  width: 100%;
-}
-
 /* Center taxonomy archive header content */
 .page-header {
   text-align: center;
@@ -15428,13 +15412,6 @@ h1, .h1, h2, .h2, h3, .h3, h4, .h4, h5, .h5, h6, .h6 {
 .page-header .taxonomy-description,
 .page-header p {
   margin: 0.5rem 0;
-}
-.page-header a {
-  color: #000;
-  text-decoration: none;
-}
-.page-header a:hover {
-  text-decoration: underline;
 }
 
 .has-blue-color,
