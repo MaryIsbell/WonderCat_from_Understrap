@@ -50,8 +50,8 @@ $container = get_theme_mod( 'understrap_container_type' );
 
                 if ( ! empty( $all_terms ) && ! is_wp_error( $all_terms ) ) {
                     foreach ( $all_terms as $term ) {
-                        $in_glossary = get_term_meta( $term->term_id, 'in_glossary', true );
-                        if ( strtolower($in_glossary) === 'yes' ) {
+                        $combination_term = get_term_meta( $term->term_id, 'combination_term', true );
+                        if ( strtolower($combination_term) === 'yes' ) {
                             $combination_terms[] = $term;
                         } else {
                             $normal_terms[] = $term;

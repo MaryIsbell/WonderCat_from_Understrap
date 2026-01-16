@@ -15116,6 +15116,20 @@ body.single .entry-header .entry-title.h1 {
 }
 
 /* ================================
+   Center titles for glossary templates
+   ================================ */
+body.page-template-technology-glossary .page-title,
+body.page-template-experience-glossary .page-title {
+  text-align: center;
+  margin-bottom: 1rem;
+}
+
+body.page-template-technology-glossary .page-content,
+body.page-template-experience-glossary .page-content {
+  text-align: center;
+}
+
+/* ================================
    Header / Navbar
    ================================ */
 #wrapper-navbar .navbar-brand {
