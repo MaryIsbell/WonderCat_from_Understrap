@@ -15517,6 +15517,32 @@ Styling Term History Page
   font-weight: normal;
 }
 
+.centered-title {
+  text-align: center;
+}
+
+.term-toc {
+  text-align: center;
+  margin: 1.5rem 0 3rem;
+}
+
+.term-toc ul {
+  list-style: none;
+  padding: 0;
+  margin: 0.75rem 0 0;
+  display: inline-block;
+  -moz-columns: 2;
+  columns: 2; /* optional: remove if you want single column */
+}
+
+.term-toc li {
+  margin: 0.25rem 0;
+}
+
+.term-toc a {
+  text-decoration: underline;
+}
+
 .has-blue-color,
 .has-blue-color:visited {
   color: #97C2FC;
