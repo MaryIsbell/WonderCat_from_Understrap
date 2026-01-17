@@ -46,7 +46,6 @@ $taxonomies = ['experience', 'technology'];
                         <?php
 // Build Table of Contents
 echo '<div class="col-12 term-toc centered-toc">';
-echo '<h3>Jump to a term</h3>';
 
 $taxonomy_labels = [
     'experience' => 'Experience Terms',
@@ -90,7 +89,7 @@ echo '</div>';
                 
 
                 foreach ($taxonomies as $taxonomy) :
-                    echo '<h2>' . esc_html(ucfirst($taxonomy)) . ' Revisions</h2>';
+                    echo '<h2>' . esc_html(ucfirst($taxonomy)) . ' Term History</h2>';
 
                     // Fetch all terms for the taxonomy
                     $terms = get_terms([
