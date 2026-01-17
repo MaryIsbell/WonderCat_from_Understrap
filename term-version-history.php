@@ -24,6 +24,8 @@ $field_map = [
     ],
 ];
 $container = get_theme_mod('understrap_container_type');
+// Define the taxonomies to display
+$taxonomies = ['experience', 'technology'];
 ?>
 
 
@@ -78,9 +80,9 @@ echo '</div>';
                 endif;
 
                 global $wpdb;
-
-                // Define the taxonomies to display
+// Define the taxonomies to display
                 $taxonomies = ['experience', 'technology'];
+                
 
                 foreach ($taxonomies as $taxonomy) :
                     echo '<h2>' . esc_html(ucfirst($taxonomy)) . ' Revisions</h2>';
