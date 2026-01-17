@@ -45,11 +45,19 @@ $taxonomies = ['experience', 'technology'];
                         <div class="page-content"><?php the_content(); ?></div>
                         <?php
 // Build Table of Contents
-echo '<div class="term-toc">';
+echo '<div class="term-toc centered-toc">';
 echo '<h3>Jump to a term</h3>';
-echo '<ul>';
 
-foreach ($taxonomies as $taxonomy) {
+$taxonomy_labels = [
+    'experience' => 'Experience Terms',
+    'technology' => 'Narrative Technology Terms',
+];
+
+foreach ($taxonomy_labels as $taxonomy => $heading) {
+
+    echo '<div class="toc-taxonomy-group">';
+    echo '<h4>' . esc_html($heading) . '</h4>';
+    echo '<ul class="toc-term-list">';
 
     $terms = get_terms([
         'taxonomy' => $taxonomy,
@@ -59,7 +67,6 @@ foreach ($taxonomies as $taxonomy) {
     ]);
 
     if (!empty($terms) && !is_wp_error($terms)) {
-
         foreach ($terms as $term) {
             $term_anchor = sanitize_title($taxonomy . '-' . $term->slug);
 
@@ -70,9 +77,11 @@ foreach ($taxonomies as $taxonomy) {
             echo '</li>';
         }
     }
+
+    echo '</ul>';
+    echo '</div>';
 }
 
-echo '</ul>';
 echo '</div>';
 ?>
                         <?php
@@ -80,8 +89,6 @@ echo '</div>';
                 endif;
 
                 global $wpdb;
-// Define the taxonomies to display
-                $taxonomies = ['experience', 'technology'];
                 
 
                 foreach ($taxonomies as $taxonomy) :

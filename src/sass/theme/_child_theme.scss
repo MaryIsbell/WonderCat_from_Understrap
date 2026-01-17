@@ -598,3 +598,35 @@ Styling Term History Page
 .term-toc a {
   text-decoration: underline;
 }
+
+centered-toc {
+    text-align: center;
+    margin: 2rem 0 3rem;
+}
+
+.toc-taxonomy-group {
+    margin-bottom: 2rem;
+}
+
+.toc-term-list {
+    list-style: none;
+    padding: 0;
+    margin: 0.75rem auto 0;
+    max-width: 100%;
+}
+
+.toc-term-list li {
+    display: inline;
+    margin-right: 1rem;
+    white-space: nowrap;
+}
+
+.toc-term-list li::after {
+    content: "•";
+    margin-left: 1rem;
+    color: #999;
+}
+
+.toc-term-list li:last-child::after {
+    content: "";
+}
