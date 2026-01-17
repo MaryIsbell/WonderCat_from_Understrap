@@ -72,10 +72,10 @@ $container = get_theme_mod('understrap_container_type');
                             echo '<a href="' . esc_url($term_link) . '">' . esc_html($term->name) . '</a>';
                             echo '</h3>';
                             // ACF editorial note for the term
-                            $editorial_note = get_field('editorial-note', $taxonomy . '_' . $term->term_id);
+                            $editorial_notes = get_field('editorial-note', $taxonomy . '_' . $term->term_id);
 
-                             if ( ! empty($editorial_note) ) {
-                            echo '<p class="term-editorial-note">' . esc_html($editorial_note) . '</p>';
+                             if ( ! empty($editorial_notes) ) {
+                            echo '<p class="term-editorial-notes">' . esc_html($editorial_notes) . '</p>';
                             }
 
                             // Query Gravity Flow entries associated with this term

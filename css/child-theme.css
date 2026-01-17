@@ -15501,6 +15501,16 @@ Full-width homepage image below slider with white background
   margin: 0.5rem 0;
 }
 
+/*======================================
+Styling Term History Page
+=======================================*/
+.term-editorial-notes {
+  margin: 0.25rem 0 1rem;
+  font-style: italic;
+  color: #444;
+  max-width: 70ch;
+}
+
 .has-blue-color,
 .has-blue-color:visited {
   color: #97C2FC;
