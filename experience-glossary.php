@@ -75,7 +75,7 @@ $container = get_theme_mod( 'understrap_container_type' );
     echo '<table class="glossary-table" style="width:100%; border-collapse: collapse; border: 1px solid #333;">';
     echo '<thead>
             <tr>
-                <th style="text-align:left; padding:8px; border:1px solid #333;">Term</th>
+                <th style="text-align:left; padding:8px; border:1px solid #333;">Term (links to archive)</th>
                 <th style="text-align:left; padding:8px; border:1px solid #333;">Description</th>
                 <th style="text-align:left; padding:8px; border:1px solid #333;">Related Terms</th>
             </tr>
