@@ -45,7 +45,7 @@ $taxonomies = ['experience', 'technology'];
                         <div class="page-content"><?php the_content(); ?></div>
                         <?php
 // Build Table of Contents
-echo '<div class="term-toc centered-toc">';
+echo '<div class="col-12 term-toc centered-toc">';
 echo '<h3>Jump to a term</h3>';
 
 $taxonomy_labels = [
@@ -55,7 +55,6 @@ $taxonomy_labels = [
 
 foreach ($taxonomy_labels as $taxonomy => $heading) {
 
-    echo '<div class="toc-taxonomy-group">';
     echo '<h4>' . esc_html($heading) . '</h4>';
     echo '<ul class="toc-term-list">';
 
@@ -70,17 +69,16 @@ foreach ($taxonomy_labels as $taxonomy => $heading) {
         foreach ($terms as $term) {
             $term_anchor = sanitize_title($taxonomy . '-' . $term->slug);
 
-            echo '<li>';
-            echo '<a href="#' . esc_attr($term_anchor) . '">';
-            echo esc_html($term->name);
-            echo '</a>';
-            echo '</li>';
+            echo '<li><a href="#' . esc_attr($term_anchor) . '">' . esc_html($term->name) . '</a></li>';
         }
     }
 
     echo '</ul>';
-    echo '</div>';
 }
+
+echo '</div>';
+
+
 
 echo '</div>';
 ?>

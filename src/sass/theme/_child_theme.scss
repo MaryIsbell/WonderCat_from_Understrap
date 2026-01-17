@@ -634,3 +634,16 @@ Styling Term History Page
 .toc-term-list li:last-child::after {
     content: "";
 }
+.toc-term-list {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    gap: 0.75rem 1.25rem;
+    list-style: none;
+    padding: 0;
+    margin: 0 0 2rem;
+}
+
+.toc-term-list li {
+    white-space: nowrap;
+}

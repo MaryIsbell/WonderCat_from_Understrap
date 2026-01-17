@@ -15578,6 +15578,20 @@ Styling Term History Page
   content: "";
 }
 
+.toc-term-list {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: 0.75rem 1.25rem;
+  list-style: none;
+  padding: 0;
+  margin: 0 0 2rem;
+}
+
+.toc-term-list li {
+  white-space: nowrap;
+}
+
 .has-blue-color,
 .has-blue-color:visited {
   color: #97C2FC;
