@@ -15511,6 +15511,12 @@ Styling Term History Page
   max-width: 70ch;
 }
 
+.term-archive-link {
+  font-size: 0.85em;
+  margin-left: 0.5rem;
+  font-weight: normal;
+}
+
 .has-blue-color,
 .has-blue-color:visited {
   color: #97C2FC;

@@ -70,7 +70,7 @@ $container = get_theme_mod('understrap_container_type');
 
                             echo '<h3 id="' . esc_attr($term_anchor) . '">';
                             echo esc_html($term->name);
-                            echo ' [<span class="term-archive-link"><a href="' . esc_url($term_link) . '">term archive</a></span>]';
+                            echo ' <span class="term-archive-link">[<a href="' . esc_url($term_link) . '">term archive</a>]</span>';
                             echo '</h3>';
 
                             // ACF editorial note for the term
