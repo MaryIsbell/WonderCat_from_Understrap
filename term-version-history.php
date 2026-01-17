@@ -69,8 +69,10 @@ $container = get_theme_mod('understrap_container_type');
                             $term_link = get_term_link($term);
 
                             echo '<h3 id="' . esc_attr($term_anchor) . '">';
-                            echo '<a href="' . esc_url($term_link) . '">' . esc_html($term->name) . '</a>';
+                            echo esc_html($term->name);
+                            echo ' [<span class="term-archive-link"><a href="' . esc_url($term_link) . '">term archive</a></span>]';
                             echo '</h3>';
+
                             // ACF editorial note for the term
                             $editorial_notes = get_field('editorial-notes', $taxonomy . '_' . $term->term_id);
 
