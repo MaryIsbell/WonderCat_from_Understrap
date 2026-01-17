@@ -42,6 +42,38 @@ $container = get_theme_mod('understrap_container_type');
                         <h1 class="page-title centered-title"><?php the_title(); ?></h1>
                         <div class="page-content"><?php the_content(); ?></div>
                         <?php
+// Build Table of Contents
+echo '<div class="term-toc">';
+echo '<h3>Jump to a term</h3>';
+echo '<ul>';
+
+foreach ($taxonomies as $taxonomy) {
+
+    $terms = get_terms([
+        'taxonomy' => $taxonomy,
+        'hide_empty' => false,
+        'orderby' => 'name',
+        'order' => 'ASC',
+    ]);
+
+    if (!empty($terms) && !is_wp_error($terms)) {
+
+        foreach ($terms as $term) {
+            $term_anchor = sanitize_title($taxonomy . '-' . $term->slug);
+
+            echo '<li>';
+            echo '<a href="#' . esc_attr($term_anchor) . '">';
+            echo esc_html($term->name);
+            echo '</a>';
+            echo '</li>';
+        }
+    }
+}
+
+echo '</ul>';
+echo '</div>';
+?>
+                        <?php
                     endwhile;
                 endif;
 
