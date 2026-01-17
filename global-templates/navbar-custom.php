@@ -30,6 +30,7 @@ defined( 'ABSPATH' ) || exit;
             <ul class="navbar-nav me-auto mb-2 mb-lg-0">
                 <li class="nav-item"><a class="nav-link" href="/user-experience">Archive</a></li>
                 <li class="nav-item"><a class="nav-link" href="/glossaries">Glossaries</a></li>
+                <li class="nav-item"><a class="nav-link" target="_blank" href="https://readingexperiences.us.reclaim.cloud/sample-apps/00_wondercat/">Visualizations</a></li>
                 <li class="nav-item"><a class="nav-link" href="/add-experience">Contribute</a></li>
             </ul>
         </div>
