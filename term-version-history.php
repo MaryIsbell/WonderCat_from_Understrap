@@ -71,6 +71,12 @@ $container = get_theme_mod('understrap_container_type');
                             echo '<h3 id="' . esc_attr($term_anchor) . '">';
                             echo '<a href="' . esc_url($term_link) . '">' . esc_html($term->name) . '</a>';
                             echo '</h3>';
+                            // ACF editorial note for the term
+                            $editorial_note = get_field('editorial-note', $taxonomy . '_' . $term->term_id);
+
+                             if ( ! empty($editorial_note) ) {
+                            echo '<p class="term-editorial-note">' . esc_html($editorial_note) . '</p>';
+                            }
 
                             // Query Gravity Flow entries associated with this term
                             $entries = $wpdb->get_results(
