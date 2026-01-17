@@ -15546,41 +15546,22 @@ Styling Term History Page
 .toc-term-list {
   list-style: none;
   padding: 0;
-  margin: 0.75rem auto 0;
+  margin: 0.75rem auto 2rem;
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: 0.75rem 1.25rem;
   max-width: 100%;
-  /* critical */
-  display: block;
-  white-space: normal;
 }
 
 .toc-term-list li {
-  display: inline-block; /* allows wrapping */
-  margin: 0 0.75rem 0.5rem 0;
-  white-space: normal;
+  white-space: nowrap;
 }
 
 .toc-term-list li::after {
   content: "•";
   margin-left: 0.75rem;
   color: #999;
-}
-
-.toc-term-list li:last-child::after {
-  content: "";
-}
-
-.toc-term-list {
-  display: flex;
-  flex-wrap: wrap;
-  justify-content: center;
-  gap: 0.75rem 1.25rem;
-  list-style: none;
-  padding: 0;
-  margin: 0 0 2rem;
-}
-
-.toc-term-list li {
-  white-space: nowrap;
 }
 
 .has-blue-color,
