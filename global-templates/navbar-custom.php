@@ -37,10 +37,19 @@ defined( 'ABSPATH' ) || exit;
 
         <!-- Login / Signup -->
         <div class="d-flex align-items-center login-signup-wrapper ms-lg-auto">
-            <a href="<?php echo wp_login_url(); ?>">Log In</a>
-            <span class="mx-1">or</span>
-            <a href="/sign-up">Sign Up</a>
-        </div>
+    <?php if ( ! is_user_logged_in() ) : ?>
+
+        <a href="<?php echo esc_url( wp_login_url() ); ?>">Log In</a>
+        <span class="mx-1">or</span>
+        <a href="/sign-up">Sign Up</a>
+
+    <?php else : ?>
+
+        <a href="<?php echo esc_url( wp_logout_url( home_url() ) ); ?>">Log Out</a>
+
+    <?php endif; ?>
+</div>
+
 
     </div>
 </nav>
