@@ -15182,6 +15182,16 @@ body.page-template-experience-glossary .page-content {
   width: 100%;
 }
 
+#wrapper-navbar .nav-link {
+  padding-top: 0;
+  padding-bottom: 0;
+}
+
+#wrapper-navbar .nav-link::after,
+.login-signup-wrapper a::after {
+  bottom: 0;
+}
+
 /* ================================
    Footer
    ================================ */
