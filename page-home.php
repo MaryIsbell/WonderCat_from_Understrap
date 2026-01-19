@@ -132,7 +132,7 @@ wp_reset_postdata();
 <!-- Divider -->
 <hr class="homepage-divider">
 
-<div class="homepage_header">See All Public Experiences in Visualizations</div>
+<div class="homepage_header">Explore How Experiences Connect</div>
 
 <!-- Divider -->
 <hr class="homepage-divider">
