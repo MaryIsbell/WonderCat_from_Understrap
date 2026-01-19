@@ -116,8 +116,7 @@ wp_reset_postdata();
     <img src="<?php echo get_stylesheet_directory_uri(); ?>/images/How_it_works_revised.png" alt="Homepage Image" loading="lazy">
 </div>
 
-<!-- Divider -->
-<hr class="homepage-divider">
+<div class="homepage_header">See All Public Experiences in Visualizations</div>
 
 <!-- Full-width shiny screenshot section -->
 <div class="wc-fullbleed">
