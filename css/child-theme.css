@@ -15438,7 +15438,8 @@ Shiny Screenshot and overlay button
   width: 100%;
   height: auto;
   display: block;
-  border-radius: 12px; /* optional */
+  -o-object-fit: cover;
+  object-fit: cover;
 }
 
 /* Button overlay */
