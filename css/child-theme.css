@@ -15471,6 +15471,21 @@ Shiny Screenshot and overlay button
     transform: translateX(50%) translateY(-2px);
   }
 }
+/* Image fade-out Primary method */
+.wc-home-shiny-cta img {
+  -webkit-mask-image: radial-gradient(ellipse at center, #000 60%, transparent 100%);
+  mask-image: radial-gradient(ellipse at center, #000 60%, transparent 100%);
+}
+
+/* Image fade-out Fallback */
+.wc-home-shiny-cta::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  background: radial-gradient(ellipse at center, rgba(255, 255, 255, 0) 55%, #fff 100%);
+}
+
 /* ================================
    Homepage hero section: fill viewport
    ================================ */
