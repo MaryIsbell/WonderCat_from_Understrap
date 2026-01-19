@@ -15361,6 +15361,57 @@ Homepage slider feature clickability
     height: 280px;
   }
 }
+/* ================================
+   Slider image hover overlay
+   ================================ */
+.wc-slider-image {
+  position: relative;
+  overflow: hidden;
+}
+
+/* Dark overlay */
+.wc-slider-image::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background: rgba(0, 0, 0, 0.8); /* 80% dark */
+  opacity: 0;
+  transition: opacity 0.25s ease;
+  pointer-events: none;
+  z-index: 1;
+}
+
+/* Caption text */
+.wc-slider-caption {
+  position: absolute;
+  inset: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 1.5rem;
+  text-align: center;
+  color: #fff;
+  font-size: 1rem;
+  line-height: 1.4;
+  font-weight: 500;
+  opacity: 0;
+  transform: translateY(8px);
+  transition: opacity 0.25s ease, transform 0.25s ease;
+  z-index: 2;
+}
+
+/* Hover + keyboard focus */
+.wc-slider-image:hover::after,
+.wc-slider-image:focus-within::after {
+  opacity: 1;
+}
+
+.wc-slider-image:hover .wc-slider-caption,
+.wc-slider-image:focus-within .wc-slider-caption {
+  opacity: 1;
+  transform: translateY(0);
+}
+
 /* =========================================================
 Full-width homepage image below slider with white background 
 ============================================================*/
