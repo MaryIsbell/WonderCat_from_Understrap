@@ -538,18 +538,18 @@ Shiny Screenshot and overlay button
     }
 }
 
-/* Image fade-out*/
-.wc-home-shiny-cta::after {
-    content: "";
-    position: absolute;
-    inset: 0;
-    pointer-events: none;
-    z-index: 2;
+// /* Image fade-out*/
+// .wc-home-shiny-cta::after {
+//     content: "";
+//     position: absolute;
+//     inset: 0;
+//     pointer-events: none;
+//     z-index: 2;
 
-    background: linear-gradient(
-        to right, #fff 0%, transparent 12%, transparent 88%, #fff 100%),
-  linear-gradient(to bottom, #fff 0%, transparent 12%, transparent 88%, #fff 100%);
-}
+//     background: linear-gradient(
+//         to right, #fff 0%, transparent 12%, transparent 88%, #fff 100%),
+//   linear-gradient(to bottom, #fff 0%, transparent 12%, transparent 88%, #fff 100%);
+// }
 /* Break out of Bootstrap container */
 .wc-fullbleed {
     width: 100vw;

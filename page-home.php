@@ -111,18 +111,27 @@ wp_reset_postdata();
 ?>
 <div class="homepage_header">How it Works</div>
 
+<!-- Divider -->
+<hr class="homepage-divider">
+
 <!-- Full-width homepage image -->
 <div class="wc-home-fullwidth-image">
     <img src="<?php echo get_stylesheet_directory_uri(); ?>/images/How_it_works_revised.png" alt="Homepage Image" loading="lazy">
 </div>
 
+<!-- Divider -->
+<hr class="homepage-divider">
+
 <div class="homepage_header">See All Public Experiences in Visualizations</div>
+
+<!-- Divider -->
+<hr class="homepage-divider">
 
 <!-- Full-width shiny screenshot section -->
 <div class="wc-fullbleed">
 
     <div class="wc-home-shiny-cta">
-        <img src="<?php echo get_stylesheet_directory_uri(); ?>/images/shinyscreenshot.png"
+        <img src="<?php echo get_stylesheet_directory_uri(); ?>/images/shinyvigilancetrigger.png"
              alt="Shiny WonderCat Screenshot"
              loading="lazy">
 
