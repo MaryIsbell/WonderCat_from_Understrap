@@ -481,8 +481,9 @@ Shiny Screenshot and overlay button
 .wc-home-shiny-cta {
     position: relative;
     width: 100%;
-    max-width: 1200px;
     margin: 0 auto 4rem;
+    overflow: hidden;
+    background: #fff;
 }
 
 /* Image */
@@ -561,6 +562,7 @@ Shiny Screenshot and overlay button
     margin-left: -50vw;
     margin-right: -50vw;
 }
+
 
 
 /* ================================
