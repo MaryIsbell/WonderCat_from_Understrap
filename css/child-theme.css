@@ -15445,11 +15445,11 @@ Shiny Screenshot and overlay button
 /* Button overlay */
 .wc-shiny-cta-button {
   position: absolute;
-  top: 15%;
-  left: 15%;
-  width: 96px; /* pick your size */
-  height: 96px;
-  background: #FF6347; /* red */
+  top: 25%;
+  left: 30%;
+  width: 60px; /* pick your size */
+  height: 60px;
+  background: #FFD700; /* circle color */
   color: #fff;
   border: 2px solid black;
   border-radius: 50%;
@@ -15480,19 +15480,14 @@ Shiny Screenshot and overlay button
     font-size: 0.85rem;
   }
 }
-/* Image fade-out Primary method */
-.wc-home-shiny-cta img {
-  -webkit-mask-image: radial-gradient(ellipse at center, #000 40%, transparent 100%);
-  mask-image: radial-gradient(ellipse at center, #000 40%, transparent 100%);
-}
-
-/* Image fade-out Fallback */
+/* Image fade-out*/
 .wc-home-shiny-cta::after {
   content: "";
   position: absolute;
   inset: 0;
   pointer-events: none;
-  background: radial-gradient(ellipse at center, rgba(255, 255, 255, 0) 55%, #fff 100%);
+  z-index: 2;
+  background: linear-gradient(to right, #fff 0%, transparent 12%, transparent 88%, #fff 100%), linear-gradient(to bottom, #fff 0%, transparent 12%, transparent 88%, #fff 100%);
 }
 
 /* Break out of Bootstrap container */
