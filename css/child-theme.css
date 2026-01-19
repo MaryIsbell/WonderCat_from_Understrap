@@ -15473,8 +15473,8 @@ Shiny Screenshot and overlay button
 }
 /* Image fade-out Primary method */
 .wc-home-shiny-cta img {
-  -webkit-mask-image: radial-gradient(ellipse at center, #000 60%, transparent 100%);
-  mask-image: radial-gradient(ellipse at center, #000 60%, transparent 100%);
+  -webkit-mask-image: radial-gradient(ellipse at center, #000 50%, transparent 100%);
+  mask-image: radial-gradient(ellipse at center, #000 50%, transparent 100%);
 }
 
 /* Image fade-out Fallback */
@@ -15495,68 +15495,6 @@ Shiny Screenshot and overlay button
   min-height: 100vh; /* ensures hero + CTA fills viewport */
 }
 
-/* ================================
-   Homepage CTA section below hero image
-   ================================ */
-.homepage-cta {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  flex-wrap: wrap; /* allows stacking on mobile */
-  padding: 40px 20px;
-  margin-top: 20px;
-  width: 100%;
-}
-
-/* Left side: black background with white text */
-.homepage-cta-left {
-  flex: 1 1 60%;
-  background-color: #000000; /* black */
-  color: #ffffff; /* white text */
-  padding: 30px;
-  font-size: 2.5rem;
-  font-weight: 600;
-  text-align: center; /* centers text horizontally */
-  border-radius: 8px;
-}
-
-/* Right side: button */
-.homepage-cta-right {
-  flex: 1 1 35%;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  margin-top: 20px;
-}
-
-.homepage-cta-right .btn, .homepage-cta-right .wpcf7 input[type=submit], .wpcf7 .homepage-cta-right input[type=submit], .homepage-cta-right .woocommerce-notices-wrapper .woocommerce-message a.button, .woocommerce-notices-wrapper .woocommerce-message .homepage-cta-right a.button, .homepage-cta-right .woocommerce-info a.button, .woocommerce-info .homepage-cta-right a.button {
-  font-size: 1.5rem;
-  padding: 15px 30px;
-  border-radius: 8px;
-  background-color: #ffcc00; /* example highlight color */
-  color: #000000;
-  font-weight: 700;
-  text-decoration: none;
-  transition: background-color 0.3s;
-}
-
-.homepage-cta-right .btn:hover, .homepage-cta-right .wpcf7 input[type=submit]:hover, .wpcf7 .homepage-cta-right input[type=submit]:hover, .homepage-cta-right .woocommerce-notices-wrapper .woocommerce-message a.button:hover, .woocommerce-notices-wrapper .woocommerce-message .homepage-cta-right a.button:hover, .homepage-cta-right .woocommerce-info a.button:hover, .woocommerce-info .homepage-cta-right a.button:hover {
-  background-color: #e6b800;
-  color: #000;
-}
-
-/* Mobile responsiveness */
-@media (max-width: 767px) {
-  .homepage-cta {
-    flex-direction: column;
-    gap: 20px;
-  }
-  .homepage-cta-left,
-  .homepage-cta-right {
-    flex: 1 1 100%;
-    text-align: center;
-  }
-}
 /* ================================
    NAVIGATION LINK SPACING & FOOTER UNDERLINE FIX
    ================================ */
