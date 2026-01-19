@@ -552,6 +552,15 @@ Shiny Screenshot and overlay button
     background: radial-gradient(ellipse at center, rgba(255,255,255,0) 55%, #fff 100%);
 }
 
+/* Break out of Bootstrap container */
+.wc-fullbleed {
+    width: 100vw;
+    position: relative;
+    left: 50%;
+    right: 50%;
+    margin-left: -50vw;
+    margin-right: -50vw;
+}
 
 
 /* ================================
