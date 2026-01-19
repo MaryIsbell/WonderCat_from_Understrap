@@ -15443,38 +15443,45 @@ Shiny Screenshot and overlay button
 /* Button overlay */
 .wc-shiny-cta-button {
   position: absolute;
-  bottom: 12%;
-  right: 10%;
-  background: #000;
+  top: 15%;
+  left: 15%;
+  width: 96px; /* pick your size */
+  height: 96px;
+  background: #FF6347; /* red */
   color: #fff;
-  padding: 14px 28px;
-  border-radius: 999px;
+  border: 2px solid black;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
   font-weight: 600;
   text-decoration: none;
+  text-align: center;
   box-shadow: 0 6px 18px rgba(0, 0, 0, 0.25);
   transition: transform 0.15s ease, box-shadow 0.15s ease;
 }
 
 .wc-shiny-cta-button:hover {
-  transform: translateY(-2px);
+  transform: translateY(-2px) scale(1.03);
   box-shadow: 0 10px 24px rgba(0, 0, 0, 0.3);
-  color: #fff;
+}
+
+.wc-shiny-cta-button {
+  line-height: 1.1;
+  padding: 10px;
 }
 
 @media (max-width: 768px) {
   .wc-shiny-cta-button {
-    right: 50%;
-    transform: translateX(50%);
-    bottom: 8%;
-  }
-  .wc-shiny-cta-button:hover {
-    transform: translateX(50%) translateY(-2px);
+    width: 72px;
+    height: 72px;
+    font-size: 0.85rem;
   }
 }
 /* Image fade-out Primary method */
 .wc-home-shiny-cta img {
-  -webkit-mask-image: radial-gradient(ellipse at center, #000 50%, transparent 100%);
-  mask-image: radial-gradient(ellipse at center, #000 50%, transparent 100%);
+  -webkit-mask-image: radial-gradient(ellipse at center, #000 40%, transparent 100%);
+  mask-image: radial-gradient(ellipse at center, #000 40%, transparent 100%);
 }
 
 /* Image fade-out Fallback */

@@ -119,18 +119,18 @@ wp_reset_postdata();
 <!-- Divider -->
 <hr class="homepage-divider">
 
-<!-- Shiny CTA image with overlay button -->
-<div class="wc-home-shiny-cta">
+<!-- Full-width shiny screenshot section -->
+<div class="wc-fullbleed">
 
-    <img
-        src="<?php echo get_stylesheet_directory_uri(); ?>/images/shinyscreenshot.png"
-        alt="Shiny WonderCat preview"
-        loading="lazy"
-    >
+    <div class="wc-home-shiny-cta">
+        <img src="<?php echo get_stylesheet_directory_uri(); ?>/images/shinyscreenshot.png"
+             alt="Shiny WonderCat Screenshot"
+             loading="lazy">
 
-    <a href="<?php echo esc_url( home_url('/join') ); ?>" class="wc-shiny-cta-button">
-        Join Now
-    </a>
+        <a href="<?php echo esc_url( home_url('/join') ); ?>" class="wc-shiny-cta-button">
+            Join Now
+        </a>
+    </div>
 
 </div>
 
