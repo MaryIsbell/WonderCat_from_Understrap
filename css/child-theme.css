@@ -15414,6 +15414,63 @@ Full-width homepage image below slider with white background
   font-weight: 400;
 }
 
+/*=================================
+Shiny Screenshot and overlay button
+===================================*/
+.homepage-divider {
+  margin: 4rem auto;
+  max-width: 1100px;
+  border: none;
+  border-top: 1px solid #ddd;
+}
+
+/* Container */
+.wc-home-shiny-cta {
+  position: relative;
+  width: 100%;
+  max-width: 1200px;
+  margin: 0 auto 4rem;
+}
+
+/* Image */
+.wc-home-shiny-cta img {
+  width: 100%;
+  height: auto;
+  display: block;
+  border-radius: 12px; /* optional */
+}
+
+/* Button overlay */
+.wc-shiny-cta-button {
+  position: absolute;
+  bottom: 12%;
+  right: 10%;
+  background: #000;
+  color: #fff;
+  padding: 14px 28px;
+  border-radius: 999px;
+  font-weight: 600;
+  text-decoration: none;
+  box-shadow: 0 6px 18px rgba(0, 0, 0, 0.25);
+  transition: transform 0.15s ease, box-shadow 0.15s ease;
+}
+
+.wc-shiny-cta-button:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 10px 24px rgba(0, 0, 0, 0.3);
+  color: #fff;
+}
+
+@media (max-width: 768px) {
+  .wc-shiny-cta-button {
+    right: 50%;
+    transform: translateX(50%);
+    bottom: 8%;
+  }
+  .wc-shiny-cta-button:hover {
+    transform: translateX(50%) translateY(-2px);
+  }
+}
 /* ================================
    Homepage hero section: fill viewport
    ================================ */

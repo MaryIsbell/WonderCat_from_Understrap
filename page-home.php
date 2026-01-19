@@ -116,16 +116,22 @@ wp_reset_postdata();
     <img src="<?php echo get_stylesheet_directory_uri(); ?>/images/How_it_works_revised.png" alt="Homepage Image" loading="lazy">
 </div>
 
-<!-- Homepage CTA Section -->
-<div class="homepage-cta">
-    <div class="homepage-cta-left">
-        Start chronicling your experiences
-    </div>
-    <div class="homepage-cta-right">
-        <a href="<?php echo esc_url( home_url('/join') ); ?>" class="btn">
-            Join WonderCat
-        </a>
-    </div>
+<!-- Divider -->
+<hr class="homepage-divider">
+
+<!-- Shiny CTA image with overlay button -->
+<div class="wc-home-shiny-cta">
+
+    <img
+        src="<?php echo get_stylesheet_directory_uri(); ?>/images/shinyscreenshot.png"
+        alt="Shiny WonderCat preview"
+        loading="lazy"
+    >
+
+    <a href="<?php echo esc_url( home_url('/join') ); ?>" class="wc-shiny-cta-button">
+        Join Now
+    </a>
+
 </div>
 
 
