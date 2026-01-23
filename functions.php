@@ -86,3 +86,15 @@ function understrap_child_customize_controls_js() {
 	);
 }
 add_action( 'customize_controls_enqueue_scripts', 'understrap_child_customize_controls_js' );
+
+
+// Include Wikidata Logic
+require_once dirname( __FILE__ ) . '/inc/wikidata.php';
+
+add_action('after_switch_theme', 'wikidata_install_table');
+
+add_action('init', function () {
+	if (get_option('wikidata_schema_version') !== '1.0.0') {
+		wikidata_install_table();
+	}
+}, 5);
