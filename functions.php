@@ -101,31 +101,28 @@ function ue_post_author_archive($query) {
 add_action('pre_get_posts', 'ue_post_author_archive');
 
 /*Allows users to set experiences to private through gravity form*/
-add_action( 'gravityflow_step_complete', function( $step, $entry, $form ) {
+add_action( 'transition_post_status', function( $new, $old, $post ) {
 
-    // Only your form
-    if ( (int) $form['id'] !== 1 ) {
-        return;
-    }
+    if ( $post->post_type !== 'user-experience' ) return;
 
-    // Field 26 = visibility radio
+    // Get visibility directly from GF entry
+    $entry = GFAPI::get_entry( get_post_meta( $post->ID, '_gform-entry-id', true ) );
+
+    if ( is_wp_error( $entry ) ) return;
+
     $visibility = strtolower( trim( rgar( $entry, '26' ) ) );
 
-    if ( $visibility !== 'private' ) {
-        return;
+    if ( $visibility !== 'private' ) return;
+
+    if ( $new !== 'private' ) {
+
+        remove_action( 'transition_post_status', __FUNCTION__, 10 );
+
+        wp_update_post([
+            'ID' => $post->ID,
+            'post_status' => 'private'
+        ]);
+
     }
 
-    // Gravity Forms stores created post ID here
-    $post_id = rgar( $entry, 'post_id' );
-
-    if ( ! $post_id ) {
-        return;
-    }
-
-    // Force private AFTER workflow changes
-    wp_update_post([
-        'ID'          => $post_id,
-        'post_status' => 'private'
-    ]);
-
-}, 20, 3 );
+}, 10, 3 );
