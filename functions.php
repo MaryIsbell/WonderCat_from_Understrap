@@ -101,19 +101,22 @@ function ue_post_author_archive($query) {
 add_action('pre_get_posts', 'ue_post_author_archive');
 
 /*Allow users to set posts to private through front-end form*/
-add_action( 'gform_post_creation', function( $post_id, $entry, $form ) {
+add_filter( 'wp_insert_post_data', function( $data, $postarr ) {
 
-    if ( (int) $form['id'] !== 1 ) {
-        return;
+    if ( $data['post_type'] !== 'user-experience' ) {
+        return $data;
     }
 
-    $visibility = strtolower( trim( rgar( $entry, '26' ) ) );
+    if ( ! isset( $_POST['input_26'] ) ) {
+        return $data;
+    }
+
+    $visibility = strtolower( trim( $_POST['input_26'] ) );
 
     if ( $visibility === 'private' ) {
-        wp_update_post([
-            'ID' => $post_id,
-            'post_status' => 'private'
-        ]);
+        $data['post_status'] = 'private';
     }
 
-}, 10, 3 );
+    return $data;
+
+}, 999, 2 );
