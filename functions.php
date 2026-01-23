@@ -100,23 +100,32 @@ function ue_post_author_archive($query) {
 }
 add_action('pre_get_posts', 'ue_post_author_archive');
 
-/*Allow users to set posts to private through front-end form*/
-add_filter( 'wp_insert_post_data', function( $data, $postarr ) {
+/*Allows users to set experiences to private through gravity form*/
+add_action( 'gravityflow_step_complete', function( $step, $entry, $form ) {
 
-    if ( $data['post_type'] !== 'user-experience' ) {
-        return $data;
+    // Only your form
+    if ( (int) $form['id'] !== 1 ) {
+        return;
     }
 
-    if ( ! isset( $_POST['input_26'] ) ) {
-        return $data;
+    // Field 26 = visibility radio
+    $visibility = strtolower( trim( rgar( $entry, '26' ) ) );
+
+    if ( $visibility !== 'private' ) {
+        return;
     }
 
-    $visibility = strtolower( trim( $_POST['input_26'] ) );
+    // Gravity Forms stores created post ID here
+    $post_id = rgar( $entry, 'post_id' );
 
-    if ( $visibility === 'private' ) {
-        $data['post_status'] = 'private';
+    if ( ! $post_id ) {
+        return;
     }
 
-    return $data;
+    // Force private AFTER workflow changes
+    wp_update_post([
+        'ID'          => $post_id,
+        'post_status' => 'private'
+    ]);
 
-}, 999, 2 );
+}, 20, 3 );
