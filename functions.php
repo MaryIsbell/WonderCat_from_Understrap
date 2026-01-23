@@ -101,13 +101,13 @@ function ue_post_author_archive($query) {
 add_action('pre_get_posts', 'ue_post_author_archive');
 
 /*Allow users to set posts to private through front-end form*/
-add_action( 'gform_after_create_post', function( $post_id, $entry, $form ) {
+add_action( 'gform_post_creation', function( $post_id, $entry, $form ) {
 
-    if ( (int) $form['id'] !== 1 ) { // your form ID
+    if ( (int) $form['id'] !== 1 ) {
         return;
     }
 
-    $visibility = rgar( $entry, '26' ); // field ID of your visibility radio/select
+    $visibility = strtolower( trim( rgar( $entry, '26' ) ) );
 
     if ( $visibility === 'private' ) {
         wp_update_post([
