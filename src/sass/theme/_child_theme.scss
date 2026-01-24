@@ -350,16 +350,14 @@ body.page-template-experience-glossary .page-content {
     flex: 1;
 }
 
-/* Mobile adjustments */
 @media (max-width: 768px) {
-    #wrapper-home-slider,
-    .wc-experience-carousel {
-        height: 50vh;
-        min-height: 250px;
-    }
     .wc-slider-content {
         flex-direction: column;
         text-align: center;
+    }
+
+    .wc-slider-slide {
+        min-height: 300px;
     }
 }
 /*===================================
