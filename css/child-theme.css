@@ -15266,6 +15266,7 @@ body.page-template-experience-glossary .page-content {
 /* New: Set slider height and center content */
 .wc-experience-carousel {
   width: 100%;
+  margin-bottom: 3rem;
 }
 
 /* Each slide fills container */
