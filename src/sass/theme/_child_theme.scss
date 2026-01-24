@@ -309,12 +309,10 @@ body.page-template-experience-glossary .page-content {
    ================================ */
 
 /* New: Set slider height and center content */
-#wrapper-home-slider,
 .wc-experience-carousel {
-    height: 60vh; /* relative to viewport height */
-    min-height: 300px;
-    max-height: 600px;
+    width: 100%;
 }
+
 
 /* Each slide fills container */
 .wc-slider-slide {
