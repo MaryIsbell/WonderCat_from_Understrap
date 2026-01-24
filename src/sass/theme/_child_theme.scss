@@ -360,6 +360,20 @@ body.page-template-experience-glossary .page-content {
         min-height: 300px;
     }
 }
+/*Responsive height scaling for short screens*/
+
+@media (max-height: 800px) {
+    .wc-slider-slide {
+        min-height: 340px;
+    }
+}
+
+@media (max-height: 650px) {
+    .wc-slider-slide {
+        min-height: 280px;
+    }
+}
+
 /*===================================
 Homepage slider feature clickability
 ====================================*/
