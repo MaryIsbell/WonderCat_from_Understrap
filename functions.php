@@ -127,13 +127,15 @@ add_action( 'transition_post_status', function( $new, $old, $post ) {
 
 }, 10, 3 );
 
-add_action( 'gform_after_create_post_1', function( $post_id, $entry, $form ) {
+add_action( 'gform_after_create_post', function( $post_id, $entry, $form ) {
 
-    // Field IDs from your form
+    if ( (int) $form['id'] !== 1 ) {
+        return;
+    }
+
     $technology_field_id = 5;
     $experience_field_id = 4;
 
-    // Get submitted values
     $tech_term_id = absint( rgar( $entry, (string) $technology_field_id ) );
     $exp_term_id  = absint( rgar( $entry, (string) $experience_field_id ) );
 
