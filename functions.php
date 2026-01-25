@@ -133,18 +133,24 @@ add_action( 'gform_after_create_post', function( $post_id, $entry, $form ) {
         return;
     }
 
-    $technology_field_id = 5;
-    $experience_field_id = 4;
+    add_action( 'shutdown', function() use ( $post_id, $entry ) {
 
-    $tech_term_id = absint( rgar( $entry, (string) $technology_field_id ) );
-    $exp_term_id  = absint( rgar( $entry, (string) $experience_field_id ) );
+        $technology_field_id = 5;
+        $experience_field_id = 4;
 
-    if ( $tech_term_id ) {
-        wp_set_post_terms( $post_id, [ $tech_term_id ], 'technology', false );
-    }
+        $tech_term_id = absint( rgar( $entry, '5' ) );
+        $exp_term_id  = absint( rgar( $entry, '4' ) );
 
-    if ( $exp_term_id ) {
-        wp_set_post_terms( $post_id, [ $exp_term_id ], 'experience', false );
-    }
+        if ( $tech_term_id ) {
+            wp_set_post_terms( $post_id, [ $tech_term_id ], 'technology', false );
+        }
 
-}, 20, 3 );
+        if ( $exp_term_id ) {
+            wp_set_post_terms( $post_id, [ $exp_term_id ], 'experience', false );
+        }
+
+        error_log('taxonomy FINAL assignment executed');
+
+    }, 99 );
+
+}, 10, 3 );
