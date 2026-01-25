@@ -127,29 +127,38 @@ add_action( 'transition_post_status', function( $new, $old, $post ) {
 
 }, 10, 3 );
 
-add_action( 'gform_after_create_post', 'set_multiple_taxonomy_terms_by_id', 10, 3 );
+add_action( 'init', function() {
+
+    add_action( 'gform_after_create_post', 'set_multiple_taxonomy_terms_by_id', 10, 3 );
+
+});
+
 function set_multiple_taxonomy_terms_by_id( $post_id, $feed, $entry ) {
 
+    // Ensure we have a valid post
     if ( ! $post_id ) {
+        error_log( 'set_multiple_taxonomy_terms_by_id: invalid post ID' );
         return;
     }
 
+    // Map GF field IDs to taxonomy names
     $taxonomy_map = array(
-        '4' => 'experience',  // GF field 4 maps to experience
-        '5' => 'technology',  // GF field 5 maps to technology
+        '4' => 'experience',   // GF field 4 → experience
+        '5' => 'technology',   // GF field 5 → technology
     );
 
-    // Log the entry ID once
-    error_log( 'GF Entry ID: ' . rgar( $entry, 'id' ) );
+    // Log that the hook fired
+    error_log( 'set_multiple_taxonomy_terms_by_id fired for post_id: ' . $post_id . ', GF entry ID: ' . rgar( $entry, 'id' ) );
 
     foreach ( $taxonomy_map as $field_id => $taxonomy_name ) {
 
+        // Get the term ID from GF
         $term_id = rgar( $entry, $field_id );
 
-        // Log what we got from GF
+        // Log raw value from GF
         error_log( 'GF Field ID ' . $field_id . ' (' . $taxonomy_name . ') value: ' . print_r( $term_id, true ) );
 
-        // Skip if not numeric
+        // Skip invalid values
         if ( ! $term_id || ! is_numeric( $term_id ) ) {
             error_log( 'Skipping ' . $taxonomy_name . ' because value is invalid.' );
             continue;
@@ -157,5 +166,8 @@ function set_multiple_taxonomy_terms_by_id( $post_id, $feed, $entry ) {
 
         // Update the taxonomy
         wp_set_post_terms( $post_id, array( intval( $term_id ) ), $taxonomy_name );
+
+        // Optional: log success
+        error_log( 'Updated taxonomy ' . $taxonomy_name . ' with term ID ' . intval( $term_id ) );
     }
 }
