@@ -59,7 +59,7 @@ foreach ( $terms as $term ) {
 
 
         $field->choices           = array_values( $choices );
-        $field->enableChoiceValue = false;
+        $field->enableChoiceValue = true;
         // Optional: make it feel like a placeholder (requires Enhanced UI in GF settings)
         // $field->placeholder = 'Select a technology';
     }
@@ -111,7 +111,7 @@ function cat_exp_populate_dropdown( $form ) {
         }
 
         $field->choices           = array_values( $choices );
-        $field->enableChoiceValue = false;
+        $field->enableChoiceValue = true;
         // Optional: make it feel like a placeholder (requires Enhanced UI in GF settings)
         // $field->placeholder = 'Select a technology';
     }
