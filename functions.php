@@ -126,3 +126,23 @@ add_action( 'transition_post_status', function( $new, $old, $post ) {
     }
 
 }, 10, 3 );
+
+add_action( 'gform_after_create_post_1', function( $post_id, $entry, $form ) {
+
+    // Field IDs from your form
+    $technology_field_id = 5;
+    $experience_field_id = 4;
+
+    // Get submitted values
+    $tech_term_id = absint( rgar( $entry, (string) $technology_field_id ) );
+    $exp_term_id  = absint( rgar( $entry, (string) $experience_field_id ) );
+
+    if ( $tech_term_id ) {
+        wp_set_post_terms( $post_id, [ $tech_term_id ], 'technology', false );
+    }
+
+    if ( $exp_term_id ) {
+        wp_set_post_terms( $post_id, [ $exp_term_id ], 'experience', false );
+    }
+
+}, 20, 3 );
