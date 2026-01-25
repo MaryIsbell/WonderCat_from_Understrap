@@ -40,7 +40,7 @@ function cat_tech_populate_dropdown( $form ) {
         //$choices[] = [ 'text' => '— Select —', 'value' => '' ];
 
         // Top manual option (if you still want it)
-        $choices[] = [ 'text' => 'select a term', 'value' => 'Test label' ];
+        $choices[] = [ 'text' => 'Select a term', 'value' => '' ];
 
 
 $terms = get_terms([
@@ -94,7 +94,7 @@ function cat_exp_populate_dropdown( $form ) {
         //$choices[] = [ 'text' => '— Select —', 'value' => '' ];
 
         // Top manual option (if you still want it)
-        $choices[] = [ 'text' => 'select a term', 'value' => 'Test label' ];
+        $choices[] = [ 'text' => 'Select a term', 'value' => '' ];
 
         $terms = get_terms([
             'taxonomy'   => $custom_taxonomy,
