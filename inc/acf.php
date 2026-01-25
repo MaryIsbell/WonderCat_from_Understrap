@@ -54,7 +54,7 @@ continue;
 }
 
 foreach ( $terms as $term ) {
-    $choices[] = [ 'text' => $term->name, 'value' => $term->slug ];
+    $choices[] = [ 'text' => $term->name, 'value' => (string)$term->term_id,];
 }
 
 
@@ -107,7 +107,7 @@ function cat_exp_populate_dropdown( $form ) {
         }
 
         foreach ( $terms as $term ) {
-            $choices[] = [ 'text' => $term->name, 'value' => $term->slug ];
+    $choices[] = [ 'text' => $term->name, 'value' => (string)$term->term_id,];
         }
 
         $field->choices           = array_values( $choices );
