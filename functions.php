@@ -127,33 +127,40 @@ add_action( 'transition_post_status', function( $new, $old, $post ) {
 
 }, 10, 3 );
 
-add_action( 'gravityflow_post_created', function( $post_id, $entry, $form ) {
+add_action( 'gform_after_create_post', 'set_multiple_taxonomy_terms_by_id', 10, 3 );
+function set_multiple_taxonomy_terms_by_id( $post_id, $feed, $entry ) {
 
-    if ( (int) $form['id'] !== 1 ) {
+    // Ensure a valid post ID
+    if ( ! $post_id ) {
         return;
     }
 
-    error_log( 'Gravity Flow post created: ' . $post_id );
+    /**
+     * Map Gravity Form field IDs to your taxonomy names
+     * 'GF field ID' => 'taxonomy_name'
+     */
+    $taxonomy_map = array(
+        '4' => 'experience', // GF field 4 maps to experience
+        '5' => 'technology', // GF field 5 maps to technology
+    );
 
-    // Delay until all workflow steps & ACF mappings finish
-    add_action( 'shutdown', function() use ( $post_id, $entry ) {
+    foreach ( $taxonomy_map as $field_id => $taxonomy_name ) {
 
-        error_log( 'taxonomy FINAL assignment executed' );
+        // Get term ID from GF entry
+        $term_id = rgar( $entry, $field_id );
 
-        $tech_term_id = absint( rgar( $entry, '5' ) );
-        $exp_term_id  = absint( rgar( $entry, '4' ) );
-
-        error_log( 'Tech term ID: ' . $tech_term_id );
-        error_log( 'Exp term ID: ' . $exp_term_id );
-
-        if ( $tech_term_id ) {
-            wp_set_post_terms( $post_id, [ $tech_term_id ], 'technology', false );
+        // Skip if not a valid numeric ID
+        if ( ! $term_id || ! is_numeric( $term_id ) ) {
+            continue;
+	error_log( 'GF Entry ID: ' . $entry['id'] );
+    error_log( 'Experience Field Value: ' . print_r( $experience_id, true ) );
+    error_log( 'Technology Field Value: ' . print_r( $technology_id, true ) );
         }
 
-        if ( $exp_term_id ) {
-            wp_set_post_terms( $post_id, [ $exp_term_id ], 'experience', false );
-        }
+        // Update the taxonomy for the post
+        wp_set_post_terms( $post_id, array( intval( $term_id ) ), $taxonomy_name );
 
-    }, 99 );
-
-}, 10, 3 );
+        // Optional: update ACF field if it exists for this taxonomy
+        // update_field( $taxonomy_name . '_acf_field', intval( $term_id ), $post_id );
+    }
+}
