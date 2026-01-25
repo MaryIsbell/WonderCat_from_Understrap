@@ -127,39 +127,3 @@ add_action( 'transition_post_status', function( $new, $old, $post ) {
 
 }, 10, 3 );
 
-add_action( 'gform_after_submission', 'set_taxonomies_after_submission', 10, 2 );
-function set_taxonomies_after_submission( $entry, $form ) {
-
-    // Try to get the post ID created by the form (only exists if a Post feed is active)
-    $post_id = rgar( $entry, '_created_post_id' );
-
-    if ( ! $post_id ) {
-        error_log( 'set_taxonomies_after_submission: no post created for entry ID ' . rgar( $entry, 'id' ) );
-        return;
-    }
-
-    // Map GF field IDs to taxonomy names
-    $taxonomy_map = array(
-        '4' => 'experience',  // GF field 4 → experience
-        '5' => 'technology',  // GF field 5 → technology
-    );
-
-    // Log entry and post info
-    error_log( 'set_taxonomies_after_submission fired for post_id: ' . $post_id . ', entry ID: ' . rgar( $entry, 'id' ) );
-
-    foreach ( $taxonomy_map as $field_id => $taxonomy_name ) {
-
-        $term_id = rgar( $entry, $field_id );
-
-        // Log the raw value
-        error_log( 'GF Field ID ' . $field_id . ' (' . $taxonomy_name . ') value: ' . print_r( $term_id, true ) );
-
-        if ( ! $term_id || ! is_numeric( $term_id ) ) {
-            error_log( 'Skipping ' . $taxonomy_name . ' because value is invalid.' );
-            continue;
-        }
-
-        wp_set_post_terms( $post_id, array( intval( $term_id ) ), $taxonomy_name );
-        error_log( 'Updated taxonomy ' . $taxonomy_name . ' with term ID ' . intval( $term_id ) );
-    }
-}
