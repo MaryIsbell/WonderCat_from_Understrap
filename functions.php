@@ -133,13 +133,17 @@ add_action( 'gform_after_create_post', function( $post_id, $entry, $form ) {
         return;
     }
 
+    error_log('GF outer hook fired for post ' . $post_id);
+
     add_action( 'shutdown', function() use ( $post_id, $entry ) {
 
-        $technology_field_id = 5;
-        $experience_field_id = 4;
+        error_log('taxonomy FINAL assignment executed');
 
         $tech_term_id = absint( rgar( $entry, '5' ) );
         $exp_term_id  = absint( rgar( $entry, '4' ) );
+
+        error_log('Tech term ID: ' . $tech_term_id);
+        error_log('Exp term ID: ' . $exp_term_id);
 
         if ( $tech_term_id ) {
             wp_set_post_terms( $post_id, [ $tech_term_id ], 'technology', false );
@@ -148,8 +152,6 @@ add_action( 'gform_after_create_post', function( $post_id, $entry, $form ) {
         if ( $exp_term_id ) {
             wp_set_post_terms( $post_id, [ $exp_term_id ], 'experience', false );
         }
-
-        error_log('taxonomy FINAL assignment executed');
 
     }, 99 );
 
