@@ -127,23 +127,24 @@ add_action( 'transition_post_status', function( $new, $old, $post ) {
 
 }, 10, 3 );
 
-add_action( 'gform_after_create_post', function( $post_id, $entry, $form ) {
+add_action( 'gravityflow_post_created', function( $post_id, $entry, $form ) {
 
     if ( (int) $form['id'] !== 1 ) {
         return;
     }
 
-    error_log('GF outer hook fired for post ' . $post_id);
+    error_log( 'Gravity Flow post created: ' . $post_id );
 
+    // Delay until all workflow steps & ACF mappings finish
     add_action( 'shutdown', function() use ( $post_id, $entry ) {
 
-        error_log('taxonomy FINAL assignment executed');
+        error_log( 'taxonomy FINAL assignment executed' );
 
         $tech_term_id = absint( rgar( $entry, '5' ) );
         $exp_term_id  = absint( rgar( $entry, '4' ) );
 
-        error_log('Tech term ID: ' . $tech_term_id);
-        error_log('Exp term ID: ' . $exp_term_id);
+        error_log( 'Tech term ID: ' . $tech_term_id );
+        error_log( 'Exp term ID: ' . $exp_term_id );
 
         if ( $tech_term_id ) {
             wp_set_post_terms( $post_id, [ $tech_term_id ], 'technology', false );
