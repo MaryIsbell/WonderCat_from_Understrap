@@ -100,29 +100,29 @@ function ue_post_author_archive($query) {
 }
 add_action('pre_get_posts', 'ue_post_author_archive');
 
-/*Allows users to set experiences to private through gravity form*/
-add_action( 'gform_advancedpostcreation_post_after_creation_6', 'set_experience_private_status', 10, 3 );
+// /*Allows users to set experiences to private through gravity form
+// add_action( 'gform_advancedpostcreation_post_after_creation_6', 'set_experience_private_status', 10, 3 );
 
-function set_experience_private_status( $post_id, $entry, $form ) {
+// function set_experience_private_status( $post_id, $entry, $form ) {
 
-    if ( get_post_type( $post_id ) !== 'user-experience' ) {
-        return;
-    }
+//     if ( get_post_type( $post_id ) !== 'user-experience' ) {
+//         return;
+//     }
 
-    // prevent multiple runs
-    if ( get_post_meta( $post_id, '_visibility_processed', true ) ) {
-        return;
-    }
+//     // prevent multiple runs
+//     if ( get_post_meta( $post_id, '_visibility_processed', true ) ) {
+//         return;
+//     }
 
-    $visibility = strtolower( trim( rgar( $entry, '26' ) ) );
+//     $visibility = strtolower( trim( rgar( $entry, '26' ) ) );
 
-    if ( $visibility === 'private' ) {
-        wp_update_post([
-            'ID' => $post_id,
-            'post_status' => 'private',
-        ]);
-    }
+//     if ( $visibility === 'private' ) {
+//         wp_update_post([
+//             'ID' => $post_id,
+//             'post_status' => 'private',
+//         ]);
+//     }
 
-    update_post_meta( $post_id, '_visibility_processed', 1 );
-}
+//     update_post_meta( $post_id, '_visibility_processed', 1 );
+// }*/
 
