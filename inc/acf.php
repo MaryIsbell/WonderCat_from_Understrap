@@ -68,10 +68,10 @@ foreach ( $terms as $term ) {
 }
  
 
-add_filter( 'gform_pre_render_1',            'cat_exp_populate_dropdown' );
-add_filter( 'gform_pre_validation_1',        'cat_exp_populate_dropdown' );
-add_filter( 'gform_pre_submission_filter_1', 'cat_exp_populate_dropdown' );
-add_filter( 'gform_admin_pre_render_1',      'cat_exp_populate_dropdown' );
+add_filter( 'gform_pre_render_6',            'cat_exp_populate_dropdown' );
+add_filter( 'gform_pre_validation_6',        'cat_exp_populate_dropdown' );
+add_filter( 'gform_pre_submission_filter_6', 'cat_exp_populate_dropdown' );
+add_filter( 'gform_admin_pre_render_6',      'cat_exp_populate_dropdown' );
 
 function cat_exp_populate_dropdown( $form ) {
     $field_id        = 4;               // your Drop Down field ID
