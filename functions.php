@@ -101,21 +101,28 @@ function ue_post_author_archive($query) {
 add_action('pre_get_posts', 'ue_post_author_archive');
 
 /*Allows users to set experiences to private through gravity form*/
-add_action( 'gform_post_create_post', 'set_experience_private', 10, 3 );
+add_action( 'gform_after_create_post_1', 'set_experience_private_status', 10, 3 );
 
-function set_experience_private( $post_id, $feed, $entry ) {
-    $post_type = get_post_type( $post_id );
-    if ( $post_type !== 'user-experience' ) return;
+function set_experience_private_status( $post_id, $entry, $form ) {
 
-    // Get the visibility field (GF field 26)
+    if ( get_post_type( $post_id ) !== 'user-experience' ) {
+        return;
+    }
+
+    // prevent multiple runs
+    if ( get_post_meta( $post_id, '_visibility_processed', true ) ) {
+        return;
+    }
+
     $visibility = strtolower( trim( rgar( $entry, '26' ) ) );
 
     if ( $visibility === 'private' ) {
-        // Update the post status to private
         wp_update_post([
             'ID' => $post_id,
             'post_status' => 'private',
         ]);
     }
+
+    update_post_meta( $post_id, '_visibility_processed', 1 );
 }
 
