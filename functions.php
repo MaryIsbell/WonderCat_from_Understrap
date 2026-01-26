@@ -101,7 +101,7 @@ function ue_post_author_archive($query) {
 add_action('pre_get_posts', 'ue_post_author_archive');
 
 /*Allows users to set experiences to private through gravity form*/
-add_action( 'gform_after_create_post_6', 'set_experience_private_status', 10, 3 );
+add_action( 'gform_advancedpostcreation_post_after_creation_6', 'set_experience_private_status', 10, 3 );
 
 function set_experience_private_status( $post_id, $entry, $form ) {
 
