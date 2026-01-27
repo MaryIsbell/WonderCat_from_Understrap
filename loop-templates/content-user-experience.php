@@ -60,11 +60,10 @@ $container_class = $is_slider ? 'bento_container bento_slider' : 'bento_containe
 
 <div class="<?php echo esc_attr( $container_class ); ?>">
    <?php if ( get_post_status( $post_id ) === 'private' ) : ?>
-    <span class="bento-private-badge"
-          title="Only you and WonderCat admins can see this">
+    <div class="bento-private-badge" title="Only you and site editors can see this post">
         🔒 Private
-    </span>
-<?php endif; ?>
+    </div>
+<?php endif; ?> 
     <div class="row">
 
         <div class="col-md-6">
