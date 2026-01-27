@@ -16,6 +16,7 @@ get_header();
 // Query featured user-experience posts
 $args = [
     'post_type'      => 'user-experience',
+    'post_status'.   => 'publish', //making sure posts changed to private disappear from home-page slider
     'posts_per_page' => 10,
     'meta_query'     => [
         [
