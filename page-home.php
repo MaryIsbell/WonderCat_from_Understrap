@@ -138,18 +138,26 @@ wp_reset_postdata();
 <!-- Divider -->
 <hr class="homepage-divider">
 
-<!-- Full-width shiny screenshot section -->
-<div class="wc-fullbleed">
+<!--Homepage Video-->
 
-    <div class="wc-home-shiny-cta">
-        <img src="<?php echo get_stylesheet_directory_uri(); ?>/images/shinyvigilancetrigger.png"
-             alt="Shiny WonderCat Screenshot"
-             loading="lazy">
+<div class="wc-home-video-wrapper">
 
-        <a href="<?php echo esc_url( home_url('/join') ); ?>" class="wc-shiny-cta-button">
-            Join Now
-        </a>
-    </div>
+    <video
+        class="wc-home-video"
+        autoplay
+        muted
+        loop
+        playsinline
+        preload="metadata"
+        poster="<?php echo get_stylesheet_directory_uri(); ?>/images/How_it_works_revised.png"
+    >
+        <source src="<?php echo get_stylesheet_directory_uri(); ?>/videos/how-it-works-loop.mp4" type="video/mp4">
+    </video>
+
+    <a href="<?php echo esc_url( home_url('/your-demo-page') ); ?>"
+       class="wc-home-video-button">
+        See how it works
+    </a>
 
 </div>
 
