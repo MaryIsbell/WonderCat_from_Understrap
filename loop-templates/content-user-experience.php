@@ -59,6 +59,11 @@ $container_class = $is_slider ? 'bento_container bento_slider' : 'bento_containe
 ?>
 
 <div class="<?php echo esc_attr( $container_class ); ?>">
+   <?php if ( get_post_status( $post_id ) === 'private' ) : ?>
+    <div class="bento-private-badge" title="Only you and site editors can see this post">
+        🔒 Private
+    </div>
+<?php endif; ?> 
     <div class="row">
 
         <div class="col-md-6">
