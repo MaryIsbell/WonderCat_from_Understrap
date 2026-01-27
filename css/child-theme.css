@@ -15653,6 +15653,43 @@ Styling Term History Page
   color: #999;
 }
 
+/*Homepage Video
+*/
+.wc-home-video-wrapper {
+  position: relative;
+  width: 100%;
+  overflow: hidden;
+}
+
+.wc-home-video {
+  width: 100%;
+  height: auto;
+  display: block;
+  -o-object-fit: cover;
+  object-fit: cover;
+}
+
+/* Button overlay */
+.wc-home-video-button {
+  position: absolute;
+  bottom: 10%;
+  left: 50%;
+  transform: translateX(-50%);
+  background: rgba(0, 0, 0, 0.75);
+  color: #fff;
+  padding: 12px 22px;
+  border-radius: 999px;
+  text-decoration: none;
+  font-weight: 600;
+  letter-spacing: 0.02em;
+  transition: transform 0.15s ease, background 0.15s ease;
+}
+
+.wc-home-video-button:hover {
+  background: rgba(0, 0, 0, 0.9);
+  transform: translateX(-50%) scale(1.05);
+}
+
 .has-blue-color,
 .has-blue-color:visited {
   color: #97C2FC;
