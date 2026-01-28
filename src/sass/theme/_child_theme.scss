@@ -735,7 +735,10 @@ Styling Term History Page
 */
 .wc-home-video-wrapper {
     position: relative;
-    width: 100%;
+    max-width: 1100px;     // controls how wide the video can get
+    margin: 0 auto;        // centers horizontally
+    padding: 0 1.25rem;    // side margins on small screens
+
     overflow: hidden;
 }
 

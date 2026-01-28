@@ -15657,7 +15657,9 @@ Styling Term History Page
 */
 .wc-home-video-wrapper {
   position: relative;
-  width: 100%;
+  max-width: 1100px;
+  margin: 0 auto;
+  padding: 0 1.25rem;
   overflow: hidden;
 }
 
