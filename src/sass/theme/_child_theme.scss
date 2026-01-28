@@ -756,15 +756,17 @@ Styling Term History Page
     left: 50%;
     transform: translateX(-50%);
 
-    background: rgba(0,0,0,0.75);
+    background: rgba(0,0,0,0.55);
     color: #fff;
-    padding: 12px 22px;
+    padding: 0.7em 1.4em;
     border-radius: 999px;
     text-decoration: none;
     font-weight: 600;
     letter-spacing: 0.02em;
+    backdrop-filter: blur(6px);
+    -webkit-backdrop-filter: blur(6px);
 
-    transition: transform 0.15s ease, background 0.15s ease;
+    transition: transform 0.15s ease, background 0.15s ease, box-shadow 0.15s ease;
 }
 
 .wc-home-video-button:hover {
