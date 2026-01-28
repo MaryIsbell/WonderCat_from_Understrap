@@ -151,7 +151,7 @@ wp_reset_postdata();
         preload="metadata"
         poster="<?php echo get_stylesheet_directory_uri(); ?>/images/How_it_works_revised.png"
     >
-        <source src="<?php echo get_stylesheet_directory_uri(); ?>/videos/how-it-works-loop.mp4" type="video/mp4">
+        <source src="<?php echo get_stylesheet_directory_uri(); ?>/images/ShinyDemo2.mp4" type="video/mp4">
     </video>
 
     <a href="<?php echo esc_url( home_url('/your-demo-page') ); ?>"

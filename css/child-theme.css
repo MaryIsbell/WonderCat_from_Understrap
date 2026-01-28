@@ -15671,7 +15671,7 @@ Styling Term History Page
 
 /* Button overlay */
 .wc-home-video-button {
-  position: absolute;
+  position: relative;
   bottom: 10%;
   left: 50%;
   transform: translateX(-50%);
