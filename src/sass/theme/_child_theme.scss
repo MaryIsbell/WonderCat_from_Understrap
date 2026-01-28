@@ -770,6 +770,7 @@ Styling Term History Page
 }
 
 .wc-home-video-button:hover {
-    background: rgba(0,0,0,0.9);
-    transform: translateX(-50%) scale(1.05);
+    background: rgba(0,0,0,0.75);
+    transform: translateX(-50%) scale(1.06);
+    box-shadow: 0 6px 20px rgba(0,0,0,0.25);
 }
