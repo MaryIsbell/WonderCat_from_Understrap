@@ -133,7 +133,7 @@ wp_reset_postdata();
 <!-- Divider -->
 <hr class="homepage-divider">
 
-<div class="homepage_header">Explore How Experiences Connect</div>
+<div class="homepage_header">Network</div>
 
 <!-- Divider -->
 <hr class="homepage-divider">
@@ -156,7 +156,7 @@ wp_reset_postdata();
 
     <a href="<?php echo esc_url( home_url('/your-demo-page') ); ?>"
        class="wc-home-video-button">
-        See how it works
+        Explore Shiny WonderCat
     </a>
 
 </div>
