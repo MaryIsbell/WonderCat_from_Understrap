@@ -154,7 +154,7 @@ wp_reset_postdata();
         <source src="<?php echo get_stylesheet_directory_uri(); ?>/images/ShinyDemo2.mp4" type="video/mp4">
     </video>
 
-    <a href="<?php echo esc_url( home_url('/your-demo-page') ); ?>"
+    <a href="https://readingexperiences.us.reclaim.cloud/sample-apps/00_wondercat/" target="blank"
        class="wc-home-video-button">
         Explore Shiny WonderCat
     </a>
