@@ -66,7 +66,10 @@
             "default_value": "",
             "enable_opacity": 0,
             "return_format": "string",
-            "allow_in_bindings": 0
+            "allow_in_bindings": 0,
+            "custom_palette_source": "",
+            "palette_colors": "",
+            "show_color_wheel": true
         }
     ],
     "location": [
@@ -92,5 +95,6 @@
     "active": true,
     "description": "",
     "show_in_rest": 0,
-    "modified": 1768494675
+    "display_title": "",
+    "modified": 1770219574
 }
