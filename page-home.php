@@ -133,7 +133,7 @@ wp_reset_postdata();
 <!-- Divider -->
 <hr class="homepage-divider">
 
-<div class="homepage_header">Network</div>
+<div class="homepage_header">Explore Connections</div>
 
 <!-- Divider -->
 <hr class="homepage-divider">
