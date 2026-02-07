@@ -526,10 +526,17 @@ Full-width homepage image below slider with white background
         max-height: 300px; /* smaller height for mobile */
     }
 }
-.homepage_header {text-align: center;
-color: #000;
-    font-size: 4.2vw;
+.homepage_header {
+    display: block;
+    text-align: center;
+    color: #000;
     font-weight: 700;
+
+    font-size: clamp(1.75rem, 4.2vw, 3.25rem);
+    line-height: 1.15;
+
+    /* critical: prevent parent scaling interference */
+    max-width: 100%;
 }
 
 /*=================================
