@@ -528,7 +528,7 @@ Full-width homepage image below slider with white background
 }
 .homepage_header {text-align: center;
 color: #000;
-    font-size: 4.2vw;
+    font-size: clamp(2rem, 4.2vw, 4rem);
     font-weight: 700;
 }
 
