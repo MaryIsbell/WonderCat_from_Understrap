@@ -154,8 +154,7 @@ wp_reset_postdata();
         <source src="<?php echo get_stylesheet_directory_uri(); ?>/images/ShinyDemo2.mp4" type="video/mp4">
     </video>
 
-    <a href="https://shiny.wonder-cat.org/sample-apps/00_wondercat/" target="blank"
-       class="wc-home-video-button">
+    <a href="https://shiny.wonder-cat.org/sample-apps/00_wondercat/" target="blank" rel="noreferrer noopener" class="wc-home-video-button">
         Explore Shiny WonderCat
     </a>
 
