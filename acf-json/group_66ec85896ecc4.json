@@ -368,90 +368,6 @@
             "rows": "",
             "placeholder": "",
             "new_lines": ""
-        },
-        {
-            "key": "field_67114e6d0612c",
-            "label": "Benefit of Experience",
-            "name": "benefit_of_experience",
-            "aria-label": "",
-            "type": "taxonomy",
-            "instructions": "Do you think this experience prompted any of the benefits below? (you can refer to the benefits glossary for description of each term). You can also leave this blank in you're not sure. Remember that some benefits are immediate and some emerge upon reflection. If the benefit isn't in our list, select \"xxx-I need to enter something new.\"",
-            "required": 0,
-            "conditional_logic": 0,
-            "wrapper": {
-                "width": "",
-                "class": "",
-                "id": ""
-            },
-            "taxonomy": "benefit",
-            "add_term": 1,
-            "save_terms": 1,
-            "load_terms": 1,
-            "return_format": "id",
-            "field_type": "select",
-            "allow_null": 1,
-            "allow_in_bindings": 1,
-            "bidirectional": 0,
-            "multiple": 0,
-            "bidirectional_target": []
-        },
-        {
-            "key": "field_671150d42e328",
-            "label": "Propose Benefit",
-            "name": "propose_benefit",
-            "aria-label": "",
-            "type": "text",
-            "instructions": "What benefit do you want to add to our database?",
-            "required": 0,
-            "conditional_logic": [
-                [
-                    {
-                        "field": "field_67114e6d0612c",
-                        "operator": "==",
-                        "value": "151"
-                    }
-                ]
-            ],
-            "wrapper": {
-                "width": "",
-                "class": "",
-                "id": ""
-            },
-            "default_value": "",
-            "maxlength": "",
-            "allow_in_bindings": 0,
-            "placeholder": "",
-            "prepend": "",
-            "append": ""
-        },
-        {
-            "key": "field_671151db4280d",
-            "label": "Theorize Benefit",
-            "name": "theorize_benefit",
-            "aria-label": "",
-            "type": "textarea",
-            "instructions": "If you think this experience was beneficial to you and\/or might be beneficial to others, why do you think that is? This is a space to theorize a little about benefits that might emerge from the experience you're submitting. Make sure to include citations for any sources you reference as you formulate your hypothesis. You can leave this blank if you're not sure.",
-            "required": 0,
-            "conditional_logic": [
-                [
-                    {
-                        "field": "field_67114e6d0612c",
-                        "operator": "==",
-                        "value": "151"
-                    }
-                ]
-            ],
-            "wrapper": {
-                "width": "",
-                "class": "",
-                "id": ""
-            },
-            "default_value": "",
-            "maxlength": "",
-            "allow_in_bindings": 1,
-            "rows": "",
-            "placeholder": "",
-            "new_lines": ""
         }
     ],
     "location": [
@@ -473,5 +389,5 @@
     "description": "",
     "show_in_rest": 1,
     "display_title": "",
-    "modified": 1770219653
+    "modified": 1771181400
 }
