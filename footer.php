@@ -19,7 +19,7 @@ defined( 'ABSPATH' ) || exit;
                 </div>
 
                 <div class="col-auto wc-footer-right text-end">
-                    <a href="https://example.com">Powered by WordPress and WikiData | WonderCat Theme</a>
+                    <a href="https://github.com/MaryIsbell/WonderCat_from_Understrap">Powered by WordPress and WikiData | WonderCat Theme</a>
                 </div>
 
             </div>
