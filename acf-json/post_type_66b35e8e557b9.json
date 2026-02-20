@@ -73,8 +73,7 @@
     ],
     "taxonomies": [
         "experience",
-        "technology",
-        "benefit"
+        "technology"
     ],
     "has_archive": true,
     "has_archive_slug": "user-experience",
@@ -90,5 +89,5 @@
     "delete_with_user": false,
     "register_meta_box_cb": "",
     "enter_title_here": "[Title of Creative Work] by [Creator]",
-    "modified": 1770219671
+    "modified": 1771546650
 }
