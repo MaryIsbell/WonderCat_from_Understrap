@@ -15312,6 +15312,13 @@ body.page-template-experience-glossary .page-content {
   justify-content: center; /* new: centers content horizontally */
 }
 
+/* Slider Image*/
+.wc-slider-image img {
+  max-width: 300px;
+  height: auto;
+  border-radius: 8px;
+}
+
 /* Bento box inside slider */
 .wc-slider-bento {
   flex: 1;
@@ -15362,19 +15369,11 @@ Homepage slider feature clickability
   outline-offset: 3px;
 }
 
-/* Slider Image*/
-.wc-slider-image img {
-  max-width: 300px;
-  height: auto;
-  border-radius: 8px;
-}
-
 /* ================================
    Homepage slider image constraints
    ================================ */
 .wc-experience-carousel .wc-slider-image {
   height: 420px;
-  width: 420px;
   overflow: hidden;
   position: relative;
 }
