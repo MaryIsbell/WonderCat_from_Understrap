@@ -2,7 +2,7 @@
     "key": "taxonomy_66b36c918fa7d",
     "title": "Benefits",
     "menu_order": 0,
-    "active": true,
+    "active": false,
     "taxonomy": "benefit",
     "object_type": [
         "user-experience"
@@ -71,5 +71,5 @@
     "meta_box": "default",
     "meta_box_cb": "",
     "meta_box_sanitize_cb": "",
-    "modified": 1770219715
+    "modified": 1771688719
 }
