@@ -357,13 +357,6 @@ body.page-template-experience-glossary .page-content {
     justify-content: center; /* new: centers content horizontally */
 }
 
-/* Slider image */
-.wc-slider-image img {
-    max-width: 300px;
-    height: auto;
-    border-radius: 8px;
-}
-
 /* Bento box inside slider */
 .wc-slider-bento {
     flex: 1;
@@ -422,15 +415,18 @@ Homepage slider feature clickability
    ================================ */
 
 .wc-experience-carousel .wc-slider-image {
-    height: 420px;            /*adjust as desired*/
+    height: 420px;  
+    width: 420px; 
     overflow: hidden;
     position: relative;
+    border-radius: 8px;  //radius on container so crop + overlays respect it
 }
 
 .wc-experience-carousel .wc-slider-image img {
     width: 100%;
     height: 100%;
     object-fit: cover;        /*crop instead of stretch*/
+    object-position: center;
     display: block;
 }
 

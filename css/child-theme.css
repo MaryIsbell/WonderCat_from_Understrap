@@ -15312,13 +15312,6 @@ body.page-template-experience-glossary .page-content {
   justify-content: center; /* new: centers content horizontally */
 }
 
-/* Slider image */
-.wc-slider-image img {
-  max-width: 300px;
-  height: auto;
-  border-radius: 8px;
-}
-
 /* Bento box inside slider */
 .wc-slider-bento {
   flex: 1;
@@ -15373,9 +15366,11 @@ Homepage slider feature clickability
    Homepage slider image constraints
    ================================ */
 .wc-experience-carousel .wc-slider-image {
-  height: 420px; /*adjust as desired*/
+  height: 420px;
+  width: 420px;
   overflow: hidden;
   position: relative;
+  border-radius: 8px;
 }
 
 .wc-experience-carousel .wc-slider-image img {
@@ -15383,6 +15378,8 @@ Homepage slider feature clickability
   height: 100%;
   -o-object-fit: cover;
   object-fit: cover; /*crop instead of stretch*/
+  -o-object-position: center;
+  object-position: center;
   display: block;
 }
 
