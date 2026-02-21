@@ -422,7 +422,7 @@ Homepage slider feature clickability
    ================================ */
 
 .wc-experience-carousel .wc-slider-image {
-    height: 420px;            // adjust as desired
+    height: 420px;            /*adjust as desired*/
     overflow: hidden;
     position: relative;
 }
@@ -430,7 +430,7 @@ Homepage slider feature clickability
 .wc-experience-carousel .wc-slider-image img {
     width: 100%;
     height: 100%;
-    object-fit: cover;        // crop instead of stretch
+    object-fit: cover;        /*crop instead of stretch*/
     display: block;
 }
 

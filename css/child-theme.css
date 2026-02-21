@@ -15373,7 +15373,7 @@ Homepage slider feature clickability
    Homepage slider image constraints
    ================================ */
 .wc-experience-carousel .wc-slider-image {
-  height: 420px;
+  height: 420px; /*adjust as desired*/
   overflow: hidden;
   position: relative;
 }
@@ -15382,7 +15382,7 @@ Homepage slider feature clickability
   width: 100%;
   height: 100%;
   -o-object-fit: cover;
-  object-fit: cover;
+  object-fit: cover; /*crop instead of stretch*/
   display: block;
 }
 
