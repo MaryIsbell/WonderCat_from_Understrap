@@ -15362,6 +15362,13 @@ Homepage slider feature clickability
   outline-offset: 3px;
 }
 
+/* Slider Image*/
+.wc-slider-image img {
+  max-width: 300px;
+  height: auto;
+  border-radius: 8px;
+}
+
 /* ================================
    Homepage slider image constraints
    ================================ */
@@ -15370,7 +15377,6 @@ Homepage slider feature clickability
   width: 420px;
   overflow: hidden;
   position: relative;
-  border-radius: 8px;
 }
 
 .wc-experience-carousel .wc-slider-image img {
