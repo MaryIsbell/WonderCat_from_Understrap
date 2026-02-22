@@ -397,37 +397,36 @@ body.page-template-experience-glossary .page-content {
         min-height: 280px;
     }
 }
-/*================================================================
-Fixing Square images on Mobile Devices (when image and bento stack)
-=================================================================*/
-@media (max-width: 768px) {
 
-  /* IMPORTANT: stop shrink-to-fit width in column layout */
+/* Mobile: remove fixed frame, preserve portrait ratio, allow scrolling */
+@media (max-width: 768px) {
   .wc-slider-content {
     flex-direction: column;
     text-align: center;
-    align-items: stretch;  // <-- add this
+    align-items: stretch;
   }
 
-  /* Keep a consistent frame height, but prevent the narrow “square” look */
+  .wc-slider-slide {
+    min-height: 0;  /* optional */
+  }
+
   .wc-experience-carousel .wc-slider-image {
-    height: 280px;         // your existing mobile height constraint
+    height: auto;        /* key */
     width: 100%;
-    max-width: 420px;      // tune 340–460 as desired
+    max-width: none;
+    overflow: visible;   /* key */
     margin: 0 auto;
-    border-radius: 8px;
-    overflow: hidden;
   }
 
-  /* Portrait-friendly: show whole image (no crop) within the fixed-height frame */
   .wc-experience-carousel .wc-slider-image img {
     width: 100%;
-    height: 100%;
-    object-fit: contain;   // <-- key change
-    object-position: center;
+    height: auto;        /* key */
+    object-fit: unset;   /* cancels cover */
+    display: block;
+    border-radius: 8px;
   }
 
-  /* Optional: ensure image appears above bento even if HTML order differs */
+  /* only needed if your HTML order is bento then image */
   .wc-slider-image { order: 1; }
   .wc-slider-bento { order: 2; }
 }
