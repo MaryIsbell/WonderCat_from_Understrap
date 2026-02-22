@@ -416,6 +416,7 @@ body.page-template-experience-glossary .page-content {
     display: block;
     border-radius: 8px;
     margin: 0 auto; /*image is centered even if some other rule constrains its width*/
+    max-width: none; /*allows image to override the earlier max-width 300px rule in this case*/
   }
 
   /* only needed if your HTML order is bento then image */
