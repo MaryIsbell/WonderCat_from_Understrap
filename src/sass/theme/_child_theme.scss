@@ -374,16 +374,7 @@ body.page-template-experience-glossary .page-content {
     flex: 1;
 }
 
-@media (max-width: 768px) {
-    .wc-slider-content {
-        flex-direction: column;
-        text-align: center;
-    }
 
-    .wc-slider-slide {
-        min-height: 300px;
-    }
-}
 /*Responsive height scaling for short screens*/
 
 @media (max-height: 800px) {
