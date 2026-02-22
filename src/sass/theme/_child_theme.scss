@@ -452,9 +452,11 @@ Homepage slider feature clickability
 
 /* ================================
    Homepage slider image constraints
+   FOR DESKTOP
    ================================ */
 
-.wc-experience-carousel .wc-slider-image {
+@media (min-width: 769px) {
+   .wc-experience-carousel .wc-slider-image {
     height: 420px;  
     overflow: hidden;
     position: relative;
@@ -466,6 +468,7 @@ Homepage slider feature clickability
     object-fit: cover;        /*crop instead of stretch*/
     object-position: center;
     display: block;
+}
 }
 
 /* ================================

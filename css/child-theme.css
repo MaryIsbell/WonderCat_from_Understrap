@@ -15404,23 +15404,24 @@ Homepage slider feature clickability
 
 /* ================================
    Homepage slider image constraints
+   FOR DESKTOP
    ================================ */
-.wc-experience-carousel .wc-slider-image {
-  height: 420px;
-  overflow: hidden;
-  position: relative;
+@media (min-width: 769px) {
+  .wc-experience-carousel .wc-slider-image {
+    height: 420px;
+    overflow: hidden;
+    position: relative;
+  }
+  .wc-experience-carousel .wc-slider-image img {
+    width: 100%;
+    height: 100%;
+    -o-object-fit: cover;
+    object-fit: cover; /*crop instead of stretch*/
+    -o-object-position: center;
+    object-position: center;
+    display: block;
+  }
 }
-
-.wc-experience-carousel .wc-slider-image img {
-  width: 100%;
-  height: 100%;
-  -o-object-fit: cover;
-  object-fit: cover; /*crop instead of stretch*/
-  -o-object-position: center;
-  object-position: center;
-  display: block;
-}
-
 /* ================================
    Slider image hover overlay
    ================================ */
