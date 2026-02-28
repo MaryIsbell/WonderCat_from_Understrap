@@ -86,48 +86,6 @@
             "append": ""
         },
         {
-            "key": "field_6787eea156392",
-            "label": "Wikidata",
-            "name": "wikidata",
-            "aria-label": "",
-            "type": "textarea",
-            "instructions": "This field is not editable and is only shown for debugging purposes.",
-            "required": 0,
-            "conditional_logic": 0,
-            "wrapper": {
-                "width": "",
-                "class": "",
-                "id": ""
-            },
-            "default_value": "",
-            "maxlength": "",
-            "allow_in_bindings": 0,
-            "rows": "",
-            "placeholder": "",
-            "new_lines": ""
-        },
-        {
-            "key": "field_6787eec056393",
-            "label": "Wikidata Last Update",
-            "name": "wikidata_last_update",
-            "aria-label": "",
-            "type": "text",
-            "instructions": "This field is not editable and is only shown for debugging purposes.",
-            "required": 0,
-            "conditional_logic": 0,
-            "wrapper": {
-                "width": "",
-                "class": "",
-                "id": ""
-            },
-            "default_value": "",
-            "maxlength": "",
-            "allow_in_bindings": 0,
-            "placeholder": "",
-            "prepend": "",
-            "append": ""
-        },
-        {
             "key": "field_671148110ccca",
             "label": "URL",
             "name": "url",
@@ -389,5 +347,5 @@
     "description": "",
     "show_in_rest": 1,
     "display_title": "",
-    "modified": 1771181400
+    "modified": 1772316137
 }
