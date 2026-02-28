@@ -66,7 +66,8 @@ function wikidata_table_exists() {
 /**
  * Upsert by qid (insert new or update existing).
  *
- * Requires a UNIQUE KEY on qid.
+ * Uses conditional logic to avoid wasting auto-increment IDs.
+ * Checks if the record exists, then UPDATEs or INSERTs accordingly.
  */
 function wikidata_upsert($qid, $url = null, $label = null, $description = null, $json = null) {
     global $wpdb;
@@ -76,44 +77,53 @@ function wikidata_upsert($qid, $url = null, $label = null, $description = null, 
 
     $json_data = is_string($json) ? $json : wp_json_encode($json);
 
-    // If url is NULL, the unique index allows multiple NULLs in MySQL.
-    $sql = $wpdb->prepare(
-        "INSERT INTO {$table} (qid, url, label, description, json_data, created_at, updated_at)
-         VALUES (%s, %s, %s, %s, %s, %s, %s)
-         ON DUPLICATE KEY UPDATE
-           url = VALUES(url),
-           label = VALUES(label),
-           description = VALUES(description),
-           json_data = VALUES(json_data),
-           updated_at = VALUES(updated_at)",
-        $qid, $url, $label, $description, $json_data, $now, $now
-    );
+    // Check if this QID already exists
+    $existing = wikidata_get_by_qid( $qid );
 
-    return $wpdb->query($sql);
+    if ( $existing ) {
+        // Record exists, so UPDATE it
+        $sql = $wpdb->prepare(
+            "UPDATE {$table} SET
+               url = %s,
+               label = %s,
+               description = %s,
+               json_data = %s,
+               updated_at = %s
+             WHERE qid = %s",
+            $url, $label, $description, $json_data, $now, $qid
+        );
+
+        $result = $wpdb->query( $sql );
+
+        return $result;
+    } else {
+        // Record doesn't exist, so INSERT it
+        $sql = $wpdb->prepare(
+            "INSERT INTO {$table} (qid, url, label, description, json_data, created_at, updated_at)
+             VALUES (%s, %s, %s, %s, %s, %s, %s)",
+            $qid, $url, $label, $description, $json_data, $now, $now
+        );
+
+        $result = $wpdb->query( $sql );
+
+        return $result;
+    }
 }
 
 /**
- * Get unique 'wikidata-qid' values from all posts.
+ * Retrieve a single wikidata entity by QID.
  *
- * @return string[] Array of unique wikidata-qid values.
+ * @param string $qid The WikiData entity ID (e.g., "Q42").
+ * @return object|null The entity record as an object, or null if not found.
  */
-function wikidata_find_posts_with_qid() {
+function wikidata_get_by_qid( $qid ) {
     global $wpdb;
 
-    $meta_key = 'wikidata-qid';
-    $sql = $wpdb->prepare(
-        "SELECT DISTINCT pm.meta_value
-         FROM {$wpdb->postmeta} pm
-         INNER JOIN {$wpdb->posts} p ON pm.post_id = p.ID
-         WHERE pm.meta_key = %s
-         AND p.post_status = 'publish'
-         ORDER BY pm.meta_value ASC",
-        $meta_key
+    $table = wikidata_table_name();
+    $sql   = $wpdb->prepare(
+        "SELECT * FROM {$table} WHERE qid = %s LIMIT 1",
+        $qid
     );
 
-    $results = $wpdb->get_col( $sql );
-    return array_filter( array_unique( $results ) );
+    return $wpdb->get_row( $sql );
 }
-
-
-var_dump(wikidata_find_posts_with_qid());
