@@ -7,73 +7,120 @@
 
 // Exit if accessed directly.
 defined( 'ABSPATH' ) || exit;
+
+// Detect if we are rendering inside the homepage slider
+$is_slider = ! empty( $GLOBALS['is_home_slider'] );
 ?>
 
 <article <?php post_class(); ?> id="post-<?php the_ID(); ?>">
 
-	<header class="entry-header">
+<?php
+$post_id = get_the_ID();
 
-		<?php
-		the_title(
-			sprintf( '<h2 class="entry-title"><a href="%s" rel="bookmark">', esc_url( get_permalink() ) ),
-			'</a></h2>'
-		);
-		?>
+// Get the pieces for the bento box
+$title_of_creative_work = get_field( 'title_of_creative_work', $post_id );
 
-		<?php if ( 'post' === get_post_type() ) : ?>
+// Experience taxonomy
+$experience = '';
+$experience_url = '';
+$experience_terms = get_the_terms( $post_id, 'experience' );
 
-			<div class="entry-meta">
-				<?php understrap_posted_on(); ?>
-			</div><!-- .entry-meta -->
+if ( ! empty( $experience_terms ) && ! is_wp_error( $experience_terms ) ) {
+    $term = $experience_terms[0];
+    $experience = $term->name;
+    $experience_url = get_term_link( $term );
+}
 
-		<?php endif; ?>
+// Technology taxonomy
+$technology = '';
+$technology_url = '';
+$technology_terms = get_the_terms( $post_id, 'technology' );
 
-	</header><!-- .entry-header -->
+if ( ! empty( $technology_terms ) && ! is_wp_error( $technology_terms ) ) {
+    $term = $technology_terms[0];
+    $technology = $term->name;
+    $technology_url = get_term_link( $term );
+}
 
-	<?php echo get_the_post_thumbnail( $post->ID, 'large' ); ?>
+// Other fields
+$feature = get_field( 'feature', $post_id );
 
-	<div class="entry-content">
+// Trim feature text only inside the homepage slider
+if ( $is_slider && ! empty( $feature ) ) {
+    $feature = wp_trim_words( wp_strip_all_tags( $feature ), 20, '…' );
+}
+$display_name = get_the_author_meta( 'display_name', get_post_field( 'post_author', $post_id ) );
+$author_id    = get_post_field( 'post_author', $post_id );
+$author_url   = get_author_posts_url( $author_id );
+$date         = get_the_date( 'F j, Y', $post_id );
 
-		<?php
-		//the_excerpt();
-		  $post_id = get_the_ID();
+// Choose container class based on context
+$container_class = $is_slider ? 'bento_container bento_slider' : 'bento_container';
+?>
 
-    // Get the pieces for the bento box
-    $title_of_creative_work = get_field( 'title_of_creative_work', $post_id);
-	$experience = get_field( 'experience', $post_id);
-	$technology = get_field( 'technology', $post_id);
-	$feature = get_field( 'feature', $post_id);
-	$nickname = get_the_author_meta( 'nickname', get_post_field( 'post_author', $post_id ));
-	$date = get_the_date( 'F j, Y', $post_id);
-	//$authorarchivelink = ge
+<div class="<?php echo esc_attr( $container_class ); ?>">
+   <?php if ( get_post_status( $post_id ) === 'private' ) : ?>
+    <div class="bento-private-badge" title="Only you and site editors can see this post">
+        🔒 Private
+    </div>
+<?php endif; ?> 
+    <div class="row">
 
-
-    // Display the bento box
-
-    echo "<div class='container'>
-        <div class='row'>
-            <div class='col-md-6'>
-                <div class='button_creative_work'>{$title_of_creative_work}</div>
-                <div class='button_experience'>{$experience}</div>
-                <div class='button_technology'>{$technology}</div>
+        <div class="col-md-6">
+            <div class="button_creative_work">
+                <?php echo esc_html( $title_of_creative_work ); ?>
             </div>
-            <div class='col-md-6'>
-                <div class='button_feature'>{$feature}</div>
-                <div class='button_user'>{$nickname}</div>
-                <div class='button_date'>{$date}</div>
+
+            <div class="button_experience">
+                Experience:
+                <a href="<?php echo esc_url( $experience_url ); ?>">
+                    <?php echo esc_html( $experience ); ?>
+                </a>
+            </div>
+
+            <div class="button_technology">
+                Narrative Technology:
+                <a href="<?php echo esc_url( $technology_url ); ?>">
+                    <?php echo esc_html( $technology ); ?>
+                </a>
             </div>
         </div>
-    </div>"
-    ;
-		understrap_link_pages();
-		?>
 
-	</div><!-- .entry-content -->
+        <div class="col-md-6">
+            <?php if ( $is_slider ) : ?>
 
-	<footer class="entry-footer">
+    <a href="<?php echo esc_url( get_permalink( $post_id ) ); ?>" class="button_feature button_feature_link">
+        <?php echo esc_html( $feature ); ?>
+    </a>
 
-		<?php understrap_entry_footer(); ?>
+<?php else : ?>
 
-	</footer><!-- .entry-footer -->
+    <div class="button_feature">
+        <?php echo esc_html( $feature ); ?>
+    </div>
 
-</article><!-- #post-<?php the_ID(); ?> -->
+<?php endif; ?>
+
+
+            <div class="button_user">
+                Contributed by:
+                <a href="<?php echo esc_url( $author_url ); ?>">
+                    <?php echo esc_html( $display_name ); ?>
+                </a>
+            </div>
+
+            <div class="button_date">
+                <?php echo esc_html( $date ); ?>
+            </div>
+        </div>
+
+    </div>
+</div>
+
+<?php understrap_link_pages(); ?>
+
+<footer class="entry-footer">
+    <?php understrap_entry_footer(); ?>
+</footer>
+
+</article>

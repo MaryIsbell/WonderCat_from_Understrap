@@ -1,92 +1,799 @@
+/* ================================
+   Global Font Setup: PT Sans
+   ================================ */
+
+/* Import PT Sans from Google Fonts */
+@import url('https://fonts.googleapis.com/css2?family=PT+Sans:wght@400;600;700&display=swap');
+
+/* Define a variable for convenience */
+$primary-font: 'PT Sans', sans-serif;
+
+/* Apply globally */
+body, 
+button, 
+input, 
+textarea, 
+select 
+ {
+  font-family: $primary-font;
+  font-weight: 400;
+  line-height: 1.6;
+  color: #000;
+}
+
+/* Optional: strong/bold elements */
+strong, b {
+  font-weight: 700;
+}
+
+/* Optional: headings */
+h1, h2, h3, h4, h5, h6 {
+  font-family: $primary-font;
+  font-weight: 600; /* or 700 for h1 */
+  line-height: 1.2;
+  color: #000;
+}
+
+/* ================================
+   Default link behavior (site-wide)
+   ================================ */
+
+a {
+  color: #000;
+  text-decoration: underline;
+}
+
+a:hover,
+a:focus {
+  text-decoration: none;
+}
+
+/* ================================
+   Bento Boxes
+   ================================ */
 .col-md-6 {
   border: 0px solid;
 }
 
-
-.container {
+.bento_container {
   border: 2px solid black;
-  box-shadow: 5px 5px black;
+  box-shadow: 3px 3px black;
   border-radius: 8px;
   text-align: center;
   padding: 10px;
-  font-size: 1.4rem;
-  background-color: #d9d9d9;
-  margin-bottom: 20px;
-  
+  font-size: 1.25rem;
+  background-color: $gray;
+  margin-bottom: 10px;
+  margin-top: 50px;
+  margin-left: 30px;
+  margin-right: 30px;
 }
 
+/* Individual bento buttons */
 .button_creative_work {
   border: 2px solid black;
-  box-shadow: 5px 5px black;
+  box-shadow: 2px 2px inset black;
   border-radius: 8px;
   text-align: center;
   padding: 10px;
-  font-size: 1.4rem;
-  background-color: #ffd600;
+  font-size: 1.25rem;
+  background-color: $yellow;
   margin-bottom: 20px;
 }
 .button_feature {
   border: 2px solid black;
-  box-shadow: 5px 5px black;
+  box-shadow: 2px 2px inset black;
   border-radius: 8px;
   text-align: center;
   padding: 10px;
-  font-size: 1.4rem;
+  font-size: 1.25rem;
   background-color: white;
   margin-bottom: 20px;
 }
-
 .button_experience {
   border: 2px solid black;
-  box-shadow: 5px 5px black;
+  box-shadow: 2px 2px inset black;
   border-radius: 8px;
   text-align: center;
   padding: 10px;
-  font-size: 1.4rem;
-  background-color: #ff6347;
+  font-size: 1.25rem;
+  background-color: $red;
   margin-bottom: 20px;
 }
-
 .button_technology {
   border: 2px solid black;
-  box-shadow: 5px 5px black;
+  box-shadow: 2px 2px inset black;
   border-radius: 8px;
   text-align: center;
   padding: 10px;
-  font-size: 1.4rem;
-  background-color: #97c2fc;
+  font-size: 1.25rem;
+  background-color: $blue;
   margin-bottom: 20px;
 }
-
-.button_proposed_technology {
-  border: 2px dotted black;
-  box-shadow: 5px 5px black;
-  border-radius: 8px;
-  text-align: center;
-  padding: 10px;
-  font-size: 1.4rem;
-  background-color: #97c2fc;
-  margin-bottom: 20px;
-}
-
-.button_proposed_experience {
-  border: 2px dotted black;
-  box-shadow: 5px 5px black;
-  border-radius: 8px;
-  text-align: center;
-  padding: 10px;
-  font-size: 1.4rem;
-  background-color: #ff6347;
-  margin-bottom: 20px;
-}
-
 .button_user {
   border: 2px solid black;
-  box-shadow: 5px 5px black;
+  box-shadow: 2px 2px inset black;
   border-radius: 8px;
   text-align: center;
   padding: 10px;
-  font-size: 1.4rem;
-  background-color: #8e7b7f;
+  font-size: 1.25rem;
+  background-color: $brown;
   margin-bottom: 20px;
+}
+
+/* ================================
+    Bento Box Privacy Marker
+================================ */
+.bento_container {
+    position: relative;
+}
+
+.bento-private-badge {
+    position: absolute;
+    bottom: 10px;
+    right: 10px;
+    background: #444;
+    color: #fff;
+    font-size: 0.75rem;
+    padding: 4px 8px;
+    border-radius: 999px;
+    display: flex;
+    align-items: center;
+    gap: 4px;
+    opacity: 0.85;
+    z-index: 5;
+    pointer-events: none;
+}
+
+/* ================================
+   Taxonomy Archive Header
+   ================================ */
+.page-header {
+  text-align: center;
+
+  h1.page-title {
+    margin-bottom: 1rem;
+  }
+
+  .taxonomy-description,
+  p {
+    margin: 0.5rem 0;
+  }
+
+  a {
+    color: #000;
+  }
+}
+
+/* ================================
+   Center titles on normal pages & posts
+   ================================ */
+
+body.page .entry-header,
+body.single .entry-header {
+  text-align: center;
+
+  h1.entry-title {
+    margin-bottom: 1rem;
+  }
+}
+
+/* ================================
+   Center titles for glossary templates
+   ================================ */
+
+body.page-template-technology-glossary .page-title,
+body.page-template-experience-glossary .page-title {
+  text-align: center;
+  margin-bottom: 1rem;
+}
+
+body.page-template-technology-glossary .page-content,
+body.page-template-experience-glossary .page-content {
+  text-align: center;
+}
+
+
+/* ================================
+   Header / Navbar
+   ================================ */
+#wrapper-navbar .navbar-brand {
+  font-size: 2rem;
+  font-weight: 700;
+  color: #000;
+  margin: 0 40px;
+  padding: 0;
+}
+
+#wrapper-navbar .navbar-brand:hover {
+  text-decoration: none;
+}
+
+#wrapper-navbar .navbar-nav {
+  display: flex;
+  flex-direction: row;
+  gap: 40px; /* adjust spacing between links */
+}
+
+#wrapper-navbar .nav-item {
+  margin: 0;
+}
+
+/* Header link underline animation */
+#wrapper-navbar .nav-link,
+.login-signup-wrapper a {
+  position: relative;
+  text-decoration: none !important;
+  color: #000;
+}
+
+#wrapper-navbar .nav-link::after,
+.login-signup-wrapper a::after {
+  content: '';
+  position: absolute;
+  left: 50%;
+  bottom: 0.00em;
+  height: 2px;
+  width: 0;
+  background-color: #000;
+  transform: translateX(-50%);
+  transition: width 0.3s ease-in-out;
+}
+
+#wrapper-navbar .nav-link:hover::after,
+#wrapper-navbar .nav-link:focus::after,
+.login-signup-wrapper a:hover::after,
+.login-signup-wrapper a:focus::after {
+  width: 100%;
+}
+
+#wrapper-navbar .nav-link {
+  padding-top: 0;
+  padding-bottom: 0;
+}
+
+#wrapper-navbar .nav-link::after,
+.login-signup-wrapper a::after {
+  bottom: 0;
+}
+
+
+/* ================================
+   Footer
+   ================================ */
+#wrapper-footer .container {
+  max-width: 100%;
+  padding: 0 15px;
+
+  @media (min-width: 768px) {
+    padding: 0 30px;
+  }
+}
+
+.wc-footer-bar {
+  background-color: white;
+  font-size: 14px;
+  padding: 12px 0;
+  margin: 0;
+  width: 100%;
+}
+
+.wc-footer-inner {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 8px;
+  width: 100%;
+}
+
+/* Footer link sliding underline */
+.wc-footer-left a,
+.wc-footer-right a {
+  position: relative;
+  text-decoration: none !important;
+  color: #000;
+}
+
+.wc-footer-left a::after,
+.wc-footer-right a::after {
+  content: '';
+  position: absolute;
+  left: 50%;
+  bottom: -0.10em;
+  height: 2px;
+  width: 0;
+  background-color: #000;
+  transform: translateX(-50%);
+  transition: width 0.3s ease-in-out;
+}
+
+.wc-footer-left a:hover::after,
+.wc-footer-left a:focus::after,
+.wc-footer-right a:hover::after,
+.wc-footer-right a:focus::after {
+  width: 100%;
+}
+
+/* Mobile stacking for footer */
+@media (max-width: 767px) {
+  .wc-footer-inner {
+    flex-direction: column;
+    align-items: flex-start;
+  }
+  .wc-footer-right {
+    white-space: normal;
+    margin-top: 8px;
+  }
+}
+
+
+/* ================================
+   Home Page Slider
+   ================================ */
+
+/* New: Set slider height and center content */
+.wc-experience-carousel {
+    width: 100%;
+    margin-bottom: 3rem;
+}
+
+
+/* Each slide fills container */
+.wc-slider-slide {
+    min-height: 420px;
+    display: flex;
+    align-items: center; /* vertical centering */
+    justify-content: center; /* horizontal centering */
+    padding: 20px;
+}
+
+/* Slider content (bento + image) */
+.wc-slider-content {
+    max-width: 1100px;
+    margin: 0 auto;
+    display: flex;
+    gap: 30px;
+    align-items: center;
+    justify-content: center; /* new: centers content horizontally */
+}
+
+/* Slider Image*/
+.wc-slider-image img {
+  max-width: 300px;
+  height: auto;
+  border-radius: 8px;
+}
+
+/* Bento box inside slider */
+.wc-slider-bento {
+    flex: 1;
+}
+
+/* Text portion inside slider */
+.wc-slider-text {
+    flex: 1;
+}
+
+
+/*Responsive height scaling for short screens*/
+
+@media (max-height: 800px) {
+    .wc-slider-slide {
+        min-height: 340px;
+    }
+}
+
+@media (max-height: 650px) {
+    .wc-slider-slide {
+        min-height: 280px;
+    }
+}
+
+/* Mobile: remove fixed frame, preserve portrait ratio, allow scrolling */
+@media (max-width: 768px) {
+  .wc-slider-content {
+    flex-direction: column;
+    text-align: center;
+    align-items: stretch;
+  }
+
+  .wc-slider-slide {
+    min-height: 0;  /* optional */
+  }
+
+  .wc-experience-carousel .wc-slider-image {
+    height: auto;        /* key */
+    width: 100%;
+    max-width: none;
+    overflow: visible;   /* key */
+    margin: 0 auto;
+  }
+
+  .wc-experience-carousel .wc-slider-image img {
+    width: 100%;
+    height: auto;        /* key */
+    object-fit: unset;   /* cancels cover */
+    display: block;
+    border-radius: 8px;
+    margin: 0 auto; /*image is centered even if some other rule constrains its width*/
+  }
+
+  /* only needed if your HTML order is bento then image */
+  .wc-slider-image { order: 1; }
+  .wc-slider-bento { order: 2; }
+}
+
+/*===================================
+Homepage slider feature clickability
+====================================*/
+.wc-experience-carousel .button_feature_link {
+    display: block;
+    color: inherit;
+    text-decoration: none;
+}
+
+.wc-experience-carousel .button_feature_link:hover {
+    text-decoration: none;
+    filter: brightness(0.95);
+    cursor: pointer;
+}
+.wc-experience-carousel .button_feature_link:focus-visible {
+    outline: 2px solid currentColor;
+    outline-offset: 3px;
+}
+
+/* ================================
+   Homepage slider image constraints
+   FOR DESKTOP
+   ================================ */
+
+@media (min-width: 769px) {
+   .wc-experience-carousel .wc-slider-image {
+    height: 420px;  
+    overflow: hidden;
+    position: relative;
+}
+
+.wc-experience-carousel .wc-slider-image img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;        /*crop instead of stretch*/
+    object-position: center;
+    display: block;
+}
+}
+
+/* ================================
+   Slider image hover overlay
+   ================================ */
+
+.wc-slider-image {
+    position: relative;
+    overflow: hidden;
+}
+
+/* Dark overlay */
+.wc-slider-image::after {
+    content: "";
+    position: absolute;
+    inset: 0;
+    background: rgba(0,0,0,0.8); /* 80% dark */
+    opacity: 0;
+    transition: opacity 0.25s ease;
+    pointer-events: none;
+    z-index: 1;
+}
+
+/* Caption text */
+.wc-slider-caption {
+    position: absolute;
+    inset: 0;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    padding: 1.5rem;
+    text-align: center;
+
+    color: #fff;
+    font-size: 1rem;
+    line-height: 1.4;
+    font-weight: 500;
+
+    opacity: 0;
+    transform: translateY(8px);
+    transition: opacity 0.25s ease, transform 0.25s ease;
+    z-index: 2;
+}
+
+/* Hover + keyboard focus */
+.wc-slider-image:hover::after,
+.wc-slider-image:focus-within::after {
+    opacity: 1;
+}
+
+.wc-slider-image:hover .wc-slider-caption,
+.wc-slider-image:focus-within .wc-slider-caption {
+    opacity: 1;
+    transform: translateY(0);
+}
+
+/* =========================================================
+Full-width homepage image below slider with white background 
+============================================================*/
+.wc-home-fullwidth-image {
+    width: 100%;
+    margin: 0 auto;       /* centers container if narrower than viewport */
+    padding: 0;
+    text-align: center;   /* centers image horizontally */
+    background-color: #ffffff; /* white background */
+
+    img {
+        display: inline-block; /* allows centering */
+        width: 75%;           /* full width of container */
+        height: auto;          /* maintain aspect ratio */
+        max-width: 100%;
+        object-fit: cover;     /* ensures image covers container nicely */
+    }
+}
+
+/* Optional: set max-height for desktop and mobile for visual balance */
+@media (min-width: 768px) {
+    .wc-home-fullwidth-image img {
+        max-height: 500px; /* adjust for desktops */
+    }
+}
+
+@media (max-width: 767px) {
+    .wc-home-fullwidth-image img {
+        max-height: 300px; /* smaller height for mobile */
+    }
+}
+.homepage_header {text-align: center;
+color: #000;
+    font-size: clamp(2rem, 4.2vw, 4rem);
+    font-weight: 700;
+}
+
+/*=================================
+Shiny Screenshot and overlay button
+===================================*/
+.homepage-divider {
+    margin: 2.5rem auto;
+    max-width: 1100px;
+    border: none;
+    border-top: 1px solid #ddd;
+}
+
+/* Container */
+.wc-home-shiny-cta {
+    position: relative;
+    width: 100%;
+    margin: 0 auto 4rem;
+    overflow: hidden;
+    background: #fff;
+}
+
+/* Image */
+.wc-home-shiny-cta img {
+    width: 100%;
+    height: auto;
+    display: block;
+    object-fit: cover;
+}
+
+/* Button overlay */
+.wc-shiny-cta-button {
+    position: absolute;
+    top: 25%;
+    left: 30%;
+
+    width: 60px;              /* pick your size */
+    height: 60px;
+
+    background: $yellow;      /* circle color */
+    color: #fff;
+    border: 2px solid black;
+
+    border-radius: 50%;
+
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    font-weight: 600;
+    text-decoration: none;
+    text-align: center;
+
+    box-shadow: 0 6px 18px rgba(0,0,0,0.25);
+    transition: transform .15s ease, box-shadow .15s ease;
+}
+
+.wc-shiny-cta-button:hover {
+    transform: translateY(-2px) scale(1.03);
+    box-shadow: 0 10px 24px rgba(0,0,0,0.3);
+}
+.wc-shiny-cta-button {
+    line-height: 1.1;
+    padding: 10px;
+}
+
+@media (max-width: 768px) {
+    .wc-shiny-cta-button {
+        width: 72px;
+        height: 72px;
+        font-size: 0.85rem;
+    }
+}
+
+// /* Image fade-out*/
+// .wc-home-shiny-cta::after {
+//     content: "";
+//     position: absolute;
+//     inset: 0;
+//     pointer-events: none;
+//     z-index: 2;
+
+//     background: linear-gradient(
+//         to right, #fff 0%, transparent 12%, transparent 88%, #fff 100%),
+//   linear-gradient(to bottom, #fff 0%, transparent 12%, transparent 88%, #fff 100%);
+// }
+/* Break out of Bootstrap container */
+.wc-fullbleed {
+    width: 100vw;
+    position: relative;
+    left: 50%;
+    right: 50%;
+    margin-left: -50vw;
+    margin-right: -50vw;
+}
+
+
+
+/* ================================
+   Homepage hero section: fill viewport
+   ================================ */
+#primary.site-main {
+    display: flex;
+    flex-direction: column;
+    min-height: 100vh; /* ensures hero + CTA fills viewport */
+}
+
+/* ================================
+   NAVIGATION LINK SPACING & FOOTER UNDERLINE FIX
+   ================================ */
+
+/* ----- Left nav link spacing ----- */
+#wrapper-navbar .navbar-nav {
+    display: flex;
+    flex-direction: row;
+    gap: 40px;   // adjust spacing between nav links here
+}
+
+#wrapper-navbar .nav-item {
+    margin: 0;   // remove any default Bootstrap spacing
+}
+
+
+/* Center taxonomy archive header content */
+.page-header {
+    text-align: center; // horizontally center all text inside
+
+    h1.page-title {
+        margin-bottom: 1rem; // optional spacing
+    }
+
+    .taxonomy-description,
+    p {
+        margin: 0.5rem 0; // space between paragraphs
+    }
+}
+/*======================================
+Styling Term History Page
+=======================================*/
+.term-editorial-notes {
+  margin: 0.25rem 0 1rem;
+  font-style: italic;
+  color: #444;
+  max-width: 70ch;
+}
+
+.term-archive-link {
+  font-size: 0.85em;
+  margin-left: 0.5rem;
+  font-weight: normal;
+
+}
+
+.centered-title {
+  text-align: center;
+}
+
+.term-toc {
+  text-align: center;
+  margin: 1.5rem 0 3rem;
+}
+
+.term-toc li {
+  margin: 0.25rem 0;
+}
+
+.term-toc a {
+  text-decoration: underline;
+}
+
+.centered-toc {
+    text-align: center;
+    margin: 2rem 0 3rem;
+}
+
+.toc-taxonomy-group {
+    margin-bottom: 2rem;
+}
+
+.toc-term-list {
+    list-style: none;
+    padding: 0;
+    margin: 0.75rem auto 2rem;
+
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+
+    gap: 0.75rem 1.25rem;
+    max-width: 100%;
+}
+
+.toc-term-list li {
+    white-space: nowrap;
+}
+
+.toc-term-list li::after {
+    content: "•";
+    margin-left: 0.75rem;
+    color: #999;
+}
+
+/*Homepage Video
+*/
+.wc-home-video-wrapper {
+    position: relative;
+    max-width: 1100px;     // controls how wide the video can get
+    margin: 0 auto;        // centers horizontally
+    padding: 0 1.25rem;    // side margins on small screens
+
+    overflow: hidden;
+}
+
+.wc-home-video {
+    width: 100%;
+    height: auto;
+    display: block;
+    object-fit: cover;
+}
+
+/* Button overlay */
+.wc-home-video-button {
+    position: absolute;
+    bottom: 50%;
+    left: 50%;
+    transform: translateX(-50%);
+
+    background: rgba(0,0,0,0.55);
+    color: #fff;
+    padding: 0.7em 1.4em;
+    border-radius: 999px;
+    text-decoration: none;
+    font-weight: 600;
+    letter-spacing: 0.02em;
+    backdrop-filter: blur(6px);
+    -webkit-backdrop-filter: blur(6px);
+
+    transition: transform 0.15s ease, background 0.15s ease, box-shadow 0.15s ease;
+}
+
+.wc-home-video-button:hover {
+    background: rgba(0,0,0,0.75);
+    transform: translateX(-50%) scale(1.06);
+    box-shadow: 0 6px 20px rgba(0,0,0,0.25);
 }

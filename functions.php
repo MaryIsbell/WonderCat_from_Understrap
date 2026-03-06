@@ -87,6 +87,46 @@ function understrap_child_customize_controls_js() {
 }
 add_action( 'customize_controls_enqueue_scripts', 'understrap_child_customize_controls_js' );
 
+//loads inc contents
+require_once get_theme_file_path( 'inc/acf.php' );
+
+/* Add USER EXPERIENCE to author archives */
+function ue_post_author_archive($query) {
+    if (!$query->is_main_query() || !$query->is_author()) {
+        return;
+    }
+    
+    $query->set('post_type', array('user-experience', 'post'));
+}
+add_action('pre_get_posts', 'ue_post_author_archive');
+
+// /*Allows users to set experiences to private through gravity form
+// add_action( 'gform_advancedpostcreation_post_after_creation_6', 'set_experience_private_status', 10, 3 );
+
+// function set_experience_private_status( $post_id, $entry, $form ) {
+
+//     if ( get_post_type( $post_id ) !== 'user-experience' ) {
+//         return;
+//     }
+
+//     // prevent multiple runs
+//     if ( get_post_meta( $post_id, '_visibility_processed', true ) ) {
+//         return;
+//     }
+
+//     $visibility = strtolower( trim( rgar( $entry, '26' ) ) );
+
+//     if ( $visibility === 'private' ) {
+//         wp_update_post([
+//             'ID' => $post_id,
+//             'post_status' => 'private',
+//         ]);
+//     }
+
+//     update_post_meta( $post_id, '_visibility_processed', 1 );
+// }*/
+
+
 
 // Include Wikidata Logic
 require_once dirname( __FILE__ ) . '/inc/wikidata.php';
