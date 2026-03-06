@@ -127,3 +127,111 @@ function wikidata_get_by_qid( $qid ) {
 
     return $wpdb->get_row( $sql );
 }
+
+/**
+ * Retrieve a single wikidata entity by database ID.
+ *
+ * @param int $id The database ID.
+ * @return object|null The entity record as an object, or null if not found.
+ */
+function wikidata_get_by_id( $id ) {
+    global $wpdb;
+
+    $table = wikidata_table_name();
+    $sql   = $wpdb->prepare(
+        "SELECT * FROM {$table} WHERE id = %d LIMIT 1",
+        $id
+    );
+
+    return $wpdb->get_row( $sql );
+}
+
+/**
+ * Get paginated and sorted list of wikidata entities.
+ *
+ * @param int    $per_page Number of items per page.
+ * @param int    $page_number Current page number (1-indexed).
+ * @param string $orderby Column to order by (default: 'id').
+ * @param string $order Order direction: 'ASC' or 'DESC' (default: 'DESC').
+ * @return array Array of entity objects.
+ */
+function wikidata_get_all( $per_page = 20, $page_number = 1, $orderby = 'id', $order = 'DESC' ) {
+    global $wpdb;
+
+    $table = wikidata_table_name();
+    
+    // Whitelist allowed orderby columns
+    $allowed_orderby = array( 'id', 'qid', 'label', 'created_at', 'updated_at' );
+    if ( ! in_array( $orderby, $allowed_orderby, true ) ) {
+        $orderby = 'id';
+    }
+
+    // Sanitize order direction
+    $order = strtoupper( $order ) === 'ASC' ? 'ASC' : 'DESC';
+
+    $offset = ( $page_number - 1 ) * $per_page;
+
+    $sql = $wpdb->prepare(
+        "SELECT * FROM {$table} ORDER BY {$orderby} {$order} LIMIT %d OFFSET %d",
+        $per_page,
+        $offset
+    );
+
+    return $wpdb->get_results( $sql );
+}
+
+/**
+ * Get total count of wikidata entities.
+ *
+ * @return int Total number of entities.
+ */
+function wikidata_get_total_count() {
+    global $wpdb;
+
+    $table = wikidata_table_name();
+    
+    return (int) $wpdb->get_var( "SELECT COUNT(*) FROM {$table}" );
+}
+
+/**
+ * Delete a wikidata entity by database ID.
+ *
+ * @param int $id The database ID.
+ * @return int|false The number of rows deleted, or false on error.
+ */
+function wikidata_delete_by_id( $id ) {
+    global $wpdb;
+
+    $table = wikidata_table_name();
+
+    return $wpdb->delete(
+        $table,
+        array( 'id' => $id ),
+        array( '%d' )
+    );
+}
+
+/**
+ * Update only the description field of a wikidata entity.
+ *
+ * @param int    $id The database ID.
+ * @param string $description The new description.
+ * @return int|false The number of rows updated, or false on error.
+ */
+function wikidata_update_description( $id, $description ) {
+    global $wpdb;
+
+    $table = wikidata_table_name();
+    $now   = current_time( 'mysql' );
+
+    return $wpdb->update(
+        $table,
+        array(
+            'description' => $description,
+            'updated_at'  => $now,
+        ),
+        array( 'id' => $id ),
+        array( '%s', '%s' ),
+        array( '%d' )
+    );
+}
