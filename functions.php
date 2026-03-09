@@ -126,3 +126,15 @@ add_action('pre_get_posts', 'ue_post_author_archive');
 //     update_post_meta( $post_id, '_visibility_processed', 1 );
 // }*/
 
+
+
+// Include Wikidata Logic
+require_once dirname( __FILE__ ) . '/inc/wikidata.php';
+
+add_action('after_switch_theme', 'wikidata_install_table');
+
+add_action('init', function () {
+	if (get_option('wikidata_schema_version') !== '1.0.0') {
+		wikidata_install_table();
+	}
+}, 5);
