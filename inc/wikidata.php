@@ -9,6 +9,7 @@ define('WONDERCAT_POST_TYPE', 'user-experience');
 require_once dirname(__FILE__) . '/wikidata/utilities.php';
 require_once dirname(__FILE__) . '/wikidata/table.php';
 require_once dirname(__FILE__) . '/wikidata/template-tags.php';
+require_once dirname(__FILE__) . '/wikidata/rewrite.php';
 
 // Load admin interface files when in admin context
 if ( is_admin() ) {
