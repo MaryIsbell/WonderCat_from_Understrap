@@ -1,4 +1,5 @@
 <?php
+
 /**
  * Template for displaying a single Wikidata entity by QID.
  *
@@ -10,55 +11,52 @@
  */
 
 // Exit if accessed directly.
-defined( 'ABSPATH' ) || exit;
+defined('ABSPATH') || exit;
 
 // Retrieve and validate the QID from the URL.
-$raw_qid = get_query_var( 'wikidata_qid', '' );
-$qid     = strtoupper( sanitize_text_field( $raw_qid ) );
+$raw_qid = get_query_var('wikidata_qid', '');
+$qid     = strtoupper(sanitize_text_field($raw_qid));
 
 // Validate QID format: must be Q followed by one or more digits.
-if ( ! preg_match( '/^Q[0-9]+$/', $qid ) ) {
+if (! preg_match('/^Q[0-9]+$/', $qid)) {
 	global $wp_query;
 	$wp_query->set_404();
-	status_header( 404 );
+	status_header(404);
 	nocache_headers();
 	include get_404_template();
 	exit;
 }
 
 // Look up the entity in the database.
-$entity = wikidata_get_by_qid( $qid );
+$entity = wikidata_get_by_qid($qid);
 
-if ( ! $entity ) {
+if (! $entity) {
 	global $wp_query;
 	$wp_query->set_404();
-	status_header( 404 );
+	status_header(404);
 	nocache_headers();
 	include get_404_template();
 	exit;
 }
 
-// Extract and format the publication date (P577) from stored JSON.
-$publication_date = null;
-
-if ( ! empty( $entity->json_data ) ) {
-	$json = json_decode( $entity->json_data, true );
-
-	if ( isset( $json['entities'][ $qid ]['claims']['P577'][0]['mainsnak']['datavalue']['value']['time'] ) ) {
-		$raw_time = $json['entities'][ $qid ]['claims']['P577'][0]['mainsnak']['datavalue']['value']['time'];
-
-		// Wikidata time format: +YYYY-MM-DDTHH:MM:SSZ — strip sign and time component.
-		$date_string = ltrim( $raw_time, '+-' );
-		$date_string = str_replace( 'T00:00:00Z', '', $date_string );
-
-		try {
-			$datetime         = new DateTime( $date_string );
-			$publication_date = $datetime->format( get_option( 'date_format' ) );
-		} catch ( Exception $e ) {
-			$publication_date = esc_html( $date_string );
-		}
-	}
-}
+// Build metadata values from the stored entity payload.
+$entity_data       = wikidata_decode_entity_row($entity, $qid);
+$prefetch_qids     = wikidata_entity_collect_referenced_qids($entity_data);
+wikidata_prefetch_entity_labels_by_qids($prefetch_qids);
+$publication_date  = get_wikidata_entity_publication_date($entity_data);
+$media_type_links  = get_wikidata_entity_media_type_links_html($entity_data);
+$country_links     = get_wikidata_entity_country_of_origin_links_html($entity_data);
+$genre_links       = get_wikidata_entity_genres_links_html($entity_data);
+$language_links    = get_wikidata_entity_languages_links_html($entity_data);
+$not_available     = __('Not available', 'understrap-child');
+$wikidata_url      = 'https://www.wikidata.org/wiki/' . rawurlencode($qid);
+$allowed_link_html = array(
+	'a' => array(
+		'href'   => array(),
+		'target' => array(),
+		'rel'    => array(),
+	),
+);
 
 // Build title for <head>.
 $page_title = $entity->label ? $entity->label : $qid;
@@ -66,33 +64,125 @@ $page_title = $entity->label ? $entity->label : $qid;
 // Render the page.
 get_header();
 
-$container = get_theme_mod( 'understrap_container_type' );
+$container = get_theme_mod('understrap_container_type');
 ?>
 
 <div class="wrapper" id="wikidata-entity-wrapper">
 
-	<div class="<?php echo esc_attr( $container ); ?>" id="content" tabindex="-1">
+	<div class="<?php echo esc_attr($container); ?>" id="content" tabindex="-1">
 
 		<div class="row">
 
-			<?php get_template_part( 'global-templates/left-sidebar-check' ); ?>
+			<?php get_template_part('global-templates/left-sidebar-check'); ?>
 
 			<main class="site-main" id="main">
 
-				<article class="wikidata-entity" id="wikidata-entity-<?php echo esc_attr( $qid ); ?>">
+				<article class="wikidata-entity" id="wikidata-entity-<?php echo esc_attr($qid); ?>">
 
-					<header class="entry-header">
-						<h1 class="entry-title"><?php echo esc_html( $page_title ); ?></h1>
-					</header>
+
 
 					<div class="entry-content">
 
-						<?php if ( $publication_date ) : ?>
-							<p class="wikidata-publication-date">
-								<strong><?php esc_html_e( 'Publication Date:', 'understrap-child' ); ?></strong>
-								<?php echo esc_html( $publication_date ); ?>
-							</p>
-						<?php endif; ?>
+
+
+						<dl class="wikidata-metadata" aria-label="<?php esc_attr_e('Wikidata metadata', 'understrap-child'); ?>">
+
+							<div class="row">
+								<header class="entry-header">
+									<h3 class="entry-title"><?php echo esc_html($page_title); ?></h3>
+								</header>
+							</div>
+
+							<div class="row">
+
+								<div class="col-12 col-md-6">
+									<dt class="fw-bold mb-0 d-inline">
+										<?php esc_html_e('Publication Date', 'understrap-child'); ?>
+									</dt>
+									<dd class="mb-0 d-inline">
+										<?php echo esc_html($publication_date ? $publication_date : $not_available); ?>
+									</dd>
+								</div>
+
+								<div class="col-12 col-md-6">
+									<dt class="fw-bold mb-0 d-inline">
+										<?php esc_html_e('Instance of', 'understrap-child'); ?>
+									</dt>
+									<dd class="mb-0 d-inline">
+										<?php if ($media_type_links) : ?>
+											<?php echo wp_kses($media_type_links, $allowed_link_html); ?>
+										<?php else : ?>
+											<?php echo esc_html($not_available); ?>
+										<?php endif; ?>
+									</dd>
+								</div>
+
+
+							</div>
+
+
+
+							<div class="row">
+
+								<div class="col-12 col-md-6">
+									<dt class="fw-bold mb-0 d-inline">
+										<?php esc_html_e('Country of Origin', 'understrap-child'); ?>
+									</dt>
+									<dd class="mb-0 d-inline">
+										<?php if ($country_links) : ?>
+											<?php echo wp_kses($country_links, $allowed_link_html); ?>
+										<?php else : ?>
+											<?php echo esc_html($not_available); ?>
+										<?php endif; ?>
+									</dd>
+								</div>
+
+								<div class="col-12 col-md-6">
+									<dt class="fw-bold mb-0 d-inline">
+										<?php esc_html_e('Genre(s)', 'understrap-child'); ?>
+									</dt>
+									<dd class="mb-0 d-inline">
+										<?php if ($genre_links) : ?>
+											<?php echo wp_kses($genre_links, $allowed_link_html); ?>
+										<?php else : ?>
+											<?php echo esc_html($not_available); ?>
+										<?php endif; ?>
+									</dd>
+								</div>
+
+
+							</div>
+
+
+							<div class="row">
+
+								<div class="col-12 col-md-6">
+									<dt class="fw-bold mb-0 d-inline">
+										<?php esc_html_e('Language', 'understrap-child'); ?>
+									</dt>
+									<dd class="mb-0 d-inline">
+										<?php if ($language_links) : ?>
+											<?php echo wp_kses($language_links, $allowed_link_html); ?>
+										<?php else : ?>
+											<?php echo esc_html($not_available); ?>
+										<?php endif; ?>
+									</dd>
+								</div>
+
+								<div class="col-12 col-md-6">
+									<dt class="fw-bold mb-0 d-inline">
+										<?php esc_html_e('Wikidata ID', 'understrap-child'); ?>
+									</dt>
+									<dd class="mb-0 d-inline">
+										<a href="<?php echo esc_url($wikidata_url); ?>" target="_blank" rel="noopener">
+											<?php echo esc_html($qid); ?>
+										</a>
+									</dd>
+								</div>
+
+
+							</div>
+						</dl>
 
 					</div><!-- .entry-content -->
 
@@ -111,14 +201,14 @@ $container = get_theme_mod( 'understrap_container_type' );
 					)
 				);
 
-				if ( $associated_posts->have_posts() ) :
-					?>
+				if ($associated_posts->have_posts()) :
+				?>
 					<section class="wikidata-associated-experiences">
-						<h2><?php esc_html_e( 'Story Experiences', 'understrap-child' ); ?></h2>
+						<h2><?php esc_html_e('Story Experiences', 'understrap-child'); ?></h2>
 						<?php
-						while ( $associated_posts->have_posts() ) {
+						while ($associated_posts->have_posts()) {
 							$associated_posts->the_post();
-							get_template_part( 'loop-templates/content-user-experience' );
+							get_template_part('loop-templates/content-user-experience');
 						}
 						wp_reset_postdata();
 						?>
@@ -127,7 +217,7 @@ $container = get_theme_mod( 'understrap_container_type' );
 
 			</main><!-- #main -->
 
-			<?php get_template_part( 'global-templates/right-sidebar-check' ); ?>
+			<?php get_template_part('global-templates/right-sidebar-check'); ?>
 
 		</div><!-- .row -->
 

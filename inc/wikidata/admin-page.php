@@ -166,43 +166,61 @@ function wikidata_handle_admin_actions() {
             ) );
             exit;
         } elseif ( $bulk_action === 'bulk_refresh' ) {
+            $entities_by_id = array();
+            $qids_to_fetch  = array();
+
             foreach ( $ids as $id ) {
                 $entity = wikidata_get_by_id( $id );
-                
-                if ( $entity ) {
-                    $json = wikidata_fetch_json_by_id( $entity->qid );
-                    
-                    if ( $json ) {
-                        // Decode to extract label and description
-                        $data = json_decode( $json, true );
-                        $label = null;
-                        $description = null;
-                        
-                        if ( isset( $data['entities'][ $entity->qid ] ) ) {
-                            $entity_data = $data['entities'][ $entity->qid ];
-                            
-                            if ( isset( $entity_data['labels']['en']['value'] ) ) {
-                                $label = $entity_data['labels']['en']['value'];
-                            }
-                            
-                            if ( isset( $entity_data['descriptions']['en']['value'] ) ) {
-                                $description = $entity_data['descriptions']['en']['value'];
-                            }
-                        }
-                        
-                        wikidata_upsert(
-                            $entity->qid,
-                            wikidata_get_rest_api_url( $entity->qid ),
-                            $label ?: $entity->label,
-                            $description ?: $entity->description,
-                            $json
-                        );
-                        
-                        $count++;
-                    } else {
-                        $errors++;
+
+                if ( ! $entity ) {
+                    $errors++;
+                    continue;
+                }
+
+                $normalized_qid = wikidata_normalize_qid( $entity->qid );
+
+                if ( ! $normalized_qid ) {
+                    $errors++;
+                    continue;
+                }
+
+                $entities_by_id[ $normalized_qid ] = $entity;
+                $qids_to_fetch[]                   = $normalized_qid;
+            }
+
+            $json_map = wikidata_batch_fetch_json_by_ids( $qids_to_fetch, true );
+
+            foreach ( $entities_by_id as $qid => $entity ) {
+                if ( empty( $json_map[ $qid ] ) ) {
+                    $errors++;
+                    continue;
+                }
+
+                $data        = json_decode( $json_map[ $qid ], true );
+                $label       = null;
+                $description = null;
+
+                if ( isset( $data['entities'][ $qid ] ) ) {
+                    $entity_data = $data['entities'][ $qid ];
+
+                    if ( isset( $entity_data['labels']['en']['value'] ) ) {
+                        $label = $entity_data['labels']['en']['value'];
+                    }
+
+                    if ( isset( $entity_data['descriptions']['en']['value'] ) ) {
+                        $description = $entity_data['descriptions']['en']['value'];
                     }
                 }
+
+                wikidata_upsert(
+                    $qid,
+                    wikidata_get_rest_api_url( $qid ),
+                    $label ?: $entity->label,
+                    $description ?: $entity->description,
+                    $json_map[ $qid ]
+                );
+
+                $count++;
             }
             
             wp_redirect( add_query_arg(

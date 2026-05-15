@@ -515,6 +515,554 @@ function the_wikidata_claim_time($property, $post_id = null, $format = 'Y-m-d', 
 }
 
 /**
+ * Decode a wikidata_entities table row into an entity payload.
+ *
+ * @param object      $entity_row A row object from wikidata_get_by_qid().
+ * @param string|null $qid        Optional. QID for a specific entity in payload.
+ * @return array|null Decoded entity payload or null.
+ */
+function wikidata_decode_entity_row($entity_row, $qid = null) {
+    if (!$entity_row || empty($entity_row->json_data)) {
+        return null;
+    }
+
+    $decoded = json_decode($entity_row->json_data, true);
+
+    if (!is_array($decoded) || empty($decoded['entities']) || !is_array($decoded['entities'])) {
+        return null;
+    }
+
+    if ($qid !== null) {
+        $qid = strtoupper(sanitize_text_field($qid));
+
+        if (isset($decoded['entities'][$qid]) && is_array($decoded['entities'][$qid])) {
+            return $decoded['entities'][$qid];
+        }
+
+        return null;
+    }
+
+    $first = reset($decoded['entities']);
+
+    return is_array($first) ? $first : null;
+}
+
+/**
+ * Get all raw datavalue payloads for a Wikidata claim property.
+ *
+ * @param array  $entity_data Entity payload array.
+ * @param string $property    Wikidata property ID.
+ * @return array Array of datavalue payloads.
+ */
+function wikidata_entity_get_claim_datavalues($entity_data, $property) {
+    if (!is_array($entity_data) || empty($entity_data['claims'][$property]) || !is_array($entity_data['claims'][$property])) {
+        return array();
+    }
+
+    $values = array();
+
+    foreach ($entity_data['claims'][$property] as $claim) {
+        if (!isset($claim['mainsnak']['datavalue']['value'])) {
+            continue;
+        }
+
+        $values[] = $claim['mainsnak']['datavalue']['value'];
+    }
+
+    return $values;
+}
+
+/**
+ * Extract referenced QIDs from claim datavalue payloads.
+ *
+ * @param array $values Claim datavalue payloads.
+ * @return array<string> Unique referenced QIDs.
+ */
+function wikidata_entity_extract_qids_from_datavalues($values) {
+    if (!is_array($values) || empty($values)) {
+        return array();
+    }
+
+    $qids = array();
+
+    foreach ($values as $value) {
+        if (is_array($value) && isset($value['id']) && is_string($value['id'])) {
+            $qid = wikidata_normalize_qid($value['id']);
+        } elseif (is_array($value) && isset($value['numeric-id'])) {
+            $qid = wikidata_normalize_qid('Q' . absint($value['numeric-id']));
+        } else {
+            $qid = null;
+        }
+
+        if ($qid) {
+            $qids[] = $qid;
+        }
+    }
+
+    return array_values(array_unique($qids));
+}
+
+/**
+ * Resolve labels for missing QIDs by fetching and persisting missing rows.
+ *
+ * @param array       $qids List of QIDs to ensure are available locally.
+ * @param string|null $lang Optional. Language code.
+ * @return void
+ */
+function wikidata_prefetch_entity_labels_by_qids($qids, $lang = null) {
+    if (!is_array($qids) || empty($qids)) {
+        return;
+    }
+
+    $lang = $lang ?: wikidata_get_site_language();
+
+    $normalized_qids = array();
+    $missing_qids    = array();
+    $stale_qids      = array();
+
+    foreach ($qids as $qid) {
+        $normalized_qid = wikidata_normalize_qid($qid);
+
+        if (!$normalized_qid) {
+            continue;
+        }
+
+        $normalized_qids[] = $normalized_qid;
+    }
+
+    $normalized_qids = array_values(array_unique($normalized_qids));
+
+    if (empty($normalized_qids)) {
+        return;
+    }
+
+    foreach ($normalized_qids as $qid) {
+        $entity_row = wikidata_get_by_qid($qid);
+
+        if (!$entity_row) {
+            $missing_qids[] = $qid;
+            continue;
+        }
+
+        if (wikidata_entity_row_is_stale($entity_row)) {
+            $stale_qids[] = $qid;
+        }
+    }
+
+    if (!empty($stale_qids)) {
+        wikidata_schedule_refresh_batch($stale_qids);
+    }
+
+    if (empty($missing_qids)) {
+        return;
+    }
+
+    $json_map = wikidata_batch_fetch_json_by_ids($missing_qids);
+
+    if (empty($json_map)) {
+        return;
+    }
+
+    foreach ($missing_qids as $qid) {
+        if (empty($json_map[$qid])) {
+            continue;
+        }
+
+        $entity_data  = json_decode($json_map[$qid], true);
+        $label        = null;
+        $description  = null;
+
+        if (isset($entity_data['entities'][$qid]) && is_array($entity_data['entities'][$qid])) {
+            $decoded_entity = $entity_data['entities'][$qid];
+
+            if (isset($decoded_entity['labels'][$lang]['value']) && is_string($decoded_entity['labels'][$lang]['value'])) {
+                $label = $decoded_entity['labels'][$lang]['value'];
+            } elseif (isset($decoded_entity['labels']['en']['value']) && is_string($decoded_entity['labels']['en']['value'])) {
+                $label = $decoded_entity['labels']['en']['value'];
+            }
+
+            if (isset($decoded_entity['descriptions'][$lang]['value']) && is_string($decoded_entity['descriptions'][$lang]['value'])) {
+                $description = $decoded_entity['descriptions'][$lang]['value'];
+            } elseif (isset($decoded_entity['descriptions']['en']['value']) && is_string($decoded_entity['descriptions']['en']['value'])) {
+                $description = $decoded_entity['descriptions']['en']['value'];
+            }
+        }
+
+        wikidata_upsert(
+            $qid,
+            wikidata_get_rest_api_url($qid),
+            $label ?: $qid,
+            $description,
+            $json_map[$qid]
+        );
+    }
+}
+
+/**
+ * Collect referenced QIDs from multiple claim properties.
+ *
+ * @param array $entity_data Entity payload array.
+ * @param array $properties  Optional. Claim properties to inspect.
+ * @return array<string> Unique QID list.
+ */
+function wikidata_entity_collect_referenced_qids($entity_data, $properties = array('P31', 'P495', 'P17', 'P136', 'P407')) {
+    if (!is_array($entity_data) || empty($properties)) {
+        return array();
+    }
+
+    $qids = array();
+
+    foreach ($properties as $property) {
+        $values = wikidata_entity_get_claim_datavalues($entity_data, $property);
+
+        if (empty($values)) {
+            continue;
+        }
+
+        $qids = array_merge($qids, wikidata_entity_extract_qids_from_datavalues($values));
+    }
+
+    return array_values(array_unique($qids));
+}
+
+/**
+ * Get structured claim entity items preserving QID and label.
+ *
+ * @param array       $entity_data Entity payload array.
+ * @param string      $property    Wikidata property ID.
+ * @param string|null $lang        Optional. Language code.
+ * @return array<int,array{qid:string,label:string,url:string}> Structured items.
+ */
+function wikidata_entity_get_claim_entity_items($entity_data, $property, $lang = null) {
+    $lang   = $lang ?: wikidata_get_site_language();
+    $values = wikidata_entity_get_claim_datavalues($entity_data, $property);
+
+    if (empty($values)) {
+        return array();
+    }
+
+    $qids = wikidata_entity_extract_qids_from_datavalues($values);
+
+    if (!empty($qids)) {
+        wikidata_prefetch_entity_labels_by_qids($qids, $lang);
+    }
+
+    $items = array();
+
+    foreach ($qids as $qid) {
+        $label = wikidata_get_entity_label_by_qid($qid, $lang);
+
+        if ($label === '') {
+            continue;
+        }
+
+        $items[$qid] = array(
+            'qid'   => $qid,
+            'label' => $label,
+            'url'   => 'https://www.wikidata.org/wiki/' . rawurlencode($qid),
+        );
+    }
+
+    return array_values($items);
+}
+
+/**
+ * Get linked HTML for entity-reference claim values.
+ *
+ * @param array       $entity_data Entity payload array.
+ * @param string      $property    Wikidata property ID.
+ * @param string|null $lang        Optional. Language code.
+ * @param string      $separator   Optional. Separator string.
+ * @return string|null Linked HTML string or null.
+ */
+function wikidata_entity_get_claim_entity_links_html($entity_data, $property, $lang = null, $separator = ', ') {
+    $items = wikidata_entity_get_claim_entity_items($entity_data, $property, $lang);
+
+    if (empty($items)) {
+        return null;
+    }
+
+    $links = array();
+
+    foreach ($items as $item) {
+        $links[] = sprintf(
+            '<a href="%s" target="_blank" rel="noopener">%s</a>',
+            esc_url($item['url']),
+            esc_html($item['label'])
+        );
+    }
+
+    return implode($separator, $links);
+}
+
+/**
+ * Convenience linked HTML accessor for media type (P31).
+ *
+ * @param array       $entity_data Entity payload array.
+ * @param string|null $lang        Optional. Language code.
+ * @return string|null Linked HTML string.
+ */
+function get_wikidata_entity_media_type_links_html($entity_data, $lang = null) {
+    return wikidata_entity_get_claim_entity_links_html($entity_data, 'P31', $lang);
+}
+
+/**
+ * Convenience linked HTML accessor for country of origin.
+ *
+ * @param array       $entity_data Entity payload array.
+ * @param string|null $lang        Optional. Language code.
+ * @return string|null Linked HTML string.
+ */
+function get_wikidata_entity_country_of_origin_links_html($entity_data, $lang = null) {
+    $country = wikidata_entity_get_claim_entity_links_html($entity_data, 'P495', $lang);
+
+    if ($country !== null) {
+        return $country;
+    }
+
+    return wikidata_entity_get_claim_entity_links_html($entity_data, 'P17', $lang);
+}
+
+/**
+ * Convenience linked HTML accessor for genres (P136).
+ *
+ * @param array       $entity_data Entity payload array.
+ * @param string|null $lang        Optional. Language code.
+ * @return string|null Linked HTML string.
+ */
+function get_wikidata_entity_genres_links_html($entity_data, $lang = null) {
+    return wikidata_entity_get_claim_entity_links_html($entity_data, 'P136', $lang);
+}
+
+/**
+ * Convenience linked HTML accessor for languages (P407).
+ *
+ * @param array       $entity_data Entity payload array.
+ * @param string|null $lang        Optional. Language code.
+ * @return string|null Linked HTML string.
+ */
+function get_wikidata_entity_languages_links_html($entity_data, $lang = null) {
+    return wikidata_entity_get_claim_entity_links_html($entity_data, 'P407', $lang);
+}
+
+/**
+ * Resolve a label for any Wikidata QID from local storage.
+ *
+ * @param string      $qid  Wikidata QID.
+ * @param string|null $lang Optional. Language code.
+ * @return string Label when available, otherwise the QID.
+ */
+function wikidata_get_entity_label_by_qid($qid, $lang = null) {
+    static $cache = array();
+
+    $qid = strtoupper(sanitize_text_field($qid));
+
+    if (!preg_match('/^Q[0-9]+$/', $qid)) {
+        return '';
+    }
+
+    $lang = $lang ?: wikidata_get_site_language();
+    $key  = $qid . ':' . $lang;
+
+    if (isset($cache[$key])) {
+        return $cache[$key];
+    }
+
+    $entity_row = wikidata_get_by_qid($qid);
+
+    if (!$entity_row) {
+        wikidata_prefetch_entity_labels_by_qids(array($qid), $lang);
+        $entity_row = wikidata_get_by_qid($qid);
+
+        if (!$entity_row) {
+            $cache[$key] = $qid;
+            return $cache[$key];
+        }
+    }
+
+    if (wikidata_entity_row_is_stale($entity_row)) {
+        wikidata_schedule_refresh_qid($qid);
+    }
+
+    $entity_data = wikidata_decode_entity_row($entity_row, $qid);
+
+    if (is_array($entity_data)) {
+        if (isset($entity_data['labels'][$lang]['value']) && is_string($entity_data['labels'][$lang]['value'])) {
+            $cache[$key] = $entity_data['labels'][$lang]['value'];
+            return $cache[$key];
+        }
+
+        if (isset($entity_data['labels']['en']['value']) && is_string($entity_data['labels']['en']['value'])) {
+            $cache[$key] = $entity_data['labels']['en']['value'];
+            return $cache[$key];
+        }
+    }
+
+    if (!empty($entity_row->label)) {
+        $cache[$key] = $entity_row->label;
+        return $cache[$key];
+    }
+
+    $cache[$key] = $qid;
+    return $cache[$key];
+}
+
+/**
+ * Get resolved labels for entity-id claims (e.g., P31, P136, P407).
+ *
+ * @param array       $entity_data Entity payload array.
+ * @param string      $property    Wikidata property ID.
+ * @param string|null $lang        Optional. Language code.
+ * @return array Deduplicated label list.
+ */
+function wikidata_entity_get_claim_entity_labels($entity_data, $property, $lang = null) {
+    $lang   = $lang ?: wikidata_get_site_language();
+    $values = wikidata_entity_get_claim_datavalues($entity_data, $property);
+
+    if (empty($values)) {
+        return array();
+    }
+
+    $qids = wikidata_entity_extract_qids_from_datavalues($values);
+
+    if (!empty($qids)) {
+        wikidata_prefetch_entity_labels_by_qids($qids, $lang);
+    }
+
+    $labels = array();
+
+    foreach ($values as $value) {
+        $qid = null;
+
+        if (is_array($value) && isset($value['id']) && is_string($value['id'])) {
+            $qid = strtoupper($value['id']);
+        } elseif (is_array($value) && isset($value['numeric-id'])) {
+            $qid = 'Q' . absint($value['numeric-id']);
+        }
+
+        if (!$qid) {
+            continue;
+        }
+
+        $label = wikidata_get_entity_label_by_qid($qid, $lang);
+
+        if ($label !== '') {
+            $labels[] = $label;
+        }
+    }
+
+    return array_values(array_unique($labels));
+}
+
+/**
+ * Get a joined label string for entity-id claims.
+ *
+ * @param array       $entity_data Entity payload array.
+ * @param string      $property    Wikidata property ID.
+ * @param string|null $lang        Optional. Language code.
+ * @param string      $separator   Optional. Separator string.
+ * @return string|null Joined label string or null.
+ */
+function wikidata_entity_get_claim_entity_labels_string($entity_data, $property, $lang = null, $separator = ', ') {
+    $labels = wikidata_entity_get_claim_entity_labels($entity_data, $property, $lang);
+
+    if (empty($labels)) {
+        return null;
+    }
+
+    return implode($separator, $labels);
+}
+
+/**
+ * Get a formatted time value for an entity claim.
+ *
+ * @param array  $entity_data Entity payload array.
+ * @param string $property    Wikidata property ID.
+ * @param string $format      Optional. PHP date format.
+ * @param int    $index       Optional. Claim index.
+ * @return string|null Formatted date string or null.
+ */
+function wikidata_entity_get_claim_time($entity_data, $property, $format = 'Y-m-d', $index = 0) {
+    $values = wikidata_entity_get_claim_datavalues($entity_data, $property);
+
+    if (!isset($values[$index]['time']) || !is_string($values[$index]['time'])) {
+        return null;
+    }
+
+    $time_string = ltrim($values[$index]['time'], '+-');
+    $time_string = str_replace('T00:00:00Z', '', $time_string);
+
+    try {
+        $datetime = new DateTime($time_string);
+        return $datetime->format($format);
+    } catch (Exception $e) {
+        return $time_string;
+    }
+}
+
+/**
+ * Convenience accessor for media type (P31).
+ *
+ * @param array       $entity_data Entity payload array.
+ * @param string|null $lang        Optional. Language code.
+ * @return string|null Media type label.
+ */
+function get_wikidata_entity_media_type($entity_data, $lang = null) {
+    return wikidata_entity_get_claim_entity_labels_string($entity_data, 'P31', $lang);
+}
+
+/**
+ * Convenience accessor for country of origin (P495, fallback P17).
+ *
+ * @param array       $entity_data Entity payload array.
+ * @param string|null $lang        Optional. Language code.
+ * @return string|null Country label.
+ */
+function get_wikidata_entity_country_of_origin($entity_data, $lang = null) {
+    $country = wikidata_entity_get_claim_entity_labels_string($entity_data, 'P495', $lang);
+
+    if ($country !== null) {
+        return $country;
+    }
+
+    return wikidata_entity_get_claim_entity_labels_string($entity_data, 'P17', $lang);
+}
+
+/**
+ * Convenience accessor for genres (P136).
+ *
+ * @param array       $entity_data Entity payload array.
+ * @param string|null $lang        Optional. Language code.
+ * @return string|null Genre labels.
+ */
+function get_wikidata_entity_genres($entity_data, $lang = null) {
+    return wikidata_entity_get_claim_entity_labels_string($entity_data, 'P136', $lang);
+}
+
+/**
+ * Convenience accessor for language (P407).
+ *
+ * @param array       $entity_data Entity payload array.
+ * @param string|null $lang        Optional. Language code.
+ * @return string|null Language labels.
+ */
+function get_wikidata_entity_languages($entity_data, $lang = null) {
+    return wikidata_entity_get_claim_entity_labels_string($entity_data, 'P407', $lang);
+}
+
+/**
+ * Convenience accessor for publication date (P577).
+ *
+ * @param array       $entity_data Entity payload array.
+ * @param string|null $format      Optional. PHP date format.
+ * @return string|null Publication date.
+ */
+function get_wikidata_entity_publication_date($entity_data, $format = null) {
+    $format = $format ?: get_option('date_format');
+    return wikidata_entity_get_claim_time($entity_data, 'P577', $format);
+}
+
+/**
  * Check if a post has Wikidata information.
  * 
  * @param int|null $post_id Optional. The post ID. Defaults to current post.
