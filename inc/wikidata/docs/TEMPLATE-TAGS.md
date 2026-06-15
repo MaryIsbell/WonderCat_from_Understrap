@@ -1,6 +1,6 @@
 # Wikidata Template Tags Documentation
 
-**Version:** 1.0.0  
+**Version:** 1.1.0  
 **For:** WordPress Theme Developers
 
 ## Overview
@@ -416,6 +416,122 @@ $label = wikidata_get_value('labels.fr.value', null, array(
 $desc = wikidata_get_value('descriptions.{lang}.value', null, array(
     'lang' => 'es'
 ));
+```
+
+---
+
+### Entity Template Helpers
+
+These helpers are designed for direct Wikidata entity pages (for example [wikidata-entity.php](wikidata-entity.php)) where you already have a row from `wikidata_get_by_qid()` and are not working inside The Loop.
+
+#### `wikidata_decode_entity_row($entity_row, $qid)`
+
+Decode a `wikidata_entities` row into a single entity payload array.
+
+**Parameters:**
+- `$entity_row` (object) - Row object returned by `wikidata_get_by_qid()`.
+- `$qid` (string|null) - Optional. QID to extract from the payload.
+
+**Returns:** `array|null`
+
+**Example:**
+```php
+$entity = wikidata_get_by_qid('Q42');
+$entity_data = wikidata_decode_entity_row($entity, 'Q42');
+```
+
+#### `wikidata_get_entity_label_by_qid($qid, $lang)`
+
+Resolve a label for any referenced QID using locally stored Wikidata rows.
+
+**Parameters:**
+- `$qid` (string) - QID to resolve.
+- `$lang` (string|null) - Optional. Language code.
+
+**Returns:** `string` - Label when available, otherwise the QID.
+
+#### `wikidata_entity_get_claim_datavalues($entity_data, $property)`
+
+Get all raw `datavalue.value` payloads for a property from an entity payload.
+
+**Parameters:**
+- `$entity_data` (array) - Decoded entity payload.
+- `$property` (string) - Wikidata property ID (for example `P136`).
+
+**Returns:** `array`
+
+#### `wikidata_entity_get_claim_entity_labels($entity_data, $property, $lang)`
+
+Resolve all entity-reference claim values to labels.
+
+**Parameters:**
+- `$entity_data` (array) - Decoded entity payload.
+- `$property` (string) - Wikidata property ID.
+- `$lang` (string|null) - Optional. Language code.
+
+**Returns:** `array` - Deduplicated labels.
+
+#### `wikidata_entity_get_claim_entity_labels_string($entity_data, $property, $lang, $separator)`
+
+Get a joined string from `wikidata_entity_get_claim_entity_labels()`.
+
+**Returns:** `string|null`
+
+#### `wikidata_entity_get_claim_time($entity_data, $property, $format, $index)`
+
+Format a time claim from entity payload data.
+
+**Returns:** `string|null`
+
+#### Entity Metadata Convenience Functions
+
+These are shortcuts for commonly displayed fields on an entity page:
+
+- `get_wikidata_entity_media_type($entity_data, $lang)` -> `P31`
+- `get_wikidata_entity_country_of_origin($entity_data, $lang)` -> `P495` (fallback `P17`)
+- `get_wikidata_entity_genres($entity_data, $lang)` -> `P136`
+- `get_wikidata_entity_languages($entity_data, $lang)` -> `P407`
+- `get_wikidata_entity_publication_date($entity_data, $format)` -> `P577`
+
+#### Entity Metadata Block Example
+
+```php
+<?php
+$entity_data       = wikidata_decode_entity_row($entity, $qid);
+$publication_date  = get_wikidata_entity_publication_date($entity_data);
+$media_type        = get_wikidata_entity_media_type($entity_data);
+$country_of_origin = get_wikidata_entity_country_of_origin($entity_data);
+$genres            = get_wikidata_entity_genres($entity_data);
+$languages         = get_wikidata_entity_languages($entity_data);
+$not_available     = __('Not available', 'understrap-child');
+?>
+
+<dl class="wikidata-metadata mb-0" aria-label="<?php esc_attr_e('Wikidata metadata', 'understrap-child'); ?>">
+    <div class="row gy-2 py-3 border-bottom align-items-start">
+        <dt class="col-12 col-md-4 fw-bold mb-0"><?php esc_html_e('Publication Date', 'understrap-child'); ?></dt>
+        <dd class="col-12 col-md-8 mb-0"><?php echo esc_html($publication_date ?: $not_available); ?></dd>
+    </div>
+
+    <div class="row gy-2 py-3 border-bottom align-items-start">
+        <dt class="col-12 col-md-4 fw-bold mb-0"><?php esc_html_e('Type of Media', 'understrap-child'); ?></dt>
+        <dd class="col-12 col-md-8 mb-0"><?php echo esc_html($media_type ?: $not_available); ?></dd>
+    </div>
+
+    <div class="row gy-2 py-3 border-bottom align-items-start">
+        <dt class="col-12 col-md-4 fw-bold mb-0"><?php esc_html_e('Country of Origin', 'understrap-child'); ?></dt>
+        <dd class="col-12 col-md-8 mb-0"><?php echo esc_html($country_of_origin ?: $not_available); ?></dd>
+    </div>
+
+    <div class="row gy-2 py-3 border-bottom align-items-start">
+        <dt class="col-12 col-md-4 fw-bold mb-0"><?php esc_html_e('Genre(s)', 'understrap-child'); ?></dt>
+        <dd class="col-12 col-md-8 mb-0"><?php echo esc_html($genres ?: $not_available); ?></dd>
+    </div>
+
+    <div class="row gy-2 py-3 border-bottom align-items-start">
+        <dt class="col-12 col-md-4 fw-bold mb-0"><?php esc_html_e('Language', 'understrap-child'); ?></dt>
+        <dd class="col-12 col-md-8 mb-0"><?php echo esc_html($languages ?: $not_available); ?></dd>
+    </div>
+</dl>
 ```
 
 ---

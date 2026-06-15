@@ -132,6 +132,7 @@ add_action('pre_get_posts', 'ue_post_author_archive');
 require_once dirname( __FILE__ ) . '/inc/wikidata.php';
 
 add_action('after_switch_theme', 'wikidata_install_table');
+add_action('after_switch_theme', 'flush_rewrite_rules');
 
 add_action('init', function () {
 	if (get_option('wikidata_schema_version') !== '1.0.0') {

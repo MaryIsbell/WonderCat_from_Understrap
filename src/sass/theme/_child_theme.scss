@@ -257,6 +257,23 @@ body.page-template-experience-glossary .page-content {
   bottom: 0;
 }
 
+/* ================================
+   Wikidata Entity Metadata
+   ================================ */
+
+.wikidata-metadata {
+  margin-top: 1.5rem;
+  border: 2px solid gold;
+  padding: 1.5em;
+  border-radius: 15px;
+  box-shadow: 2px 2px 6px #5e5e5e57
+
+}
+
+.wikidata-metadata a {
+  text-underline-offset: 0.15em;
+}
+
 
 /* ================================
    Footer

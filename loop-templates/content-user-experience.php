@@ -44,6 +44,7 @@ if ( ! empty( $technology_terms ) && ! is_wp_error( $technology_terms ) ) {
 
 // Other fields
 $feature = get_field( 'feature', $post_id );
+$qid     = get_field( WONDERCAT_QID_FIELD, $post_id );
 
 // Trim feature text only inside the homepage slider
 if ( $is_slider && ! empty( $feature ) ) {
@@ -68,7 +69,13 @@ $container_class = $is_slider ? 'bento_container bento_slider' : 'bento_containe
 
         <div class="col-md-6">
             <div class="button_creative_work">
-                <?php echo esc_html( $title_of_creative_work ); ?>
+                <?php if ( $qid && $title_of_creative_work ) : ?>
+                    <a href="<?php echo esc_url( home_url( '/wikidata/' . $qid ) ); ?>">
+                        <?php echo esc_html( $title_of_creative_work ); ?>
+                    </a>
+                <?php else : ?>
+                    <?php echo esc_html( $title_of_creative_work ); ?>
+                <?php endif; ?>
             </div>
 
             <div class="button_experience">
