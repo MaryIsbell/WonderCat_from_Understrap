@@ -85,7 +85,7 @@ $container = get_theme_mod('understrap_container_type');
 
 
 
-						<dl class="wikidata-metadata" aria-label="<?php esc_attr_e('Wikidata metadata', 'understrap-child'); ?>">
+						<dl class="wikidata-metadata m-5" aria-label="<?php esc_attr_e('Wikidata metadata', 'understrap-child'); ?>">
 
 							<div class="row">
 								<header class="entry-header">
@@ -93,16 +93,9 @@ $container = get_theme_mod('understrap_container_type');
 								</header>
 							</div>
 
-							<div class="row">
+							<div class="row mb-2">
 
-								<div class="col-12 col-md-6">
-									<dt class="fw-bold mb-0 d-inline">
-										<?php esc_html_e('Publication Date', 'understrap-child'); ?>
-									</dt>
-									<dd class="mb-0 d-inline">
-										<?php echo esc_html($publication_date ? $publication_date : $not_available); ?>
-									</dd>
-								</div>
+
 
 								<div class="col-12 col-md-6">
 									<dt class="fw-bold mb-0 d-inline">
@@ -118,12 +111,6 @@ $container = get_theme_mod('understrap_container_type');
 								</div>
 
 
-							</div>
-
-
-
-							<div class="row">
-
 								<div class="col-12 col-md-6">
 									<dt class="fw-bold mb-0 d-inline">
 										<?php esc_html_e('Country of Origin', 'understrap-child'); ?>
@@ -137,9 +124,18 @@ $container = get_theme_mod('understrap_container_type');
 									</dd>
 								</div>
 
+
+							</div>
+
+
+
+							<div class="row mb-2">
+
+
+
 								<div class="col-12 col-md-6">
 									<dt class="fw-bold mb-0 d-inline">
-										<?php esc_html_e('Genre(s)', 'understrap-child'); ?>
+										<?php esc_html_e('Genre', 'understrap-child'); ?>
 									</dt>
 									<dd class="mb-0 d-inline">
 										<?php if ($genre_links) : ?>
@@ -149,12 +145,6 @@ $container = get_theme_mod('understrap_container_type');
 										<?php endif; ?>
 									</dd>
 								</div>
-
-
-							</div>
-
-
-							<div class="row">
 
 								<div class="col-12 col-md-6">
 									<dt class="fw-bold mb-0 d-inline">
@@ -169,6 +159,14 @@ $container = get_theme_mod('understrap_container_type');
 									</dd>
 								</div>
 
+
+							</div>
+
+
+							<div class="row mb-2">
+
+
+
 								<div class="col-12 col-md-6">
 									<dt class="fw-bold mb-0 d-inline">
 										<?php esc_html_e('Wikidata ID', 'understrap-child'); ?>
@@ -177,6 +175,15 @@ $container = get_theme_mod('understrap_container_type');
 										<a href="<?php echo esc_url($wikidata_url); ?>" target="_blank" rel="noopener">
 											<?php echo esc_html($qid); ?>
 										</a>
+									</dd>
+								</div>
+
+								<div class="col-12 col-md-6">
+									<dt class="fw-bold mb-0 d-inline">
+										<?php esc_html_e('Publication Date', 'understrap-child'); ?>
+									</dt>
+									<dd class="mb-0 d-inline">
+										<?php echo esc_html($publication_date ? $publication_date : $not_available); ?>
 									</dd>
 								</div>
 
