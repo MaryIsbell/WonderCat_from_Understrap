@@ -26,6 +26,7 @@
 !.gitattributes
 !.github
 !.gitignore
+!.wp-env.json
 
 # Ignore all files with .lock extentions
 *.lock
@@ -50,3 +51,6 @@ phpcs.xml
 dist/
 dist-product/
 **/img
+
+# wp-env local-only overrides can contain licensed plugin paths.
+.wp-env.override.json
