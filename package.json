@@ -5,6 +5,7 @@
   "main": "index.js",
   "scripts": {
     "bs": "browser-sync start --config src/build/browser-sync.config.js",
+    "bs:wp-env": "BROWSERSYNC_PROXY=http://localhost:8888 browser-sync start --config src/build/browser-sync.config.js",
     "css": "npm-run-all css-compile css-postcss css-minify",
     "css-compile": "sass --style expanded --source-map --embed-sources --no-error-css --quiet src/sass/child-theme.scss:css/child-theme.css src/sass/custom-editor-style.scss:css/custom-editor-style.css",
     "css-minify": "cleancss -O1 --format breakWith=lf --with-rebase --source-map --source-map-inline-sources --output css/ --batch --batch-suffix \".min\" \"css/*.css\" \"!css/*.min.css\" \"!css/*rtl*.css\"",
@@ -19,7 +20,16 @@
     "copy-assets": "node src/build/copy-assets.js",
     "dist": "npm-run-all --parallel css js",
     "dist-build": "node src/build/dist-build.js",
-    "dist-clean": "node src/build/dist-clean.js"
+    "dist-clean": "node src/build/dist-clean.js",
+    "wp-env:start": "wp-env start",
+    "wp-env:stop": "wp-env stop",
+    "wp-env:destroy": "wp-env destroy",
+    "wp-env:logs": "wp-env logs",
+    "wp-env:cli": "wp-env run cli",
+    "wp-env:acf-sync": "wp-env run cli sh -lc 'wp eval-file wp-content/themes/wondercat/scripts/wp-env/acf-sync.php'",
+    "wp-env:acf-sync:force": "wp-env run cli sh -lc 'WONDERCAT_ACF_SYNC_FORCE=1 wp eval-file wp-content/themes/wondercat/scripts/wp-env/acf-sync.php'",
+    "wp-env:gf-import": "wp-env run cli sh -lc 'wp eval-file wp-content/themes/wondercat/scripts/wp-env/gf-import.php'",
+    "wp-env:gf-import:force": "wp-env run cli sh -lc 'WONDERCAT_GF_IMPORT_FORCE=1 wp eval-file wp-content/themes/wondercat/scripts/wp-env/gf-import.php'"
   },
   "engines": {
     "node": ">=14"

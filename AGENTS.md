@@ -16,13 +16,24 @@ For general project background, see [.github/README.md](.github/README.md).
 1. Install dependencies:
    - `npm install`
    - `composer install`
-2. Build assets:
+2. Start local WordPress runtime:
+   - `npm run wp-env:start`
+3. Build assets:
    - `npm run dist`
-3. Run PHP checks before finalizing PHP changes:
+4. Run PHP checks before finalizing PHP changes:
    - `composer php-lint`
    - `composer phpcs`
    - `composer phpstan`
    - `composer phpmd`
+
+For BrowserSync with wp-env, use `npm run bs:wp-env`.
+
+ACF JSON import is automated on `wp-env:start`; manual fallback: `npm run wp-env:acf-sync`.
+Use `npm run wp-env:acf-sync:force` when you need to re-import unchanged JSON intentionally.
+
+Gravity Forms is not required for ACF JSON import.
+
+If licensed plugins are required for a task, follow the manual setup checklist in [.github/README.md](.github/README.md).
 
 Use targeted commands when appropriate to keep iteration fast.
 

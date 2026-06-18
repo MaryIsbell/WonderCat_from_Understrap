@@ -1,0 +1,22 @@
+{
+  "core": "WordPress/WordPress#6.8",
+  "phpVersion": "8.2",
+  "testsEnvironment": false,
+  "themes": [
+    "https://downloads.wordpress.org/theme/understrap.1.2.4.zip"
+  ],
+  "plugins": [
+    "https://downloads.wordpress.org/plugin/advanced-custom-fields.latest-stable.zip",
+    "https://downloads.wordpress.org/plugin/capability-manager-enhanced.2.45.0.zip"
+  ],
+  "mappings": {
+    "wp-content/themes/wondercat": "."
+  },
+  "lifecycleScripts": {
+    "afterStart": "wp-env run cli sh -lc 'wp theme is-active wondercat || wp theme activate wondercat; wp eval-file wp-content/themes/wondercat/scripts/wp-env/acf-sync.php'"
+  },
+  "config": {
+    "WP_DEBUG": true,
+    "SCRIPT_DEBUG": true
+  }
+}
