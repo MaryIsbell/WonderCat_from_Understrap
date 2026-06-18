@@ -73,9 +73,7 @@ $container = get_theme_mod('understrap_container_type');
 
 		<div class="row">
 
-			<?php get_template_part('global-templates/left-sidebar-check'); ?>
-
-			<main class="site-main" id="main">
+			<main class="site-main col" id="main">
 
 				<article class="wikidata-entity" id="wikidata-entity-<?php echo esc_attr($qid); ?>">
 
@@ -223,8 +221,6 @@ $container = get_theme_mod('understrap_container_type');
 				<?php endif; ?>
 
 			</main><!-- #main -->
-
-			<?php get_template_part('global-templates/right-sidebar-check'); ?>
 
 		</div><!-- .row -->
 
