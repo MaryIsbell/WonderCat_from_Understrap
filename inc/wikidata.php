@@ -79,3 +79,28 @@ function wondercat_process_qid_field( $post_id ) {
 }
 add_action('acf/save_post', 'wondercat_process_qid_field', 20, 1 );
 
+/**
+ * Validate the wikidata-qid ACF field value on save.
+ *
+ * Field is optional (empty is OK), but if filled the QID must correspond
+ * to an existing Wikidata entity.
+ *
+ * @param string $valid   Current validation status.
+ * @param mixed  $value   Field value.
+ * @param array  $field   Field config.
+ * @param string $name    Input name.
+ * @return string|bool    Error message on failure, true on success.
+ */
+function wondercat_validate_qid_field( $valid, $value, $field, $name ) {
+    if ( empty( $value ) ) {
+        return $valid;
+    }
+
+    if ( wikidata_validate_qid( $value ) ) {
+        return $valid;
+    }
+
+    return __( 'The Wikidata ID entered does not correspond to an existing Wikidata entity.', 'understrap-child' );
+}
+add_filter( 'acf/validate_value/name=wikidata-qid', 'wondercat_validate_qid_field', 10, 4 );
+

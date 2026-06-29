@@ -619,3 +619,76 @@ function wikidata_get_rest_api_url($qid)
     // also "https://www.wikidata.org/w/api.php?action=wbgetentities&format=json&ids=$qid"
     return "https://www.wikidata.org/wiki/Special:EntityData/$qid.json";
 }
+
+/**
+ * Validate that a QID corresponds to an existing Wikidata entity.
+ *
+ * Checks in order:
+ *  1. Local wikidata_entities table (fast path).
+ *  2. Transient cache (6-hour TTL).
+ *  3. Lightweight API call via wbgetentities (props=info only).
+ *
+ * @param string $qid Candidate QID.
+ * @return bool True when the QID exists on Wikidata.
+ */
+function wikidata_validate_qid( $qid ) {
+    $qid = wikidata_normalize_qid( $qid );
+
+    if ( ! $qid ) {
+        return false;
+    }
+
+    // Fast path: already stored locally.
+    $entity = wikidata_get_by_qid( $qid );
+    if ( $entity ) {
+        return true;
+    }
+
+    // Check transient cache.
+    $cache_key = 'wondercat_wikidata_valid_' . strtolower( $qid );
+    $cached    = get_transient( $cache_key );
+
+    if ( false !== $cached ) {
+        return (bool) $cached;
+    }
+
+    // Lightweight API check: props=info returns only metadata, not full entity data.
+    $endpoint = add_query_arg(
+        array(
+            'action' => 'wbgetentities',
+            'format' => 'json',
+            'ids'    => $qid,
+            'props'  => 'info',
+        ),
+        'https://www.wikidata.org/w/api.php'
+    );
+
+    $response = wp_remote_get(
+        $endpoint,
+        array(
+            'timeout' => 8,
+            'headers' => array(
+                'Accept' => 'application/json',
+            ),
+        )
+    );
+
+    if ( is_wp_error( $response ) || empty( $response['body'] ) ) {
+        wc_log( $response );
+        return false;
+    }
+
+    $decoded = json_decode( $response['body'], true );
+
+    if ( ! is_array( $decoded ) || ! isset( $decoded['entities'] ) ) {
+        return false;
+    }
+
+    // QID is valid if it appears in the entities map and is NOT marked as missing.
+    $is_valid = isset( $decoded['entities'][ $qid ] ) && ! isset( $decoded['entities'][ $qid ]['missing'] );
+
+    // Cache result for 6 hours to avoid repeated API calls.
+    set_transient( $cache_key, $is_valid ? 1 : 0, 6 * HOUR_IN_SECONDS );
+
+    return $is_valid;
+}

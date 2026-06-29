@@ -1,11 +1,13 @@
 # Wikidata Template Tags Documentation
 
-**Version:** 1.1.0  
+**Version:** 1.2.0  
 **For:** WordPress Theme Developers
 
 ## Overview
 
 The Wikidata template tags provide a simple, WordPress-native way to display Wikidata entity information in your theme templates. These functions integrate seamlessly with The Loop and follow WordPress coding standards.
+
+> **For documentation on how Wikidata entity data is captured, validated, stored, and refreshed, see [DATA-FLOW.md](DATA-FLOW.md).**
 
 ### What You Can Display
 
