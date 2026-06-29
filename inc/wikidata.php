@@ -51,18 +51,27 @@ function wondercat_process_qid_field( $post_id ) {
         return;
     }
 
+    // Only process QIDs on user-experience posts.
+    if ( WONDERCAT_POST_TYPE !== $post->post_type ) {
+        return;
+    }
+
     // Get the WONDERCAT_QID_FIELD custom field value.
     $qid = get_post_meta( $post_id, WONDERCAT_QID_FIELD, true );
 
     if ( $qid ) {
-        // Process the QID.
-        wikidata_upsert( 
-            $qid, // QID
-            wikidata_get_rest_api_url($qid), // URL
-            get_post_field('post_title', $post_id, 'raw'), // Label (raw title without HTML escaping)
-            null, // Description (could be enhanced to pull from post content or another field)
-            wikidata_fetch_json_by_id($qid) // JSON data from Wikidata API
-        );
+        // Fetch JSON from Wikidata API; only upsert if fetch returned valid data.
+        $json = wikidata_fetch_json_by_id($qid);
+
+        if ( false !== $json ) {
+            wikidata_upsert(
+                $qid,
+                wikidata_get_rest_api_url($qid),
+                get_post_field('post_title', $post_id, 'raw'),
+                null,
+                $json
+            );
+        }
     }
 
     global $wondercat_process_already_run;

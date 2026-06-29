@@ -69,6 +69,41 @@ function wikidata_find_posts_with_qid()
 }
 
 /**
+ * Check whether a given QID is associated with at least one published
+ * user-experience post.
+ *
+ * @param string $qid A QID.
+ * @return bool True when at least one published post references this QID.
+ */
+function wikidata_qid_has_published_post( $qid ) {
+    $qid = wikidata_normalize_qid( $qid );
+
+    if ( ! $qid ) {
+        return false;
+    }
+
+    global $wpdb;
+
+    $meta_key = WONDERCAT_QID_FIELD;
+    $post_type = WONDERCAT_POST_TYPE;
+
+    $sql = $wpdb->prepare(
+        "SELECT COUNT(1)
+         FROM {$wpdb->postmeta} pm
+         INNER JOIN {$wpdb->posts} p ON pm.post_id = p.ID
+         WHERE pm.meta_key = %s
+         AND pm.meta_value = %s
+         AND p.post_type = %s
+         AND p.post_status = 'publish'",
+        $meta_key,
+        $qid,
+        $post_type
+    );
+
+    return (bool) $wpdb->get_var( $sql );
+}
+
+/**
  * Normalize a candidate QID string.
  *
  * @param string $qid Candidate QID.
@@ -489,6 +524,10 @@ function wikidata_handle_refresh_qid_event( $qid ) {
         return;
     }
 
+    if ( ! wikidata_qid_has_published_post( $qid ) ) {
+        return;
+    }
+
     $json = wikidata_fetch_json_by_id( $qid, true );
 
     if ( ! $json ) {
@@ -523,6 +562,17 @@ function wikidata_handle_refresh_qid_event( $qid ) {
  */
 function wikidata_handle_refresh_batch_event( $qids ) {
     if ( ! is_array( $qids ) || empty( $qids ) ) {
+        return;
+    }
+
+    // Only refresh QIDs still associated with published user-experience posts.
+    $qids = array_values(
+        array_filter( $qids, function ( $qid ) {
+            return wikidata_qid_has_published_post( $qid );
+        } )
+    );
+
+    if ( empty( $qids ) ) {
         return;
     }
 

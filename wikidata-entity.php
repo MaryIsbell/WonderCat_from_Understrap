@@ -31,6 +31,37 @@ if (! preg_match('/^Q[0-9]+$/', $qid)) {
 $entity = wikidata_get_by_qid($qid);
 
 if (! $entity) {
+	// Only attempt to fetch from Wikidata if this QID is referenced by
+	// a published user-experience post.
+	if (! wikidata_qid_has_published_post($qid)) {
+		$entity = false;
+	} else {
+		$json = wikidata_fetch_json_by_id($qid);
+
+		if ($json) {
+			$decoded = json_decode($json, true);
+			if (is_array($decoded) && isset($decoded['entities'][$qid]) && is_array($decoded['entities'][$qid])) {
+				$data       = $decoded['entities'][$qid];
+				$label      = isset($data['labels']['en']['value']) ? $data['labels']['en']['value'] : $qid;
+				$description = isset($data['descriptions']['en']['value']) ? $data['descriptions']['en']['value'] : null;
+				wikidata_upsert($qid, wikidata_get_rest_api_url($qid), $label, $description, $json);
+				$entity = wikidata_get_by_qid($qid);
+			} else {
+				error_log(
+					'WonderCat Wikidata: entity ' . $qid
+					. ' not found in API response (non-existent QID or malformed response)'
+				);
+			}
+		} else {
+			error_log(
+				'WonderCat Wikidata: API request failed for ' . $qid
+				. ' (HTTP error, timeout, or empty response)'
+			);
+		}
+	}
+}
+
+if (! $entity || ! wikidata_qid_has_published_post($qid)) {
 	global $wp_query;
 	$wp_query->set_404();
 	status_header(404);
