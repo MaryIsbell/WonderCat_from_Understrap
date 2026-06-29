@@ -4,81 +4,87 @@
 
 WonderCat is a WordPress child theme built on Understrap.
 
-- Theme type: WordPress child theme (`Template: understrap`)
-- Core integrations: Advanced Custom Fields (ACF), Gravity Forms, custom Wikidata integration
-- Frontend stack: SCSS + Rollup + PostCSS + BrowserSync
-- PHP quality tooling: PHPCS (WPCS + WPThemeReview), PHPStan, PHPMD
+- Theme: WordPress child theme (`Template: understrap`), directory name `wondercat`
+- Custom post type: `user-experience`
+- Core integrations: ACF, Gravity Forms, custom Wikidata integration (`inc/wikidata/`)
+- Frontend: SCSS + Rollup + PostCSS + BrowserSync, Bootstrap 5
+- PHP quality: PHPCS (WPCS + WPThemeReview), PHPStan (level max, `inc/` only), PHPMD (with baseline)
 
-For general project background, see [.github/README.md](.github/README.md).
+## Quick Start
 
-## Quick Start For Agents
+```sh
+npm install && composer install                  # deps (+ auto-configures PHPCS paths)
+npm run copy-assets                               # copies Bootstrap/FA/Understrap SCSS -> src/sass/assets/ (required before first build)
+npm run wp-env:start                              # starts Docker, activates wondercat theme, auto-syncs ACF JSON
+npm run dist                                      # compiles css/ and js/ from src/
+```
 
-1. Install dependencies:
-   - `npm install`
-   - `composer install`
-2. Start local WordPress runtime:
-   - `npm run wp-env:start`
-3. Build assets:
-   - `npm run dist`
-4. Run PHP checks before finalizing PHP changes:
-   - `composer php-lint`
-   - `composer phpcs`
-   - `composer phpstan`
-   - `composer phpmd`
+- ACF JSON import is idempotent (content-hash skip). Force with `npm run wp-env:acf-sync:force`.
+- Gravity Forms import: `npm run wp-env:gf-import` (requires GF active; idempotent by title dedup)
+- Licensed plugins (ACF Pro, GF, Gravity Flow, GF Advanced Post Creation): mount in `.wp-env.override.json` (gitignored)
+- BrowserSync via wp-env: `npm run bs:wp-env` (proxies `localhost:8888`)
+- Watch mode: `npm run watch`
 
-For BrowserSync with wp-env, use `npm run bs:wp-env`.
+## Key Paths
 
-ACF JSON import is automated on `wp-env:start`; manual fallback: `npm run wp-env:acf-sync`.
-Use `npm run wp-env:acf-sync:force` when you need to re-import unchanged JSON intentionally.
+| Area | Path |
+|---|---|
+| Theme bootstrap | `functions.php` (also loads `inc/acf.php`, `inc/wikidata.php`) |
+| ACF + GF integration | `inc/acf.php` |
+| Wikidata entrypoint | `inc/wikidata.php` / `inc/wikidata/` |
+| Wikidata template tags | `inc/wikidata/docs/TEMPLATE-TAGS.md` |
+| ACF JSON source of truth | `acf-json/` |
+| Source assets (edit these) | `src/sass/`, `src/js/` |
+| Compiled assets | `css/`, `js/` |
+| WP-env config | `.wp-env.json` (WordPress 6.8, PHP 8.2) |
+| GF form archive | `FormArchive/` |
 
-Gravity Forms is not required for ACF JSON import.
+## Conventions
 
-If licensed plugins are required for a task, follow the manual setup checklist in [.github/README.md](.github/README.md).
+- Edit `src/sass/` and `src/js/`; rebuild with `npm run dist` to update compiled output.
+- WordPress escaping/sanitization conventions apply everywhere.
+- Keep existing text domains (`understrap-child`) and i18n patterns.
+- Preserve Understrap template structure unless the task requires divergence.
 
-Use targeted commands when appropriate to keep iteration fast.
+## ACF + Gravity Forms
 
-## High-Signal Paths
+- Gravity Forms form `8` fields `4` (experience dropdown) and `5` (technology dropdown) are populated from taxonomies via filters in `inc/acf.php`.
+- `term-version-history.php` (Template Name: Term Version History) reads form `1` fields `9,10,11,12` + field `25` for term proposal workflow.
+- ACF Local JSON saves/loads from `acf-json/`. Keep these in sync with field group changes.
 
-- Theme bootstrap and hooks: [functions.php](functions.php)
-- ACF + Gravity Forms integration: [inc/acf.php](inc/acf.php)
-- Wikidata integration entrypoint: [inc/wikidata.php](inc/wikidata.php)
-- Wikidata modules: [inc/wikidata/](inc/wikidata/)
-- Wikidata template tag docs: [inc/wikidata/docs/TEMPLATE-TAGS.md](inc/wikidata/docs/TEMPLATE-TAGS.md)
-- ACF JSON source of truth: [acf-json/](acf-json/)
-- Source assets (edit these first): [src/sass/](src/sass/), [src/js/](src/js/)
-- Compiled assets: [css/](css/), [js/](js/)
+## Wikidata
 
-## Theme-Specific Conventions
+- QID constants and save hooks in `inc/wikidata.php`. Requires ACF active.
+- Custom `wikidata_entities` table + rewrite rules loaded via `inc/wikidata/`.
+- Template-rendering entry points: `wikidata-entity.php` (direct entity page at `/wikidata/{qid}`), template tags in `inc/wikidata/`.
+- Wikidata entity routes depend on non-Plain permalink structure.
+- Custom table created on theme activation and checked on `init`.
 
-- Prefer editing source assets under `src/`; then rebuild to update `css/` and `js/` outputs.
-- Follow WordPress escaping/sanitization conventions in templates and admin handlers.
-- Keep existing text domains and i18n patterns consistent with surrounding code.
-- Preserve Understrap template structure and function usage unless a task explicitly requires divergence.
+## PHP Quality Checks (run before finalizing PHP changes)
 
-## ACF + Gravity Forms Notes
+```sh
+composer php-lint        # parallel lint
+composer phpcs           # WPCS + WPThemeReview
+composer phpstan         # level max, inc/ only (has baseline)
+composer phpmd           # PHPMD (has baseline)
+```
 
-- Gravity Forms field population is currently hard-wired to form `8` and specific field IDs in [inc/acf.php](inc/acf.php).
-- When changing taxonomy-driven dropdown behavior, verify both filters and field IDs remain aligned.
-- ACF Local JSON is configured to save/load from [acf-json/](acf-json/). Keep these files in sync with field group changes.
+- `composer phpcs-fix` auto-fixes where possible.
+- `composer phpstan-baseline` / `composer phpmd-baseline` regenerate baselines.
 
-## Wikidata Notes
+## Notable Repo Quirks
 
-- QID constants and save hooks are defined in [inc/wikidata.php](inc/wikidata.php).
-- The custom table and rewrite handling are loaded via [inc/wikidata/](inc/wikidata/).
-- If changing Wikidata rendering, check template behavior in [wikidata-entity.php](wikidata-entity.php) and helper/template-tag usage.
+- `package-lock.json` is gitignored (only `composer.lock` tracked).
+- `dist/` and `dist-product/` are gitignored (release build artifacts).
+- No CI workflows exist. No test framework.
+- PHPMD excludes `src/`, `js/`, `css/`, `*-templates/`, `woocommerce/`.
+- PHPStan excludes `inc/deprecated.php` and `inc/class-wp-bootstrap-navwalker.php`.
+- Lifecycle on `wp-env:start`: activates `wondercat` theme, runs ACF sync.
+- Theme name in wp-env CLI paths is `wondercat` (e.g. `wp-content/themes/wondercat/scripts/...`).
 
 ## Change Safety Checklist
 
-Before completing work:
-
-1. Rebuild assets if `src/sass` or `src/js` changed.
-2. Run relevant Composer checks for PHP changes.
-3. Keep plugin assumptions explicit (ACF and Gravity Forms are expected active dependencies).
-4. Do not remove or silently rename form IDs, field IDs, taxonomy slugs, or ACF field keys without updating dependent logic.
-
-## Documentation Strategy
-
-- Link to existing docs instead of duplicating them.
-- For Wikidata template helper usage, prefer referencing [inc/wikidata/docs/TEMPLATE-TAGS.md](inc/wikidata/docs/TEMPLATE-TAGS.md).
-- After completing implementation work, update existing docs or create new docs for behavior/API/workflow changes before finishing.
-- For Wikidata-related changes, update or add docs under [inc/wikidata/docs/](inc/wikidata/docs/).
+1. Rebuild assets if `src/sass` or `src/js` changed (`npm run dist`).
+2. Run Composer checks for PHP changes.
+3. Do not rename/remove form IDs, field IDs, taxonomy slugs, or ACF field keys without updating dependent logic.
+4. Update docs under `inc/wikidata/docs/` for Wikidata changes.
