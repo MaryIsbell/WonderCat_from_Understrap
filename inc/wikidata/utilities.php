@@ -629,19 +629,27 @@ function wikidata_get_rest_api_url($qid)
  *  3. Lightweight API call via wbgetentities (props=info only).
  *
  * @param string $qid Candidate QID.
- * @return bool True when the QID exists on Wikidata.
+ * @return array{valid:bool,reason:string,qid:string|null}
  */
-function wikidata_validate_qid( $qid ) {
+function wikidata_validate_qid_with_status( $qid ) {
     $qid = wikidata_normalize_qid( $qid );
 
     if ( ! $qid ) {
-        return false;
+        return array(
+            'valid'  => false,
+            'reason' => 'invalid_format',
+            'qid'    => null,
+        );
     }
 
     // Fast path: already stored locally.
     $entity = wikidata_get_by_qid( $qid );
     if ( $entity ) {
-        return true;
+        return array(
+            'valid'  => true,
+            'reason' => 'exists',
+            'qid'    => $qid,
+        );
     }
 
     // Check transient cache.
@@ -649,7 +657,11 @@ function wikidata_validate_qid( $qid ) {
     $cached    = get_transient( $cache_key );
 
     if ( false !== $cached ) {
-        return (bool) $cached;
+        return array(
+            'valid'  => (bool) $cached,
+            'reason' => (bool) $cached ? 'exists' : 'not_found',
+            'qid'    => $qid,
+        );
     }
 
     // Lightweight API check: props=info returns only metadata, not full entity data.
@@ -675,13 +687,21 @@ function wikidata_validate_qid( $qid ) {
 
     if ( is_wp_error( $response ) || empty( $response['body'] ) ) {
         wc_log( $response );
-        return false;
+        return array(
+            'valid'  => false,
+            'reason' => 'unverifiable',
+            'qid'    => $qid,
+        );
     }
 
     $decoded = json_decode( $response['body'], true );
 
     if ( ! is_array( $decoded ) || ! isset( $decoded['entities'] ) ) {
-        return false;
+        return array(
+            'valid'  => false,
+            'reason' => 'unverifiable',
+            'qid'    => $qid,
+        );
     }
 
     // QID is valid if it appears in the entities map and is NOT marked as missing.
@@ -690,5 +710,21 @@ function wikidata_validate_qid( $qid ) {
     // Cache result for 6 hours to avoid repeated API calls.
     set_transient( $cache_key, $is_valid ? 1 : 0, 6 * HOUR_IN_SECONDS );
 
-    return $is_valid;
+    return array(
+        'valid'  => $is_valid,
+        'reason' => $is_valid ? 'exists' : 'not_found',
+        'qid'    => $qid,
+    );
+}
+
+/**
+ * Validate that a QID corresponds to an existing Wikidata entity.
+ *
+ * @param string $qid Candidate QID.
+ * @return bool True when the QID exists on Wikidata.
+ */
+function wikidata_validate_qid( $qid ) {
+    $result = wikidata_validate_qid_with_status( $qid );
+
+    return ! empty( $result['valid'] );
 }
