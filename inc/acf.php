@@ -8,6 +8,137 @@
 // Exit if accessed directly.
 defined( 'ABSPATH' ) || exit;
 
+/**
+ * Normalize text for case-insensitive field matching.
+ *
+ * @param mixed $value Field metadata value.
+ * @return string
+ */
+function wondercat_gf_normalize_match_text( $value ) {
+    if ( ! is_string( $value ) ) {
+        return '';
+    }
+
+    $value = trim( preg_replace( '/\s+/', ' ', $value ) );
+
+    if ( function_exists( 'mb_strtolower' ) ) {
+        return mb_strtolower( $value, 'UTF-8' );
+    }
+
+    return strtolower( $value );
+}
+
+/**
+ * Determine whether a Gravity Forms field represents the Wikidata QID input.
+ *
+ * @param object $field Gravity Forms field object.
+ * @return bool
+ */
+function wondercat_gf_is_wikidata_qid_field( $field ) {
+    if ( ! is_object( $field ) ) {
+        return false;
+    }
+
+    $label      = wondercat_gf_normalize_match_text( $field->label ?? '' );
+    $admin_label = wondercat_gf_normalize_match_text( $field->adminLabel ?? '' );
+    $input_name = wondercat_gf_normalize_match_text( $field->inputName ?? '' );
+    $css_class  = wondercat_gf_normalize_match_text( $field->cssClass ?? '' );
+
+    if ( in_array( $input_name, array( 'wikidata-qid', 'wikidata_qid' ), true ) ) {
+        return true;
+    }
+
+    if ( 'wikidata qid' === $label || 'wikidata qid' === $admin_label ) {
+        return true;
+    }
+
+    if ( false !== strpos( $css_class, 'wikidata-qid' ) || false !== strpos( $css_class, 'wikidata_qid' ) ) {
+        return true;
+    }
+
+    if ( function_exists( 'wondercat_is_wikidata_qid_field' ) ) {
+        $acf_like_field = array(
+            'name'  => (string) ( $field->inputName ?? '' ),
+            'label' => (string) ( $field->label ?? '' ),
+        );
+
+        return wondercat_is_wikidata_qid_field( $acf_like_field, (string) ( $field->inputName ?? '' ) );
+    }
+
+    return false;
+}
+
+/**
+ * Get submitted value for a Gravity Forms field.
+ *
+ * @param object $field Gravity Forms field object.
+ * @return mixed
+ */
+function wondercat_gf_get_submitted_field_value( $field ) {
+    if ( ! is_object( $field ) || ! isset( $field->id ) ) {
+        return '';
+    }
+
+    $input_key = 'input_' . (string) $field->id;
+
+    if ( ! isset( $_POST[ $input_key ] ) ) {
+        return '';
+    }
+
+    $value = wp_unslash( $_POST[ $input_key ] );
+
+    if ( is_array( $value ) ) {
+        return '';
+    }
+
+    return $value;
+}
+
+/**
+ * Validate any Gravity Forms field that maps to Wikidata QID.
+ *
+ * @param array $validation_result Gravity Forms validation result.
+ * @return array
+ */
+function wondercat_gform_validate_wikidata_qid_fields( $validation_result ) {
+    if ( ! function_exists( 'wondercat_get_qid_validation_error' ) ) {
+        return $validation_result;
+    }
+
+    if ( ! is_array( $validation_result ) || empty( $validation_result['form'] ) || ! is_array( $validation_result['form'] ) ) {
+        return $validation_result;
+    }
+
+    $form = $validation_result['form'];
+
+    if ( empty( $form['fields'] ) || ! is_array( $form['fields'] ) ) {
+        return $validation_result;
+    }
+
+    foreach ( $form['fields'] as &$field ) {
+        if ( ! wondercat_gf_is_wikidata_qid_field( $field ) ) {
+            continue;
+        }
+
+        $submitted_value = wondercat_gf_get_submitted_field_value( $field );
+        $error_message   = wondercat_get_qid_validation_error( $submitted_value );
+
+        if ( '' === $error_message ) {
+            continue;
+        }
+
+        $validation_result['is_valid'] = false;
+        $field->failed_validation      = true;
+        $field->validation_message     = $error_message;
+    }
+    unset( $field );
+
+    $validation_result['form'] = $form;
+
+    return $validation_result;
+}
+add_filter( 'gform_validation', 'wondercat_gform_validate_wikidata_qid_fields' );
+
 
 /**
  * NEW CODE FROM TOM, TESTING ON AUGUST 12
