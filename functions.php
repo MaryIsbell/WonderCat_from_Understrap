@@ -56,6 +56,28 @@ function add_child_theme_textdomain() {
 }
 add_action( 'after_setup_theme', 'add_child_theme_textdomain' );
 
+/**
+ * Defensively disable starter content support from parent theme bootstrap.
+ */
+function wondercat_disable_starter_content() {
+	remove_theme_support( 'starter-content' );
+}
+add_action( 'after_setup_theme', 'wondercat_disable_starter_content', 100 );
+
+/**
+ * Prevent default sample widgets from being auto-assigned to sidebars.
+ *
+ * @param mixed $_default The default option value.
+ * @return array<string, mixed>
+ */
+function wondercat_disable_default_sidebar_widgets( $_default ) {
+	return array(
+		'wp_inactive_widgets' => array(),
+		'array_version'       => 3,
+	);
+}
+add_filter( 'default_option_sidebars_widgets', 'wondercat_disable_default_sidebar_widgets' );
+
 
 
 /**
