@@ -91,6 +91,7 @@ $allowed_link_html = array(
 
 // Build title for <head>.
 $page_title = $entity->label ? $entity->label : $qid;
+$entity_description = isset($entity->description) ? trim((string) $entity->description) : '';
 
 // Render the page.
 get_header();
@@ -119,6 +120,9 @@ $container = get_theme_mod('understrap_container_type');
 							<div class="row">
 								<header class="entry-header">
 									<h3 class="entry-title"><?php echo esc_html($page_title); ?></h3>
+									<?php if ('' !== $entity_description) : ?>
+										<p class="mb-0 text-muted fst-italic fs-5"><?php echo esc_html($entity_description); ?></p>
+									<?php endif; ?>
 								</header>
 							</div>
 
