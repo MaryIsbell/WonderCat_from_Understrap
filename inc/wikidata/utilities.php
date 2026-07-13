@@ -631,40 +631,22 @@ function wikidata_get_rest_api_url($qid)
  * @param string $qid Candidate QID.
  * @return array{valid:bool,reason:string,qid:string|null}
  */
-function wikidata_validate_qid_with_status( $qid ) {
-    $qid = wikidata_normalize_qid( $qid );
+function wikidata_qid_validation_result( $valid, $reason, $qid ) {
+    return array(
+        'valid'  => (bool) $valid,
+        'reason' => (string) $reason,
+        'qid'    => $qid,
+    );
+}
 
-    if ( ! $qid ) {
-        return array(
-            'valid'  => false,
-            'reason' => 'invalid_format',
-            'qid'    => null,
-        );
-    }
-
-    // Fast path: already stored locally.
-    $entity = wikidata_get_by_qid( $qid );
-    if ( $entity ) {
-        return array(
-            'valid'  => true,
-            'reason' => 'exists',
-            'qid'    => $qid,
-        );
-    }
-
-    // Check transient cache.
-    $cache_key = 'wondercat_wikidata_valid_' . strtolower( $qid );
-    $cached    = get_transient( $cache_key );
-
-    if ( false !== $cached ) {
-        return array(
-            'valid'  => (bool) $cached,
-            'reason' => (bool) $cached ? 'exists' : 'not_found',
-            'qid'    => $qid,
-        );
-    }
-
-    // Lightweight API check: props=info returns only metadata, not full entity data.
+/**
+ * Validate a normalized QID against Wikidata API and cache the result.
+ *
+ * @param string $qid       Normalized QID.
+ * @param string $cache_key Transient cache key.
+ * @return array{valid:bool,reason:string,qid:string|null}
+ */
+function wikidata_validate_qid_via_api( $qid, $cache_key ) {
     $endpoint = add_query_arg(
         array(
             'action' => 'wbgetentities',
@@ -687,34 +669,55 @@ function wikidata_validate_qid_with_status( $qid ) {
 
     if ( is_wp_error( $response ) || empty( $response['body'] ) ) {
         wc_log( $response );
-        return array(
-            'valid'  => false,
-            'reason' => 'unverifiable',
-            'qid'    => $qid,
-        );
+        return wikidata_qid_validation_result( false, 'unverifiable', $qid );
     }
 
     $decoded = json_decode( $response['body'], true );
 
     if ( ! is_array( $decoded ) || ! isset( $decoded['entities'] ) ) {
-        return array(
-            'valid'  => false,
-            'reason' => 'unverifiable',
-            'qid'    => $qid,
-        );
+        return wikidata_qid_validation_result( false, 'unverifiable', $qid );
     }
 
-    // QID is valid if it appears in the entities map and is NOT marked as missing.
+    // QID is valid if it appears in the entities map and is not marked missing.
     $is_valid = isset( $decoded['entities'][ $qid ] ) && ! isset( $decoded['entities'][ $qid ]['missing'] );
-
-    // Cache result for 6 hours to avoid repeated API calls.
     set_transient( $cache_key, $is_valid ? 1 : 0, 6 * HOUR_IN_SECONDS );
 
-    return array(
-        'valid'  => $is_valid,
-        'reason' => $is_valid ? 'exists' : 'not_found',
-        'qid'    => $qid,
-    );
+    return wikidata_qid_validation_result( $is_valid, $is_valid ? 'exists' : 'not_found', $qid );
+}
+
+/**
+ * Validate that a QID corresponds to an existing Wikidata entity.
+ *
+ * Checks in order:
+ *  1. Local wikidata_entities table (fast path).
+ *  2. Transient cache (6-hour TTL).
+ *  3. Lightweight API call via wbgetentities (props=info only).
+ *
+ * @param string $qid Candidate QID.
+ * @return array{valid:bool,reason:string,qid:string|null}
+ */
+function wikidata_validate_qid_with_status( $qid ) {
+    $qid = wikidata_normalize_qid( $qid );
+
+    if ( ! $qid ) {
+        return wikidata_qid_validation_result( false, 'invalid_format', null );
+    }
+
+    // Fast path: already stored locally.
+    $entity = wikidata_get_by_qid( $qid );
+    if ( $entity ) {
+        return wikidata_qid_validation_result( true, 'exists', $qid );
+    }
+
+    // Check transient cache.
+    $cache_key = 'wondercat_wikidata_valid_' . strtolower( $qid );
+    $cached    = get_transient( $cache_key );
+
+    if ( false !== $cached ) {
+        return wikidata_qid_validation_result( (bool) $cached, (bool) $cached ? 'exists' : 'not_found', $qid );
+    }
+
+    return wikidata_validate_qid_via_api( $qid, $cache_key );
 }
 
 /**
