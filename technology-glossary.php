@@ -34,7 +34,7 @@ $container = get_theme_mod( 'understrap_container_type' );
                 endif;
 
                 $taxonomy = 'technology';
-                $version_history_page = '/term-version-history/'; // change to your actual page slug
+                $version_history_page = '/term-version-history/'; // change to your actual page slug (you can set an options page in ACF to select this)
 
                 // Fetch all top-level technology terms alphabetically
                 $all_terms = get_terms([
@@ -85,6 +85,23 @@ $container = get_theme_mod( 'understrap_container_type' );
                         $term_link   = get_term_link( $term );
                         $description = term_description( $term );
 
+                        // Check whether any experiences have actually been tagged with this term
+                        $experience_ids = get_posts([
+                            'post_type'      => 'user-experience',
+                            'post_status'    => 'publish',
+                            'fields'         => 'ids',
+                            'posts_per_page' => 1,
+                            'tax_query'      => [
+                                [
+                                    'taxonomy'         => $term->taxonomy,
+                                    'field'            => 'term_id',
+                                    'terms'            => $term->term_id,
+                                    'include_children' => false,
+                                ],
+                            ],
+                        ]);
+                        $has_experiences = ! empty( $experience_ids );
+
                         // Fetch child terms
                         $child_terms = get_terms([
                             'taxonomy'   => $term->taxonomy,
@@ -109,9 +126,16 @@ $container = get_theme_mod( 'understrap_container_type' );
 
                         echo '<tr>';
                         // Term name column
-                        echo '<td style="padding:8px; border:1px solid #333; vertical-align:top;">
-                                <a href="' . esc_url( $term_link ) . '">' . esc_html( $term->name ) . '</a>
-                              </td>';
+                        if ( $has_experiences ) {
+                            echo '<td style="padding:8px; border:1px solid #333; vertical-align:top;">
+                                    <a href="' . esc_url( $term_link ) . '">' . esc_html( $term->name ) . '</a>
+                                  </td>';
+                        } else {
+                            echo '<td style="padding:8px; border:1px solid #333; vertical-align:top;">'
+                                 . esc_html( $term->name ) . '<br>
+                                    <small><a href="/add-experience">No experiences yet &mdash; contribute one?</a></small>
+                                  </td>';
+                        }
 
                         // Description column + bolded version history link
                         echo '<td style="padding:8px; border:1px solid #333; vertical-align:top;">'
