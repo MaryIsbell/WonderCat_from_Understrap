@@ -120,7 +120,7 @@
             "aria-label": "",
             "type": "taxonomy",
             "instructions": "Which term below best captures the experience you are submitting? (you can refer to the glossary of experiences for descriptions of each term) If your experience isn't in our list, select \"xxx-I need to enter something new\" at the bottom of the list and you will be invited to propose a new term",
-            "required": 1,
+            "required": 0,
             "conditional_logic": 0,
             "wrapper": {
                 "width": "",
@@ -347,5 +347,7 @@
     "description": "",
     "show_in_rest": 1,
     "display_title": "",
-    "modified": 1772316137
+    "allow_ai_access": false,
+    "ai_description": "",
+    "modified": 1784981712
 }
