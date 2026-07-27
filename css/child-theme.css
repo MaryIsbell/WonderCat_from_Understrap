@@ -15154,6 +15154,28 @@ body.page-template-experience-glossary .page-content {
 }
 
 /* ================================
+   Glossary tables
+   ================================ */
+.glossary-table-heading--spaced {
+  margin-top: 2rem;
+}
+
+.glossary-table {
+  width: 100%;
+  border-collapse: collapse;
+  border: 1px solid #333;
+}
+.glossary-table th,
+.glossary-table td {
+  padding: 8px;
+  border: 1px solid #333;
+  text-align: left;
+}
+.glossary-table td {
+  vertical-align: top;
+}
+
+/* ================================
    Header / Navbar
    ================================ */
 #wrapper-navbar .navbar-brand {
