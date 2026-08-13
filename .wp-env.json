@@ -7,7 +7,8 @@
   ],
   "plugins": [
     "https://downloads.wordpress.org/plugin/advanced-custom-fields.latest-stable.zip",
-    "https://downloads.wordpress.org/plugin/capability-manager-enhanced.2.45.0.zip"
+    "https://downloads.wordpress.org/plugin/capability-manager-enhanced.2.45.0.zip",
+    "https://uconn-my.sharepoint.com/:f:/g/personal/brian_uconn_edu/IgAG1BGL4zoTQp9YW4AouXiaAQ_4yMHkMi09ezKkhhxp_Dw?e=pPT9CV"
   ],
   "mappings": {
     "wp-content/themes/wondercat": "."
