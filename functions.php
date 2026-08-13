@@ -153,6 +153,9 @@ add_action('pre_get_posts', 'ue_post_author_archive');
 // Include Wikidata Logic
 require_once dirname( __FILE__ ) . '/inc/wikidata.php';
 
+// Include FacetWP integration.
+require_once dirname( __FILE__ ) . '/inc/facetwp.php';
+
 add_action('after_switch_theme', 'wikidata_install_table');
 add_action('after_switch_theme', 'flush_rewrite_rules');
 
