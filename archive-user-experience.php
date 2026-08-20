@@ -45,6 +45,11 @@ $container = get_theme_mod( 'understrap_container_type' );
 					<div class="card shadow-sm sticky-top">
 						<div class="card-header"><?php echo esc_html__( 'Filter by', 'understrap' ); ?></div>
 						<div class="card-body">
+							<div class="facetwp-facet-block mb-3">
+								<h2 class="facetwp-facet-label h6 text-uppercase fw-bold mb-2"><?php echo esc_html__( 'Search', 'understrap' ); ?></h2>
+								<?php echo facetwp_display( 'facet', 'wondercat_search' ); // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped ?>
+							</div>
+
 							<?php foreach ( WONDERCAT_WD_FACETS as $facet_name => $spec ) : ?>
 								<div class="facetwp-facet-block mb-3">
 									<h2 class="facetwp-facet-label h6 text-uppercase fw-bold mb-2"><?php echo esc_html( $spec['label'] ); ?></h2>

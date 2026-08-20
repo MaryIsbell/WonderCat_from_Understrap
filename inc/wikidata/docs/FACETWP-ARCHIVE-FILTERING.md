@@ -24,13 +24,16 @@ All facet names are namespaced with `wondercat_` to avoid collisions with facets
 
 | Facet name | Label | Type | Source | Properties |
 |---|---|---|---|---|
-| `wondercat_wd_instance` | Instance of | dropdown | `cf/wikidata-qid` | P31 |
-| `wondercat_wd_genre` | Genre | dropdown | `cf/wikidata-qid` | P136 |
-| `wondercat_wd_depicts` | Depicts | dropdown | `cf/wikidata-qid` | P180 |
-| `wondercat_wd_country` | Country of Origin | dropdown | `cf/wikidata-qid` | P495 (fallback P17) |
-| `wondercat_wd_language` | Language | dropdown | `cf/wikidata-qid` | P407 |
-| `wondercat_experience` | Experience | dropdown | `tax/experience` | — |
-| `wondercat_narrative_technology` | Narrative Technology | dropdown | `tax/technology` | — |
+| `wondercat_search` | Search | search | WP Default + postmeta | — |
+| `wondercat_wd_instance` | Instance of | fselect | `cf/wikidata-qid` | P31 |
+| `wondercat_wd_genre` | Genre | fselect | `cf/wikidata-qid` | P136 |
+| `wondercat_wd_depicts` | Depicts | fselect | `cf/wikidata-qid` | P180 |
+| `wondercat_wd_country` | Country of Origin | fselect | `cf/wikidata-qid` | P495 (fallback P17) |
+| `wondercat_wd_language` | Language | fselect | `cf/wikidata-qid` | P407 |
+| `wondercat_experience` | Experience | fselect | `tax/experience` | — |
+| `wondercat_narrative_technology` | Narrative Technology | fselect | `tax/technology` | — |
+
+The filter dropdowns use FacetWP's built-in **fSelect** facet type (`multiple = yes`): FacetWP enqueues `fSelect.css`/`fSelect.js` and re-initializes the widgets on every `facetwp-loaded`, so selections (including multi-select) survive AJAX refreshes with no theme JS.
 | `wondercat_pager` | Pager | pager | — | — |
 | `wondercat_reset` | Reset | reset | — | — |
 
@@ -44,7 +47,7 @@ The Wikidata facet spec map is stored in the `WONDERCAT_WD_FACETS` constant (`in
 
 Admin-saved facets carry every setting FacetWP's renderers read (they are persisted with the form's defaults). Code-registered facets get only the keys you supply, and several renderers access settings unguarded, emitting `Undefined array key` warnings. Verified against FacetWP 4.5, the required keys are:
 
-- Dropdown facets: `orderby` → `'count'` (read via `FacetWP_Facet::get_orderby()`, `facets/base.php:15`).
+- fSelect facets: `operator` → `'or'` (read unguarded via `FacetWP_Facet_fSelect::settings_js()`, `facets/fselect.php`), `orderby` → `'count'` (read through `FacetWP_Facet_Checkboxes::load_values()`), and `multiple` → `'yes'` for multi-select.
 - Pager facet: `pager_type` → `'numbers'`, plus `inner_size`, `dots_label`, `prev_label`, `next_label` (`facets/pager.php`).
 - Reset facet: `reset_ui` → `'link'` (`facets/reset.php:14`).
 
@@ -82,10 +85,10 @@ Both callbacks restrict indexing to `user-experience` posts and guard on `FWP()`
 
 When `facetwp_display()` exists:
 
-- Facets render **outside** the `.facetwp-template` container (a FacetWP requirement), in a `col-md-3` sidebar (`#facetwp-sidebar`) on the **right** of the results column, ordered: Wikidata property facets, Experience, Narrative Technology, Reset. The results (`col-md-9`) come first in the DOM so the panel sits to the right; the column stacks below the results on mobile.
+- Facets render **outside** the `.facetwp-template` container (a FacetWP requirement), in a `col-md-3` sidebar (`#facetwp-sidebar`) on the **right** of the results column, ordered: Search, Wikidata property facets, Experience, Narrative Technology, Reset. The results (`col-md-9`) come first in the DOM so the panel sits to the right; the column stacks below the results on mobile.
 - FacetWP does not render a visible label above a dropdown, so the template emits an `<h2>` heading above each facet block that is given Bootstrap typography classes (`h6 text-uppercase fw-bold mb-2`) to identify the filter in the UI.
 - The sidebar is wrapped in a Bootstrap `card` (with `card-body`, `shadow-sm`, `sticky-top`) so the filters stick while scrolling on desktop; each facet block uses `mb-3` spacing.
-- FacetWP-generated controls are re-styled to Bootstrap via the `facetwp_facet_html` filter (`wondercat_bootstrap_facet_html` in `inc/facetwp.php`): dropdowns get `form-select`, and the reset control gets `btn btn-outline-dark`. The original `facetwp-*` classes are preserved so FacetWP's frontend JS keeps working.
+- FacetWP-generated controls are restyled via the `facetwp_facet_html` filter (`wondercat_bootstrap_facet_html` in `inc/facetwp.php`): the reset control gets `btn btn-outline-dark`, and the search input gets `form-control`. The fSelect filter dropdowns use FacetWP's built-in fSelect widget (their native `<select>` is hidden after initialization), so they are themed instead via scoped `.facetwp-type-fselect` SCSS in `src/sass/theme/_child_theme.scss` (`fs-wrap` set to 100% width, `.fs-label-wrap`/`.fs-dropdown` matching the Bootstrap `form-select` look, checkbox accent for the multi-select mode). The original `facetwp-*` classes are preserved so FacetWP's frontend JS keeps working.
 - The post loop — including the `else`/no-results branch — renders **inside** `.facetwp-template` (required so AJAX can replace it), in a `col-md-9` column. The Pager facet renders **after** (outside) the template container, still within `col-md-9` — every facet, including the pager, must live outside `.facetwp-template` or FacetWP logs "Facets should not be inside the facetwp-template container" and the placeholder gets wiped on AJAX refresh.
 - Layout stacks on mobile via Bootstrap's responsive grid.
 
@@ -99,7 +102,8 @@ When FacetWP is inactive, `function_exists( 'facetwp_display' )` is false and th
 
 - [ ] Run **FacetWP → Re-index** once after first activation.
 - [ ] `/user-experience/` renders the facet sidebar and listing inside `.facetwp-template`.
-- [ ] Wikidata dropdowns show resolved labels and filter the listing; selections across facets intersect.
+- [ ] Search matches `feature`/`title_of_creative_work`/`benefit_of_experience` text and title-only terms; results auto-refresh on typing and clear cleanly.
+- [ ] Wikidata fSelect dropdowns show resolved labels and filter the listing; multi-select is per-facet OR ("match any") while selections across facets intersect. Choices with zero results are disabled; the fSelect search box narrows options.
 - [ ] Posts without a QID appear unfiltered but drop out when a Wikidata-property facet is selected.
 - [ ] Pager facet paginates and survives AJAX refresh.
 - [ ] Saving a `user-experience` post (QID change) updates its facet rows without a manual re-index; same for a new frontend form submission.
@@ -111,8 +115,26 @@ When FacetWP is inactive, `function_exists( 'facetwp_display' )` is false and th
 - Label staleness after a background Wikidata refresh is accepted until the next save/re-index (facet values are QIDs and remain stable; only display labels can drift).
 - `composer php-lint` passes; `vendor/bin/phpcs` scoped to `inc/facetwp.php`, `functions.php`, and `archive-user-experience.php` is clean.
 
+- **Publication year / date (P577)**: not included; uses a time datatype and would want a Date Range or Slider facet.
+- **`benefit` taxonomy**: registered and public but not surfaced as a facet.
+
+## Search facet (`wondercat_search`)
+
+Rendered at the top of the sidebar card (`archive-user-experience.php`), before the Wikidata dropdowns. Registered in code with `type` `search`, `search_engine` empty (**WP Default**), `auto_refresh` `yes` (500 ms debounce on keystroke), `enable_relevance` `yes`.
+
+### Why an extra postmeta clause is needed
+
+Native WordPress search only covers `post_title`/`post_content`/`post_excerpt`, and `user-experience` posts have no content/excerpt — the readable text lives in ACF postmeta. Without extending the query, search would match titles only.
+
+`wondercat_search_query_args` (on `facetwp_search_query_args`) scopes the facet's `WP_Query` to `user-experience`, raises `posts_per_page` from FacetWP's hardcoded 200 cap to 500, and registers a one-time `posts_search` filter:
+
+- `wondercat_search_posts_search`: wraps the native search WHERE with an `EXISTS` subquery (`meta_key IN ('feature','title_of_creative_work','benefit_of_experience') AND meta_value LIKE <term>`) OR'd into the native term match. A `meta_query` alone would AND with the title clause; the OR-in-WHERE wrapper keeps base query conditions (post type/status) intact. The `EXISTS` form avoids the duplicate post rows a `wp_postmeta` JOIN would produce. The filter removes itself inside the callback so only the search facet query is affected.
+
+Matching is effectively `post_title` OR `feature` OR `title_of_creative_work` OR `benefit_of_experience` (case-insensitive LIKE). Matched posts are capped at 500 via the facet's own `WP_Query`; there is **no** interaction with `wp_facetwp_index` and no re-index is required for changes to this facet. The `facetwp-*` classes of the rendered input are preserved (per the Bootstrap restyling above) so FacetWP's `facetwp/refresh/search` handler keeps working.
+
 ## Out of scope / future
 
 - **Wikidata entity pages** (`/wikidata/{qid}`): FacetWP-enabled experience lists there are not included.
 - **Publication year / date (P577)**: not included; uses a time datatype and would want a Date Range or Slider facet.
 - **`benefit` taxonomy**: registered and public but not surfaced as a facet.
+- **Search over Wikidata-derived values / taxonomies**: the search facet matches postmeta and title only; a custom `facetwp_facet_search_engines` engine or index-backed matching would be required to search taxonomy terms or `wikidata_entities` claims.
