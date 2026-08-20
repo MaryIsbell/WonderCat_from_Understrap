@@ -121,7 +121,7 @@ These functions are intended for pages that already loaded a row via `wikidata_g
 | Function | Signature | Returns |
 |---|---|---|
 | `wikidata_entity_extract_qids_from_datavalues` | `wikidata_entity_extract_qids_from_datavalues($values)` | `array<string>` |
-| `wikidata_entity_collect_referenced_qids` | `wikidata_entity_collect_referenced_qids($entity_data, $properties = array('P31','P495','P17','P136','P407'))` | `array<string>` |
+| `wikidata_entity_collect_referenced_qids` | `wikidata_entity_collect_referenced_qids($entity_data, $properties = array('P31','P495','P17','P136','P407','P180'))` | `array<string>` |
 | `wikidata_prefetch_entity_labels_by_qids` | `wikidata_prefetch_entity_labels_by_qids($qids, $lang = null)` | `void` |
 
 ### Label resolution for referenced entities
@@ -142,6 +142,7 @@ These functions are intended for pages that already loaded a row via `wikidata_g
 | `get_wikidata_entity_country_of_origin_links_html` | `get_wikidata_entity_country_of_origin_links_html($entity_data, $lang = null)` | `string|null` |
 | `get_wikidata_entity_genres_links_html` | `get_wikidata_entity_genres_links_html($entity_data, $lang = null)` | `string|null` |
 | `get_wikidata_entity_languages_links_html` | `get_wikidata_entity_languages_links_html($entity_data, $lang = null)` | `string|null` |
+| `get_wikidata_entity_depicts_links_html` | `get_wikidata_entity_depicts_links_html($entity_data, $lang = null)` | `string|null` |
 
 ### Plain-text convenience helpers
 

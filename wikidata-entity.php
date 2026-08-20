@@ -79,6 +79,7 @@ $media_type_links  = get_wikidata_entity_media_type_links_html($entity_data);
 $country_links     = get_wikidata_entity_country_of_origin_links_html($entity_data);
 $genre_links       = get_wikidata_entity_genres_links_html($entity_data);
 $language_links    = get_wikidata_entity_languages_links_html($entity_data);
+$depicts_links     = get_wikidata_entity_depicts_links_html($entity_data);
 $not_available     = __('Not available', 'understrap-child');
 $wikidata_url      = 'https://www.wikidata.org/wiki/' . rawurlencode($qid);
 $allowed_link_html = array(
@@ -207,12 +208,14 @@ $container = get_theme_mod('understrap_container_type');
 
 								<div class="col-12 col-md-6">
 									<dt class="fw-bold mb-0 d-inline">
-										<?php esc_html_e('Wikidata ID', 'understrap-child'); ?>
+										<?php esc_html_e('Depicts', 'understrap-child'); ?>
 									</dt>
 									<dd class="mb-0 d-inline">
-										<a href="<?php echo esc_url($wikidata_url); ?>" target="_blank" rel="noopener">
-											<?php echo esc_html($qid); ?>
-										</a>
+										<?php if ($depicts_links) : ?>
+											<?php echo wp_kses($depicts_links, $allowed_link_html); ?>
+										<?php else : ?>
+											<?php echo esc_html($not_available); ?>
+										<?php endif; ?>
 									</dd>
 								</div>
 
