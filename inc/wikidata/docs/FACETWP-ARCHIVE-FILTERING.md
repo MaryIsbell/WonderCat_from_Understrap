@@ -83,7 +83,9 @@ Both callbacks restrict indexing to `user-experience` posts and guard on `FWP()`
 When `facetwp_display()` exists:
 
 - Facets render **outside** the `.facetwp-template` container (a FacetWP requirement), in a `col-md-3` sidebar (`#facetwp-sidebar`) on the **right** of the results column, ordered: Wikidata property facets, Experience, Narrative Technology, Reset. The results (`col-md-9`) come first in the DOM so the panel sits to the right; the column stacks below the results on mobile.
-- FacetWP does not render a visible label above a dropdown, so the template emits an `<h2 class="facetwp-facet-label">` heading above each facet block to identify the filter in the UI.
+- FacetWP does not render a visible label above a dropdown, so the template emits an `<h2>` heading above each facet block that is given Bootstrap typography classes (`h6 text-uppercase fw-bold mb-2`) to identify the filter in the UI.
+- The sidebar is wrapped in a Bootstrap `card` (with `card-body`, `shadow-sm`, `sticky-top`) so the filters stick while scrolling on desktop; each facet block uses `mb-3` spacing.
+- FacetWP-generated controls are re-styled to Bootstrap via the `facetwp_facet_html` filter (`wondercat_bootstrap_facet_html` in `inc/facetwp.php`): dropdowns get `form-select`, and the reset control gets `btn btn-outline-dark`. The original `facetwp-*` classes are preserved so FacetWP's frontend JS keeps working.
 - The post loop — including the `else`/no-results branch — renders **inside** `.facetwp-template` (required so AJAX can replace it), in a `col-md-9` column. The Pager facet renders **after** (outside) the template container, still within `col-md-9` — every facet, including the pager, must live outside `.facetwp-template` or FacetWP logs "Facets should not be inside the facetwp-template container" and the placeholder gets wiped on AJAX refresh.
 - Layout stacks on mobile via Bootstrap's responsive grid.
 
@@ -114,4 +116,3 @@ When FacetWP is inactive, `function_exists( 'facetwp_display' )` is false and th
 - **Wikidata entity pages** (`/wikidata/{qid}`): FacetWP-enabled experience lists there are not included.
 - **Publication year / date (P577)**: not included; uses a time datatype and would want a Date Range or Slider facet.
 - **`benefit` taxonomy**: registered and public but not surfaced as a facet.
-- **Custom SCSS**: FacetWP's default dropdown styling is used for now.

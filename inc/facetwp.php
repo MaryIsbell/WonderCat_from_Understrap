@@ -41,6 +41,7 @@ if ( ! defined( 'WONDERCAT_WD_FACETS' ) ) {
 
 add_filter( 'facetwp_facets', 'wondercat_register_facetwp_facets', 10 );
 add_filter( 'facetwp_indexer_row_data', 'wondercat_index_wikidata_facet_rows', 10, 2 );
+add_filter( 'facetwp_facet_html', 'wondercat_bootstrap_facet_html', 10, 2 );
 add_action( 'acf/save_post', 'wondercat_reindex_post', 30, 1 );
 add_action( 'gform_advancedpostcreation_post_after_creation', 'wondercat_reindex_after_post_creation', 10, 1 );
 
@@ -96,6 +97,38 @@ function wondercat_register_facetwp_facets( $facets ) {
 	);
 
 	return $facets;
+}
+
+/**
+ * Apply Bootstrap classes to FacetWP facet output.
+ *
+ * FacetWP renders dropdowns and the reset control with its own markup, so the
+ * theme adds Bootstrap styling via the facetwp_facet_html filter. The original
+ * facetwp-* classes are preserved for FacetWP's frontend JavaScript.
+ *
+ * @param string $output Facet HTML.
+ * @param array  $args   Facet render args (includes the facet config).
+ * @return string
+ */
+function wondercat_bootstrap_facet_html( $output, $args ) {
+	$facet = isset( $args['facet'] ) ? $args['facet'] : array();
+	$type  = isset( $facet['type'] ) ? $facet['type'] : '';
+
+	if ( 'dropdown' === $type ) {
+		$output = str_replace(
+			'class="facetwp-dropdown"',
+			'class="facetwp-dropdown form-select"',
+			$output
+		);
+	} elseif ( 'reset' === $type ) {
+		$output = preg_replace(
+			'/class="facetwp-reset"/',
+			'class="facetwp-reset btn btn-outline-dark"',
+			$output
+		);
+	}
+
+	return $output;
 }
 
 /**

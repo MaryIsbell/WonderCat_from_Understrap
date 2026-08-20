@@ -42,25 +42,30 @@ $container = get_theme_mod( 'understrap_container_type' );
 				</div>
 
 				<aside class="col-md-3" id="facetwp-sidebar">
-					<?php foreach ( WONDERCAT_WD_FACETS as $facet_name => $spec ) : ?>
-						<div class="facetwp-facet-block">
-							<h2 class="facetwp-facet-label"><?php echo esc_html( $spec['label'] ); ?></h2>
-							<?php echo facetwp_display( 'facet', $facet_name ); // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped ?>
+					<div class="card shadow-sm sticky-top">
+						<div class="card-header"><?php echo esc_html__( 'Filter by', 'understrap' ); ?></div>
+						<div class="card-body">
+							<?php foreach ( WONDERCAT_WD_FACETS as $facet_name => $spec ) : ?>
+								<div class="facetwp-facet-block mb-3">
+									<h2 class="facetwp-facet-label h6 text-uppercase fw-bold mb-2"><?php echo esc_html( $spec['label'] ); ?></h2>
+									<?php echo facetwp_display( 'facet', $facet_name ); // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped ?>
+								</div>
+							<?php endforeach; ?>
+
+							<div class="facetwp-facet-block mb-3">
+								<h2 class="facetwp-facet-label h6 text-uppercase fw-bold mb-2">Experience</h2>
+								<?php echo facetwp_display( 'facet', 'wondercat_experience' ); // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped ?>
+							</div>
+
+							<div class="facetwp-facet-block mb-3">
+								<h2 class="facetwp-facet-label h6 text-uppercase fw-bold mb-2">Narrative Technology</h2>
+								<?php echo facetwp_display( 'facet', 'wondercat_narrative_technology' ); // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped ?>
+							</div>
+
+							<div class="facetwp-facet-block mb-0">
+								<?php echo facetwp_display( 'facet', 'wondercat_reset' ); // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped ?>
+							</div>
 						</div>
-					<?php endforeach; ?>
-
-					<div class="facetwp-facet-block">
-						<h2 class="facetwp-facet-label">Experience</h2>
-						<?php echo facetwp_display( 'facet', 'wondercat_experience' ); // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped ?>
-					</div>
-
-					<div class="facetwp-facet-block">
-						<h2 class="facetwp-facet-label">Narrative Technology</h2>
-						<?php echo facetwp_display( 'facet', 'wondercat_narrative_technology' ); // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped ?>
-					</div>
-
-					<div class="facetwp-facet-block">
-						<?php echo facetwp_display( 'facet', 'wondercat_reset' ); // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped ?>
 					</div>
 				</aside><!-- #facetwp-sidebar -->
 
