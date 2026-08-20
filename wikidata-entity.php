@@ -118,12 +118,17 @@ $container = get_theme_mod('understrap_container_type');
 						<dl class="wikidata-metadata m-5" aria-label="<?php esc_attr_e('Wikidata metadata', 'understrap-child'); ?>">
 
 							<div class="row">
-								<header class="entry-header">
+								<header class="entry-header col-sm-10">
 									<h3 class="entry-title"><?php echo esc_html($page_title); ?></h3>
 									<?php if ('' !== $entity_description) : ?>
 										<p class="mb-0 text-muted fst-italic fs-5"><?php echo esc_html($entity_description); ?></p>
 									<?php endif; ?>
 								</header>
+								<aside class="col-sm-2 text-sm-end">
+									<a href="<?php echo esc_url($wikidata_url); ?>" target="_blank" rel="noopener" class="btn btn-sm btn-outline-primary">
+										<span class="bi bi-pencil-square"></span> View/Edit on Wikidata
+									</a>									
+								</aside>
 							</div>
 
 							<div class="row mb-2">
