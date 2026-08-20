@@ -112,129 +112,114 @@ $container = get_theme_mod('understrap_container_type');
 
 
 
-					<div class="entry-content">
+					<div class="entry-content wikidata-metadata mb-5">
 
-
-
-						<dl class="wikidata-metadata m-5" aria-label="<?php esc_attr_e('Wikidata metadata', 'understrap-child'); ?>">
-
-							<div class="row">
-								<header class="entry-header col-sm-10">
+							<div class="row mb-3">
+								<header class="entry-header col-sm-8">
 									<h3 class="entry-title"><?php echo esc_html($page_title); ?></h3>
 									<?php if ('' !== $entity_description) : ?>
 										<p class="mb-0 text-muted fst-italic fs-5"><?php echo esc_html($entity_description); ?></p>
 									<?php endif; ?>
 								</header>
-								<aside class="col-sm-2 text-sm-end">
+								<aside class="col-sm-4 text-sm-end">
 									<a href="<?php echo esc_url($wikidata_url); ?>" target="_blank" rel="noopener" class="btn btn-sm btn-outline-primary">
-										<span class="bi bi-pencil-square"></span> View/Edit on Wikidata
-									</a>									
+										<span class="bi bi-pencil-square"></span>&nbsp; View/Edit on Wikidata
+									</a>
 								</aside>
 							</div>
 
-							<div class="row mb-2">
+							<dl class="" aria-label="<?php esc_attr_e('Wikidata metadata', 'understrap-child'); ?>">
+								<div class="row mb-2">
+									<div class="col-12 col-md-6">
+										<dt class="fw-bold mb-0 d-inline">
+											<?php esc_html_e('Instance of', 'understrap-child'); ?>
+										</dt>
+										<dd class="mb-0 d-inline">
+											<?php if ($media_type_links) : ?>
+												<?php echo wp_kses($media_type_links, $allowed_link_html); ?>
+											<?php else : ?>
+												<?php echo esc_html($not_available); ?>
+											<?php endif; ?>
+										</dd>
+									</div>
 
+									<div class="col-12 col-md-6">
+										<dt class="fw-bold mb-0 d-inline">
+											<?php esc_html_e('Country of Origin', 'understrap-child'); ?>
+										</dt>
+										<dd class="mb-0 d-inline">
+											<?php if ($country_links) : ?>
+												<?php echo wp_kses($country_links, $allowed_link_html); ?>
+											<?php else : ?>
+												<?php echo esc_html($not_available); ?>
+											<?php endif; ?>
+										</dd>
+									</div>
+								</div>
 
+								<div class="row mb-2">
+									<div class="col-12 col-md-6">
+										<dt class="fw-bold mb-0 d-inline">
+											<?php esc_html_e('Genre', 'understrap-child'); ?>
+										</dt>
+										<dd class="mb-0 d-inline">
+											<?php if ($genre_links) : ?>
+												<?php echo wp_kses($genre_links, $allowed_link_html); ?>
+											<?php else : ?>
+												<?php echo esc_html($not_available); ?>
+											<?php endif; ?>
+										</dd>
+									</div>
 
-								<div class="col-12 col-md-6">
-									<dt class="fw-bold mb-0 d-inline">
-										<?php esc_html_e('Instance of', 'understrap-child'); ?>
-									</dt>
-									<dd class="mb-0 d-inline">
-										<?php if ($media_type_links) : ?>
-											<?php echo wp_kses($media_type_links, $allowed_link_html); ?>
-										<?php else : ?>
-											<?php echo esc_html($not_available); ?>
-										<?php endif; ?>
-									</dd>
+									<div class="col-12 col-md-6">
+										<dt class="fw-bold mb-0 d-inline">
+											<?php esc_html_e('Language', 'understrap-child'); ?>
+										</dt>
+										<dd class="mb-0 d-inline">
+											<?php if ($language_links) : ?>
+												<?php echo wp_kses($language_links, $allowed_link_html); ?>
+											<?php else : ?>
+												<?php echo esc_html($not_available); ?>
+											<?php endif; ?>
+										</dd>
+									</div>
+								</div>
+
+								<div class="row mb-2">
+									<div class="col-12 col-md-6">
+										<dt class="fw-bold mb-0 d-inline">
+											<?php esc_html_e('Depicts', 'understrap-child'); ?>
+										</dt>
+										<dd class="mb-0 d-inline">
+											<?php if ($depicts_links) : ?>
+												<?php echo wp_kses($depicts_links, $allowed_link_html); ?>
+											<?php else : ?>
+												<?php echo esc_html($not_available); ?>
+											<?php endif; ?>
+										</dd>
+									</div>
+
+									<div class="col-12 col-md-6">
+										<dt class="fw-bold mb-0 d-inline">
+											<?php esc_html_e('Publication Date', 'understrap-child'); ?>
+										</dt>
+										<dd class="mb-0 d-inline">
+											<?php echo esc_html($publication_date ? $publication_date : $not_available); ?>
+										</dd>
+									</div>
+								</div>
+							</dl>
+							
+							
+							<div class="row  ">
+								<div class="col-12 text-center text-muted  fst-italic">
+									Note: This information comes from Wikidata. If you think it's inaccurate, you can correct it! <a href="https://www.wikidata.org/wiki/Wikidata:Introduction" class="text-muted">Learn how to edit Wikidata here</a>.
 								</div>
 
 
-								<div class="col-12 col-md-6">
-									<dt class="fw-bold mb-0 d-inline">
-										<?php esc_html_e('Country of Origin', 'understrap-child'); ?>
-									</dt>
-									<dd class="mb-0 d-inline">
-										<?php if ($country_links) : ?>
-											<?php echo wp_kses($country_links, $allowed_link_html); ?>
-										<?php else : ?>
-											<?php echo esc_html($not_available); ?>
-										<?php endif; ?>
-									</dd>
-								</div>
+						</div><!-- .entry-content -->
 
-
-							</div>
-
-
-
-							<div class="row mb-2">
-
-
-
-								<div class="col-12 col-md-6">
-									<dt class="fw-bold mb-0 d-inline">
-										<?php esc_html_e('Genre', 'understrap-child'); ?>
-									</dt>
-									<dd class="mb-0 d-inline">
-										<?php if ($genre_links) : ?>
-											<?php echo wp_kses($genre_links, $allowed_link_html); ?>
-										<?php else : ?>
-											<?php echo esc_html($not_available); ?>
-										<?php endif; ?>
-									</dd>
-								</div>
-
-								<div class="col-12 col-md-6">
-									<dt class="fw-bold mb-0 d-inline">
-										<?php esc_html_e('Language', 'understrap-child'); ?>
-									</dt>
-									<dd class="mb-0 d-inline">
-										<?php if ($language_links) : ?>
-											<?php echo wp_kses($language_links, $allowed_link_html); ?>
-										<?php else : ?>
-											<?php echo esc_html($not_available); ?>
-										<?php endif; ?>
-									</dd>
-								</div>
-
-
-							</div>
-
-
-							<div class="row mb-2">
-
-
-
-								<div class="col-12 col-md-6">
-									<dt class="fw-bold mb-0 d-inline">
-										<?php esc_html_e('Depicts', 'understrap-child'); ?>
-									</dt>
-									<dd class="mb-0 d-inline">
-										<?php if ($depicts_links) : ?>
-											<?php echo wp_kses($depicts_links, $allowed_link_html); ?>
-										<?php else : ?>
-											<?php echo esc_html($not_available); ?>
-										<?php endif; ?>
-									</dd>
-								</div>
-
-								<div class="col-12 col-md-6">
-									<dt class="fw-bold mb-0 d-inline">
-										<?php esc_html_e('Publication Date', 'understrap-child'); ?>
-									</dt>
-									<dd class="mb-0 d-inline">
-										<?php echo esc_html($publication_date ? $publication_date : $not_available); ?>
-									</dd>
-								</div>
-
-
-							</div>
-						</dl>
-
-					</div><!-- .entry-content -->
-
-				</article><!-- .wikidata-entity -->
+					</article><!-- .wikidata-entity -->
 
 				<?php
 				// Query user-experience posts associated with this QID.
