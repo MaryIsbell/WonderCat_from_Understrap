@@ -705,7 +705,7 @@ function wikidata_prefetch_entity_labels_by_qids($qids, $lang = null) {
  * @param array $properties  Optional. Claim properties to inspect.
  * @return array<string> Unique QID list.
  */
-function wikidata_entity_collect_referenced_qids($entity_data, $properties = array('P31', 'P495', 'P17', 'P136', 'P407')) {
+function wikidata_entity_collect_referenced_qids($entity_data, $properties = array('P31', 'P495', 'P17', 'P136', 'P407', 'P180')) {
     if (!is_array($entity_data) || empty($properties)) {
         return array();
     }
@@ -843,6 +843,17 @@ function get_wikidata_entity_genres_links_html($entity_data, $lang = null) {
  */
 function get_wikidata_entity_languages_links_html($entity_data, $lang = null) {
     return wikidata_entity_get_claim_entity_links_html($entity_data, 'P407', $lang);
+}
+
+/**
+ * Convenience linked HTML accessor for depicts (P180).
+ *
+ * @param array       $entity_data Entity payload array.
+ * @param string|null $lang        Optional. Language code.
+ * @return string|null Linked HTML string.
+ */
+function get_wikidata_entity_depicts_links_html($entity_data, $lang = null) {
+    return wikidata_entity_get_claim_entity_links_html($entity_data, 'P180', $lang);
 }
 
 /**

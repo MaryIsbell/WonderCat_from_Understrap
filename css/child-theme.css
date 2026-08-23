@@ -15755,6 +15755,70 @@ Styling Term History Page
   box-shadow: 0 6px 20px rgba(0, 0, 0, 0.25);
 }
 
+/* ================================
+   FacetWP fSelect filter dropdowns
+   ================================ */
+.facetwp-type-fselect .fs-wrap {
+  width: 100%;
+  font-family: "PT Sans", sans-serif;
+  font-size: 1rem;
+}
+
+.facetwp-type-fselect .fs-label-wrap {
+  border: 1px solid #ced4da;
+  border-radius: 0.375rem;
+}
+
+.facetwp-type-fselect .fs-label-wrap .fs-label {
+  padding: 0.375rem 2rem 0.375rem 0.75rem;
+  color: #212529;
+  line-height: 1.5;
+}
+
+.facetwp-type-fselect .fs-arrow {
+  right: 0.75rem;
+}
+
+.facetwp-type-fselect .fs-wrap:focus-within .fs-label-wrap,
+.facetwp-type-fselect .fs-wrap.fs-open .fs-label-wrap {
+  border-color: #86b7fe;
+  outline: 0;
+  box-shadow: 0 0 0 0.25rem rgba(13, 110, 253, 0.25);
+}
+
+.facetwp-type-fselect .fs-dropdown {
+  width: 100%;
+  border: 1px solid #ced4da;
+  border-top: none;
+  border-radius: 0 0 0.375rem 0.375rem;
+  box-shadow: 0 0.5rem 1rem rgba(0, 0, 0, 0.15);
+  z-index: 1050;
+}
+
+.facetwp-type-fselect .fs-option {
+  padding: 0.5rem 0.75rem;
+  line-height: 1.5;
+}
+
+.facetwp-type-fselect .fs-option:hover,
+.facetwp-type-fselect .fs-option:focus {
+  background-color: #f8f9fa;
+}
+
+.facetwp-type-fselect .fs-wrap.single .fs-option.selected {
+  background-color: #d9d9d9;
+}
+
+.facetwp-type-fselect .fs-wrap.multiple .fs-option .fs-checkbox i {
+  border-color: #ced4da;
+  border-radius: 0.25rem;
+}
+
+.facetwp-type-fselect .fs-wrap.multiple .fs-option.selected .fs-checkbox i {
+  background-color: #000000;
+  border-color: #000000;
+}
+
 .has-blue-color,
 .has-blue-color:visited {
   color: #97C2FC;

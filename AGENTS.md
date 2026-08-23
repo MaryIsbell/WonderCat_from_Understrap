@@ -20,7 +20,7 @@ npm run dist                                      # compiles css/ and js/ from s
 ```
 
 - ACF JSON import is idempotent (content-hash skip). Force with `npm run wp-env:acf-sync:force`.
-- Gravity Forms import: `npm run wp-env:gf-import` (requires GF active; idempotent by title dedup)
+- Gravity Forms import: `npm run wp-env:gf-import` / `wp-env:gf-import:force` (requires GF active; idempotent by title dedup)
 - Licensed plugins (ACF Pro, GF, Gravity Flow, GF Advanced Post Creation): mount in `.wp-env.override.json` (gitignored)
 - BrowserSync via wp-env: `npm run bs:wp-env` (proxies `localhost:8888`)
 - Watch mode: `npm run watch`
@@ -38,12 +38,13 @@ npm run dist                                      # compiles css/ and js/ from s
 | Compiled assets | `css/`, `js/` |
 | WP-env config | `.wp-env.json` (WordPress 6.8, PHP 8.2) |
 | GF form archive | `FormArchive/` |
+| wp-env setup guide | `.github/README.md` (authoritative onboarding doc) |
 
 ## Conventions
 
 - Edit `src/sass/` and `src/js/`; rebuild with `npm run dist` to update compiled output.
 - WordPress escaping/sanitization conventions apply everywhere.
-- Keep existing text domains (`understrap-child`) and i18n patterns.
+- i18n: the theme text domain is `understrap-child`, but PHPCS only allows `understrap` / `woocommerce` (see `phpcs.xml.dist`). Use `understrap` for new strings or PHPCS flags `TextDomainMismatch`; existing Wikidata code (`wondercat`, `understrap-child`) already violates this and fails phpcs.
 - Preserve Understrap template structure unless the task requires divergence.
 
 ## ACF + Gravity Forms
@@ -77,6 +78,8 @@ composer phpmd           # PHPMD (has baseline)
 - `package-lock.json` is gitignored (only `composer.lock` tracked).
 - `dist/` and `dist-product/` are gitignored (release build artifacts).
 - No CI workflows exist. No test framework.
+- `composer phpcs` fatally crashes on the full repo: `inc/wikidata/utilities.php` triggers a PHPCS `vsprintf()` TypeError (pre-existing, unrelated to your change). Run `vendor/bin/phpcs <file>` scoped to changed files instead.
+- Repo skill: `.github/skills/wikidata-doc-sync/SKILL.md` — use it when updating Wikidata code so `inc/wikidata/docs/` stays in sync.
 - PHPMD excludes `src/`, `js/`, `css/`, `*-templates/`, `woocommerce/`.
 - PHPStan excludes `inc/deprecated.php` and `inc/class-wp-bootstrap-navwalker.php`.
 - Lifecycle on `wp-env:start`: activates `wondercat` theme, runs ACF sync.

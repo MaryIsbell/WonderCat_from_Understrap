@@ -38,6 +38,7 @@ function theme_enqueue_styles() {
 	$theme_scripts = "/js/child-theme{$suffix}.js";
 
 	wp_enqueue_style( 'child-understrap-styles', get_stylesheet_directory_uri() . $theme_styles, array(), $the_theme->get( 'Version' ) );
+	wp_enqueue_style( 'bootstrap-icons', 'https://cdn.jsdelivr.net/npm/bootstrap-icons@1.13.1/font/bootstrap-icons.min.css', array(), '1.13.1' );
 	wp_enqueue_script( 'jquery' );
 	wp_enqueue_script( 'child-understrap-scripts', get_stylesheet_directory_uri() . $theme_scripts, array(), $the_theme->get( 'Version' ), true );
 	if ( is_singular() && comments_open() && get_option( 'thread_comments' ) ) {
@@ -152,6 +153,9 @@ add_action('pre_get_posts', 'ue_post_author_archive');
 
 // Include Wikidata Logic
 require_once dirname( __FILE__ ) . '/inc/wikidata.php';
+
+// Include FacetWP integration.
+require_once dirname( __FILE__ ) . '/inc/facetwp.php';
 
 add_action('after_switch_theme', 'wikidata_install_table');
 add_action('after_switch_theme', 'flush_rewrite_rules');
