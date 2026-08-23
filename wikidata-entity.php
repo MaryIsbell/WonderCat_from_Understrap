@@ -213,7 +213,7 @@ $container = get_theme_mod('understrap_container_type');
 							
 							<div class="row  ">
 								<div class="col-12 text-center text-muted  fst-italic">
-									Note: This information comes from Wikidata. If you think it's inaccurate, you can correct it! <a href="https://www.wikidata.org/wiki/Wikidata:Introduction" class="text-muted">Learn how to edit Wikidata here</a>.
+									Note: This information comes from Wikidata. If you think it's inaccurate, you can correct it! <a target="_blank" rel="noopener noreferrer" href="https://www.wikidata.org/wiki/Wikidata:Introduction" class="text-muted">Learn how to edit Wikidata here</a>.
 								</div>
 
 
