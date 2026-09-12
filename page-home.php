@@ -149,8 +149,8 @@ wp_reset_postdata();
         loop
         playsinline
         preload="metadata"
-        poster="<?php echo get_stylesheet_directory_uri(); ?>/images/How_it_works_revised.png"
-    >
+        >
+        <!-- poster="<?php echo get_stylesheet_directory_uri(); ?>/images/How_it_works_revised.png" -->
         <source src="<?php echo get_stylesheet_directory_uri(); ?>/images/ShinyDemo2.mp4" type="video/mp4">
     </video>
 
