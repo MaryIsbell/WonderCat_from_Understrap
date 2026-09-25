@@ -29,7 +29,8 @@
     "wp-env:acf-sync": "wp-env run cli sh -lc 'wp eval-file wp-content/themes/wondercat/scripts/wp-env/acf-sync.php'",
     "wp-env:acf-sync:force": "wp-env run cli sh -lc 'WONDERCAT_ACF_SYNC_FORCE=1 wp eval-file wp-content/themes/wondercat/scripts/wp-env/acf-sync.php'",
     "wp-env:gf-import": "wp-env run cli sh -lc 'wp eval-file wp-content/themes/wondercat/scripts/wp-env/gf-import.php'",
-    "wp-env:gf-import:force": "wp-env run cli sh -lc 'WONDERCAT_GF_IMPORT_FORCE=1 wp eval-file wp-content/themes/wondercat/scripts/wp-env/gf-import.php'"
+    "wp-env:gf-import:force": "wp-env run cli sh -lc 'WONDERCAT_GF_IMPORT_FORCE=1 wp eval-file wp-content/themes/wondercat/scripts/wp-env/gf-import.php'",
+    "test:facetwp-endpoint": "node scripts/test-facetwp-endpoint.js"
   },
   "engines": {
     "node": ">=14"

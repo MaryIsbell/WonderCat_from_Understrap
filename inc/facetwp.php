@@ -46,6 +46,10 @@ add_filter( 'facetwp_facet_html', 'wondercat_bootstrap_facet_html', 10, 2 );
 add_action( 'acf/save_post', 'wondercat_reindex_post', 30, 1 );
 add_action( 'gform_advancedpostcreation_post_after_creation', 'wondercat_reindex_after_post_creation', 10, 1 );
 
+// Public read-only introspection of raw facet choices/counts; no data mutation is possible via this endpoint.
+add_filter( 'facetwp_api_can_access', '__return_true' );
+add_action( 'rest_api_init', 'wondercat_register_experiences_rest_route' );
+
 /**
  * Register code-locked FacetWP facets.
  *
@@ -223,6 +227,43 @@ function wondercat_bootstrap_facet_html( $output, $args ) {
 }
 
 /**
+ * Resolve deduplicated Wikidata entity items for a facet spec, applying the fallback properties.
+ *
+ * Shared by the FacetWP indexer and the `wondercat/v1/experiences` REST endpoint so both
+ * surfaces resolve Wikidata facet values (and the country P495 -> P17 fallback) identically.
+ *
+ * @param array $entity_data Decoded Wikidata entity payload.
+ * @param array $spec        Facet spec from WONDERCAT_WD_FACETS (props + optional fallback).
+ * @return array<int,array{qid:string,label:string,url:string}> Deduplicated items.
+ */
+function wondercat_get_wikidata_facet_items( $entity_data, $spec ) {
+	$items = array();
+	$seen  = array();
+
+	foreach ( $spec['props'] as $property ) {
+		foreach ( wikidata_entity_get_claim_entity_items( $entity_data, $property ) as $item ) {
+			if ( ! isset( $seen[ $item['qid'] ] ) ) {
+				$seen[ $item['qid'] ] = true;
+				$items[]              = $item;
+			}
+		}
+	}
+
+	if ( empty( $items ) && ! empty( $spec['fallback'] ) ) {
+		foreach ( $spec['fallback'] as $property ) {
+			foreach ( wikidata_entity_get_claim_entity_items( $entity_data, $property ) as $item ) {
+				if ( ! isset( $seen[ $item['qid'] ] ) ) {
+					$seen[ $item['qid'] ] = true;
+					$items[]              = $item;
+				}
+			}
+		}
+	}
+
+	return $items;
+}
+
+/**
  * Replace default index rows for Wikidata facets with derived property rows.
  *
  * Runs during full re-index and single-post auto-indexing. The facet source
@@ -263,31 +304,8 @@ function wondercat_index_wikidata_facet_rows( $rows, $params ) {
 		return array();
 	}
 
-	$spec  = WONDERCAT_WD_FACETS[ $defaults['facet_name'] ];
-	$items = array();
-	$seen  = array();
-
-	foreach ( $spec['props'] as $property ) {
-		foreach ( wikidata_entity_get_claim_entity_items( $entity_data, $property ) as $item ) {
-			if ( ! isset( $seen[ $item['qid'] ] ) ) {
-				$seen[ $item['qid'] ] = true;
-				$items[]              = $item;
-			}
-		}
-	}
-
-	if ( empty( $items ) && ! empty( $spec['fallback'] ) ) {
-		foreach ( $spec['fallback'] as $property ) {
-			foreach ( wikidata_entity_get_claim_entity_items( $entity_data, $property ) as $item ) {
-				if ( ! isset( $seen[ $item['qid'] ] ) ) {
-					$seen[ $item['qid'] ] = true;
-					$items[]              = $item;
-				}
-			}
-		}
-	}
-
-	$rows = array();
+	$items = wondercat_get_wikidata_facet_items( $entity_data, WONDERCAT_WD_FACETS[ $defaults['facet_name'] ] );
+	$rows  = array();
 
 	foreach ( $items as $item ) {
 		$row                        = $defaults;
@@ -341,4 +359,233 @@ function wondercat_reindex_after_post_creation( $post_id ) {
 	}
 
 	wondercat_reindex_post( $post_id );
+}
+
+/**
+ * Facet names accepted by the `wondercat/v1/experiences` REST endpoint.
+ *
+ * @return string[]
+ */
+function wondercat_experiences_facet_keys() {
+	return array_merge(
+		array_keys( WONDERCAT_WD_FACETS ),
+		array( 'wondercat_experience', 'wondercat_narrative_technology', 'wondercat_search' )
+	);
+}
+
+/**
+ * Sanitize a single facet value from the request (string or array of strings).
+ *
+ * @param mixed $value Raw request value.
+ * @return string[]
+ */
+function wondercat_sanitize_facet_param( $value ) {
+	return array_map( 'sanitize_text_field', (array) $value );
+}
+
+/**
+ * REST arg schema for `wondercat/v1/experiences`, one entry per known facet plus paging.
+ *
+ * @return array
+ */
+function wondercat_experiences_rest_args() {
+	$args = array(
+		'page'     => array(
+			'default'           => 1,
+			'sanitize_callback' => 'absint',
+		),
+		'per_page' => array(
+			'default'           => 20,
+			'sanitize_callback' => 'absint',
+		),
+	);
+
+	foreach ( wondercat_experiences_facet_keys() as $facet_key ) {
+		$args[ $facet_key ] = array(
+			'sanitize_callback' => 'wondercat_sanitize_facet_param',
+		);
+	}
+
+	return $args;
+}
+
+/**
+ * Register the public, read-only JSON feed of filtered story experiences.
+ *
+ * Mirrors the archive's FacetWP sidebar: accepts the same facet names as query params
+ * and runs them through FacetWP's own filtering engine, then returns enriched post data
+ * instead of bare post IDs.
+ *
+ * @return void
+ */
+function wondercat_register_experiences_rest_route() {
+	register_rest_route(
+		'wondercat/v1',
+		'/experiences',
+		array(
+			'methods'             => WP_REST_Server::READABLE,
+			'callback'            => 'wondercat_experiences_rest_callback',
+			'permission_callback' => '__return_true',
+			'args'                => wondercat_experiences_rest_args(),
+		)
+	);
+}
+
+/**
+ * Map a single WP_Term to its REST payload shape.
+ *
+ * @param WP_Term $term Term object.
+ * @return array
+ */
+function wondercat_experience_rest_term( $term ) {
+	return array(
+		'id'   => $term->term_id,
+		'name' => $term->name,
+		'slug' => $term->slug,
+		'link' => get_term_link( $term ),
+	);
+}
+
+/**
+ * Build the taxonomy term payload for a REST experience item.
+ *
+ * @param int    $post_id  Post ID.
+ * @param string $taxonomy Taxonomy slug.
+ * @return array
+ */
+function wondercat_experience_rest_terms( $post_id, $taxonomy ) {
+	$terms = get_the_terms( $post_id, $taxonomy );
+
+	if ( empty( $terms ) || is_wp_error( $terms ) ) {
+		return array();
+	}
+
+	return array_map( 'wondercat_experience_rest_term', $terms );
+}
+
+/**
+ * Build the JSON payload for a single story-experience post.
+ *
+ * @param WP_Post $post Post object.
+ * @return array
+ */
+function wondercat_build_experience_rest_item( $post ) {
+	$post_id       = $post->ID;
+	$qid           = get_field( WONDERCAT_QID_FIELD, $post_id );
+	$thumbnail_url = get_the_post_thumbnail_url( $post_id, 'large' );
+
+	$item = array(
+		'id'                     => $post_id,
+		'title'                  => wp_kses_decode_entities( get_the_title( $post_id ) ),
+		'permalink'              => get_permalink( $post_id ),
+		'featured_image'         => $thumbnail_url ? $thumbnail_url : null, // Normalize false (no thumbnail) to null for a consistent JSON type.
+		'feature'                => wp_kses_decode_entities( (string) get_field( 'feature', $post_id ) ),
+		'benefit_of_experience'  => wp_kses_decode_entities( (string) get_field( 'benefit_of_experience', $post_id ) ),
+		'title_of_creative_work' => wp_kses_decode_entities( (string) get_field( 'title_of_creative_work', $post_id ) ),
+		'wikidata_qid'           => $qid ? $qid : null,
+		'experience'             => wondercat_experience_rest_terms( $post_id, 'experience' ),
+		'technology'             => wondercat_experience_rest_terms( $post_id, 'technology' ),
+		// Always emit every facet key (even with no QID) so the JSON shape is a stable object, never an ambiguous empty array.
+		'wikidata'               => array_fill_keys( array_keys( WONDERCAT_WD_FACETS ), array() ),
+	);
+
+	if ( ! $qid ) {
+		return $item;
+	}
+
+	$entity      = wikidata_get_by_qid( $qid );
+	$entity_data = $entity ? wikidata_decode_entity_row( $entity, $qid ) : null;
+
+	if ( ! is_array( $entity_data ) ) {
+		return $item;
+	}
+
+	foreach ( WONDERCAT_WD_FACETS as $facet_name => $spec ) {
+		// Keep the raw qid alongside the label so consumers can filter without guessing the lowercased facet value.
+		$item['wikidata'][ $facet_name ] = wondercat_get_wikidata_facet_items( $entity_data, $spec );
+	}
+
+	return $item;
+}
+
+/**
+ * Callback for `GET /wp-json/wondercat/v1/experiences`.
+ *
+ * @param WP_REST_Request $request REST request.
+ * @return WP_REST_Response|WP_Error
+ */
+function wondercat_experiences_rest_callback( WP_REST_Request $request ) {
+	if ( ! function_exists( 'FWP' ) ) {
+		return new WP_Error( 'wondercat_facetwp_unavailable', __( 'FacetWP is not active.', 'understrap' ), array( 'status' => 503 ) );
+	}
+
+	$facets = array();
+
+	// Always include every known facet key, even unselected (empty array), so FacetWP's fetch
+	// route returns choices/counts for all facets on every request, not just requested ones.
+	foreach ( wondercat_experiences_facet_keys() as $facet_key ) {
+		$facets[ $facet_key ] = (array) $request->get_param( $facet_key );
+	}
+
+	$per_page = min( 100, max( 1, absint( $request->get_param( 'per_page' ) ) ) );
+	$page     = max( 1, absint( $request->get_param( 'page' ) ) );
+
+	// FacetWP_API_Fetch::process_request() only initializes FWP()->facet->facets when at
+	// least one facet is selected; with none selected it stays null and its own
+	// get_filtered_post_ids() does foreach ( $this->facets as ... ) on null.
+	if ( ! is_array( FWP()->facet->facets ) ) {
+		FWP()->facet->facets = array();
+	}
+
+	// FacetWP 4.5 has no FWP()->request_handler; route through its own facetwp/v1/fetch
+	// endpoint (already enabled above) so the exact same engine backs both routes.
+	$fetch_request = new WP_REST_Request( 'POST', '/facetwp/v1/fetch' );
+	$fetch_request->set_param(
+		'data',
+		wp_json_encode(
+			array(
+				'facets'     => $facets,
+				'query_args' => array(
+					'post_type'      => WONDERCAT_POST_TYPE,
+					'post_status'    => 'publish', // Public endpoint: never expose private/draft experiences.
+					'posts_per_page' => $per_page,
+					'paged'          => $page,
+				),
+			)
+		)
+	);
+
+	$fetch_response = rest_do_request( $fetch_request );
+
+	if ( $fetch_response->is_error() ) {
+		return $fetch_response->as_error();
+	}
+
+	$result   = $fetch_response->get_data();
+	$post_ids = isset( $result['results'] ) ? array_map( 'absint', (array) $result['results'] ) : array();
+	$items    = array();
+
+	if ( ! empty( $post_ids ) ) {
+		$posts_query = new WP_Query(
+			array(
+				'post_type'      => WONDERCAT_POST_TYPE,
+				'post_status'    => 'publish',
+				'post__in'       => $post_ids,
+				'orderby'        => 'post__in', // Preserve FacetWP's result order (e.g. active Sort facet).
+				'posts_per_page' => count( $post_ids ), // phpcs:ignore WordPress.WP.PostsPerPage.posts_per_page_posts_per_page,WPThemeReview.CoreFunctionality.PostsPerPage.posts_per_page_posts_per_page -- already capped to 100 above via $per_page.
+			)
+		);
+
+		foreach ( $posts_query->posts as $post ) {
+			$items[] = wondercat_build_experience_rest_item( $post );
+		}
+	}
+
+	return rest_ensure_response(
+		array(
+			'items'  => $items,
+			'facets' => isset( $result['facets'] ) ? $result['facets'] : array(),
+			'pager'  => isset( $result['pager'] ) ? $result['pager'] : array(),
+		)
+	);
 }
