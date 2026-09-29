@@ -132,6 +132,43 @@ Native WordPress search only covers `post_title`/`post_content`/`post_excerpt`, 
 
 Matching is effectively `post_title` OR `feature` OR `title_of_creative_work` OR `benefit_of_experience` (case-insensitive LIKE). Matched posts are capped at 500 via the facet's own `WP_Query`; there is **no** interaction with `wp_facetwp_index` and no re-index is required for changes to this facet. The `facetwp-*` classes of the rendered input are preserved (per the Bootstrap restyling above) so FacetWP's `facetwp/refresh/search` handler keeps working.
 
+## JSON REST endpoints
+
+Two public, read-only REST endpoints expose the same filtering used by the archive sidebar, for external consumers that want JSON instead of the HTML/AJAX widget.
+
+### `GET /wp-json/wondercat/v1/experiences`
+
+Registered in `inc/facetwp.php` (`wondercat_register_experiences_rest_route`). Accepts one query param per facet name from the table above (`wondercat_wd_instance`, `wondercat_wd_genre`, `wondercat_wd_depicts`, `wondercat_wd_country`, `wondercat_wd_language`, `wondercat_experience`, `wondercat_narrative_technology`, `wondercat_search`), each an array of selected values (e.g. `?wondercat_wd_genre[]=q175173&wondercat_wd_genre[]=q744038` — see the QA findings below for why these are lowercase), plus `page` and `per_page` (max 100). The callback (`wondercat_experiences_rest_callback`) dispatches an internal `rest_do_request()` call to FacetWP's own `POST /facetwp/v1/fetch` route (below) — the same filtering engine FacetWP's `/facetwp/v1/refresh` AJAX handler uses — so results always match what the archive UI would show for the same selection. (FacetWP 4.5 has no `FWP()->request_handler`; an earlier version of this callback called that nonexistent property, which raised a PHP warning that corrupted the JSON response body — see QA findings.)
+
+Unlike FacetWP's own results (which are just post IDs), the response expands each matched post into: `title`, `permalink`, `featured_image`, the `feature`/`benefit_of_experience`/`title_of_creative_work` ACF fields (HTML entities decoded), `wikidata_qid`, `experience`/`technology` taxonomy terms, and a `wikidata` map of facet name to `{qid, label, url}` items (always present for all `WONDERCAT_WD_FACETS` keys, even when the post has no QID) — via `wondercat_get_wikidata_facet_items`, the same helper the indexer uses, including the country P495 → P17 fallback. The response also includes FacetWP's own `facets` (choices + counts, always populated for every registered facet regardless of what was selected) and `pager` blocks, unmodified, so a consumer can build its own filter UI from a single request. Results are restricted to `post_status = publish` regardless of the requesting user, since the endpoint has no authentication.
+
+See `inc/wikidata/docs/FACETWP-API-CONSUMER-GUIDE.md` for the external, collaborator-facing "how to" reference (parameters, response schema, pagination, and curl/R/Python recipes).
+
+### `POST /wp-json/facetwp/v1/fetch`
+
+FacetWP's native endpoint, enabled via `add_filter( 'facetwp_api_can_access', '__return_true' )` in `inc/facetwp.php` (disabled by default upstream). Takes a stringified JSON `data` param with `facets` and `query_args` keys and returns raw `results` (post IDs) + `facets` + `pager` — no post enrichment. Useful for low-level facet-count introspection without the enrichment cost of `/wondercat/v1/experiences`. See [FacetWP's REST API docs](https://facetwp.com/help-center/developers/facetwp-rest-api/) for the request/response shape.
+
+## Known Issues / QA Findings
+
+Found via `scripts/test-facetwp-endpoint.js` (`npm run test:facetwp-endpoint`), a QA script that exercises `GET /wp-json/wondercat/v1/experiences` against a running `wp-env` instance and checks response schema, cross-item type consistency, encoding, pagination clamping, and FacetWP filtering correctness — targeted at consumers (like a Shiny/R app) that parse the raw JSON rather than rendering the archive UI. Re-run it after any change to `inc/facetwp.php`'s REST callback or `wondercat_build_experience_rest_item()`.
+
+**Fixed during this QA pass:**
+
+- `FWP()->request_handler->request()` doesn't exist in FacetWP 4.5 (verified: `request_handler` isn't a property on the `FWP()` singleton at all). Every call to the endpoint returned a 503 with a PHP warning (`Undefined property: FacetWP::$request_handler`) printed *before* the JSON body, corrupting it for any strict JSON parser. Fixed by dispatching an internal `rest_do_request()` call to FacetWP's own `POST /facetwp/v1/fetch` route instead (see `wondercat_experiences_rest_callback`).
+- `FacetWP_API_Fetch::process_request()` only initializes `FWP()->facet->facets` when at least one facet is selected; an endpoint request with **no** facet filters left it `null`, and FacetWP's own `get_filtered_post_ids()` then does `foreach ( $this->facets as ... )` on `null`, emitting another body-corrupting warning. Worked around by initializing `FWP()->facet->facets = array()` before dispatching the request when it isn't already an array.
+- `featured_image` was `get_the_post_thumbnail_url()`'s return value directly, which is `false` (bool) for posts without a thumbnail rather than `null`. Every item was affected (100% of a 100-item sample had no thumbnail set, all typed `false`). Normalized to `null` in `wondercat_build_experience_rest_item()` so the field is consistently `string|null`, since a JSON field that alternates between `false` and a string is a common source of column-type coercion errors in R (`jsonlite`/`purrr`).
+
+**Fixed in a follow-up pass (external consumer guide preparation):**
+
+- **`wikidata` field no longer alternates between a JSON array and a JSON object.** `wondercat_build_experience_rest_item()` now initializes `$item['wikidata']` with every `WONDERCAT_WD_FACETS` key defaulting to `array()` before the QID check, so the field is always a JSON object with a stable set of keys, whether or not the post has a QID.
+- **Wikidata facet values now expose the raw qid alongside the label.** Each entry in the `wikidata` map is now `{qid, label, url}` (the same shape `wondercat_get_wikidata_facet_items()` already produced internally) instead of a bare label string, so a consumer can filter on and correlate the exact (lowercase) facet value without guessing `strtolower($qid)` or risking a label collision.
+- **An unfiltered request now returns every registered facet's choices.** `wondercat_experiences_rest_callback()` always includes every key from `wondercat_experiences_facet_keys()` in the `facets` param sent to FacetWP's `facetwp/v1/fetch` route (as an empty array when unselected), so a single unfiltered `GET` returns `choices`/`counts` for all facets — no per-facet probing required.
+- **HTML entities are decoded in text fields.** `title`, `feature`, `benefit_of_experience`, and `title_of_creative_work` are passed through `wp_kses_decode_entities()` in `wondercat_build_experience_rest_item()`, so e.g. `"Baldur&#8217;s Gate 3"` is returned as `"Baldur's Gate 3"`.
+
+**Open findings (not yet fixed — flagged for follow-up):**
+
+- None currently open; all findings from the original QA pass have been addressed. Re-run `npm run test:facetwp-endpoint` after any future change to the REST callback or `wondercat_build_experience_rest_item()` to catch regressions (the script now asserts these fixes as hard PASS/FAIL checks rather than just documenting them).
+
 ## Out of scope / future
 
 - **Wikidata entity pages** (`/wikidata/{qid}`): FacetWP-enabled experience lists there are not included.
