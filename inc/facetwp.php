@@ -66,6 +66,7 @@ function wondercat_register_facetwp_facets( $facets ) {
 			'operator' => 'or',
 			'orderby'  => 'count',
 			'multiple' => 'yes',
+			'count'    => -1,
 		);
 	}
 
@@ -77,6 +78,7 @@ function wondercat_register_facetwp_facets( $facets ) {
 		'operator' => 'or',
 		'orderby'  => 'count',
 		'multiple' => 'yes',
+		'count'    => -1,
 	);
 	$facets[] = array(
 		'name'     => 'wondercat_narrative_technology',
@@ -86,6 +88,7 @@ function wondercat_register_facetwp_facets( $facets ) {
 		'operator' => 'or',
 		'orderby'  => 'count',
 		'multiple' => 'yes',
+		'count'    => -1,
 	);
 	$facets[] = array(
 		'name'       => 'wondercat_pager',
