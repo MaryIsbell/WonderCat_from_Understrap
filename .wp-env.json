@@ -6,8 +6,6 @@
     "https://downloads.wordpress.org/theme/understrap.1.2.4.zip"
   ],
   "plugins": [
-    "https://downloads.wordpress.org/plugin/advanced-custom-fields.latest-stable.zip",
-    "https://downloads.wordpress.org/plugin/capability-manager-enhanced.2.45.0.zip"
   ],
   "mappings": {
     "wp-content/themes/wondercat": "."
