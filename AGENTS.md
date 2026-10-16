@@ -32,6 +32,8 @@ npm run dist                                      # compiles css/ and js/ from s
 | Theme bootstrap | `functions.php` (also loads `inc/acf.php`, `inc/wikidata.php`) |
 | ACF + GF integration | `inc/acf.php` |
 | Wikidata entrypoint | `inc/wikidata.php` / `inc/wikidata/` |
+| Wikidata scheduled sweep + WP-CLI resync | `inc/wikidata/schedule.php` (`wp wondercat wikidata-sweep`) |
+| Wikidata ops runbook | `inc/wikidata/docs/OPS-RUNBOOK.md` |
 | Wikidata template tags | `inc/wikidata/docs/TEMPLATE-TAGS.md` |
 | ACF JSON source of truth | `acf-json/` |
 | Source assets (edit these) | `src/sass/`, `src/js/` |
